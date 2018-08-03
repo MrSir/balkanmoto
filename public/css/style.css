@@ -1,0 +1,74 @@
+@font-face {
+    font-family: 'Lavalette';
+    src: url('/fonts/Lavalette.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+html, body {
+    background-size: 100%;
+    color: #636b6f;
+    font-family: 'Arial', sans-serif;
+    font-weight: 100;
+    font-size: 30pt;
+    height: 100vh;
+    margin: 0;
+}
+
+.content {
+    text-align: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+            'header'
+            'content sidebar'
+            'footer';
+    grid-auto-rows: 300px auto 200px;
+    grid-template-columns: repeat(auto-fill, 500px);
+    height: 100%;
+}
+
+.grid-item {
+    border: 1px solid black;
+}
+
+.header, .footer {
+    grid-column: 1 / 5;
+}
+
+.main {
+    grid-column: 1 / 4;
+}
+
+.sidebar {
+    grid-column: 4 / 5;
+}
+
+.header {
+    background: center url('/img/coming_soon_photo2.jpg');
+    background-size: 100%;
+    align-items: center;
+    color: white;
+}
+
+.header .logo {
+    background: center url('/img/BalkanMotoLogo_300x80_white.png');
+    width: 300px;
+    height: 80px;
+}
+
+.grid-container2 {
+    display: grid;
+    grid-template-areas:
+            'logo spacer nav nav nav nav nav';
+    height: 100%;
+    grid-template-columns: 1fr 12fr repeat(5, 1fr);
+    font-size: 16pt;
+}
+
+.grid-container2 .logo {
+    grid-row: span 4;
+}
