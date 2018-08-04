@@ -20,55 +20,175 @@ html, body {
     text-align: center;
 }
 
-.grid-container {
+.container-grid {
     display: grid;
     grid-template-areas:
-            'header'
-            'content sidebar'
-            'footer';
-    grid-auto-rows: 300px auto 200px;
-    grid-template-columns: repeat(auto-fill, 500px);
+            "header"
+            "content"
+            "footer";
+    grid-auto-rows: 500px auto 200px;
     height: 100%;
 }
 
 .grid-item {
-    border: 1px solid black;
+    //border: 1px solid black;
 }
 
-.header, .footer {
-    grid-column: 1 / 5;
+.container-grid .header-grid {
+    grid-area: header;
 }
 
-.main {
-    grid-column: 1 / 4;
+.container-grid .content-grid {
+    grid-area: content;
 }
 
-.sidebar {
-    grid-column: 4 / 5;
+.container-grid .footer-grid {
+    grid-area: footer;
 }
 
-.header {
-    background: center url('/img/coming_soon_photo2.jpg');
-    background-size: 100%;
-    align-items: center;
-    color: white;
-}
-
-.header .logo {
+.logo {
     background: center url('/img/BalkanMotoLogo_300x80_white.png');
     width: 300px;
     height: 80px;
 }
 
-.grid-container2 {
+.header-grid {
     display: grid;
     grid-template-areas:
-            'logo spacer nav nav nav nav nav';
+            'tutorials builds youtube'
+            'logo-nav logo-nav logo-nav';
     height: 100%;
-    grid-template-columns: 1fr 12fr repeat(5, 1fr);
-    font-size: 16pt;
+    grid-template-rows: 300px 200px;
+    grid-template-columns: repeat(3, 1fr);
 }
 
-.grid-container2 .logo {
-    grid-row: span 4;
+.header-grid .tutorials {
+    grid-area: tutorials;
+}
+
+.header-grid .builds {
+    grid-area: builds;
+}
+
+.header-grid .youtube {
+    grid-area: youtube;
+}
+
+.header-grid .logo-nav-grid {
+    grid-area: logo-nav;
+}
+
+.logo-nav-grid {
+    display: grid;
+    grid-template-areas:
+            'logo-grid'
+            'nav-grid';
+    height: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 120px 80px;
+    grid-gap: 0px;
+    background-color: #383838;
+}
+
+.logo-nav-grid .log-grid {
+    grid-area: logo-grid;
+}
+
+.logo-nav-grid .nav-grid {
+    grid-area: nav-grid;
+}
+
+.logo-grid {
+    display: grid;
+    height: 100%;
+    grid-template-areas:
+            '. . .'
+            '. logo .';
+    grid-template-rows: 1fr 80px;
+    grid-template-columns: 1fr 300px 1fr;
+    justify-items: center;
+}
+
+.logo-grid .logo {
+    grid-area: logo;
+}
+
+.nav-grid {
+    display: grid;
+    height: 100%;
+    grid-template-areas:
+            '. nav-item nav-item nav-item nav-item .';
+    grid-template-columns: 1fr repeat(4, 100px) 1fr;
+    font-size: 16pt;
+    color: white;
+}
+
+.nav-grid .nav-item{
+    grid-area: nav-item;
+    margin-top: 10px;
+}
+
+.nav-grid .nav-item1{
+    grid-column: 2 / 3;
+    color: chartreuse;
+}
+
+.nav-grid .nav-item2{
+    grid-column: 3 / 4;
+}
+
+.nav-grid .nav-item3{
+    grid-column: 4 / 5;
+}
+
+.nav-grid .nav-item4{
+    grid-column: 5 / 6;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-areas:
+            '. . . . .'
+            '. tweets links social .';
+            '. . . . .'
+    height: 100%;
+    grid-template-columns: 1fr repeat(3, 400px) 1fr;
+    grid-template-rows: 1fr 150px 1fr;
+    background-color: #383838;
+    grid-gap: 20px;
+
+}
+
+.footer-grid .tweets {
+    grid-area: tweets;
+    grid-column: 2 / 3;
+}
+
+.footer-grid .links {
+    grid-area: tweets;
+    grid-column: 3 / 4;
+}
+
+.footer-grid .social {
+    grid-area: tweets;
+    grid-column: 4 / 5;
+}
+
+.footer-grid .footer-title {
+    font-size: 16pt;
+    color: chartreuse;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.footer-grid ul {
+    list-style-type: none;
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+}
+
+.footer-grid ul li {
+    font-size: 12pt;
+    color: white;
 }

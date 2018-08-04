@@ -13,7 +13,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<div class="content grid-container">
+<div class="content container-grid">
     @include('theme.header')
     @include('theme.content')
     @include('theme.footer')
