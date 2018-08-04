@@ -23,15 +23,11 @@ html, body {
 .container-grid {
     display: grid;
     grid-template-areas:
-            "header"
-            "content"
-            "footer";
+            'header'
+            'content'
+            'footer';
     grid-auto-rows: 500px auto 200px;
     height: 100%;
-}
-
-.grid-item {
-    //border: 1px solid black;
 }
 
 .container-grid .header-grid {

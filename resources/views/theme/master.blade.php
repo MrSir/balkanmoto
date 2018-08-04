@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
 
     <link href="css/style.css" rel="stylesheet">
+    @yield('page-header')
 </head>
 <body>
 <div class="content container-grid">
