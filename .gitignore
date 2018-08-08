@@ -4,6 +4,7 @@
 /public/hot
 /storage/*.key
 /storage/logs/*.log
+/storage/debugbar
 /storage/temp
 /storage/files
 /vendor
