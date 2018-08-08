@@ -10,56 +10,8 @@
     grid-gap: 30px;
 }
 
-.content-grid .grid-item {
-    border: 1px solid black;
-}
-
 .content-grid .main-grid{
     grid-area: main-grid;
-    display: grid;
-    grid-template-areas:
-            'post-grid'
-            'post-grid'
-            'post-grid';
-    height: 100%;
-    grid-gap: 20px;
-}
-
-.content-grid .main-grid .post-grid {
-    display: grid;
-    grid-template-areas:
-            '. image .'
-            '. image .'
-            '. image .'
-            '. image .';
-    grid-template-columns: 1fr 1000px 1fr;
-    grid-template-rows: repeat(2, 250px) repeat(2, 50px);
-    height: 100%;
-}
-
-.content-grid .main-grid .post-grid .image{
-    grid-area: image;
-    grid-column: 2 / 3;
-    grid-row: 1 / 5;
-}
-
-.content-grid .main-grid .post-grid .title{
-    grid-column: 2 / 3;
-    grid-row: 3 / 4;
-    font-size: 16pt;
-    text-align: left;
-    padding: 10px;
-    vertical-align: middle;
-    background-color: lightgray;
-}
-.content-grid .main-grid .post-grid .summary{
-    grid-column: 2 / 3;
-    grid-row: 4 / 5;
-    font-size: 12pt;
-    text-align: left;
-    padding: 0px 10px;
-    vertical-align: middle;
-    background-color: lightgray;
 }
 
 .content-grid .divider{
@@ -71,21 +23,12 @@
 .content-grid .instagram-grid{
     grid-area: instagram-grid;
     display: grid;
-    grid-template-areas:
-            'spacer-left image image image image spacer-right'
-            'spacer-left image image image image spacer-right'
-            'spacer-left image image image image spacer-right'
-            'spacer-left image image image image spacer-right';
-    grid-template-columns: 1fr repeat(4, 300px) 1fr;
-    grid-template-rows: repeat(4, 300px);
-    height: 100%;
-    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 440px));
+    grid-auto-flow: dense;
+    grid-gap: 30px;
+    justify-content: center;
 }
 
-.content-grid .instagram-grid .spacer-left{
-    grid-area: spacer-left;
-}
-
-.content-grid .instagram-grid .spacer-right{
-    grid-area: spacer-right;
+.content-grid .instagram-grid img{
+    width: 100%;
 }

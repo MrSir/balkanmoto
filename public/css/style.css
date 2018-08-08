@@ -1,15 +1,7 @@
-@font-face {
-    font-family: 'Lavalette';
-    src: url('/fonts/Lavalette.ttf') format('truetype');
-    font-style: normal;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
-}
-
 html, body {
     background-size: 100%;
     color: #636b6f;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Teko', sans-serif;
     font-weight: 100;
     font-size: 30pt;
     height: 100vh;
@@ -23,15 +15,63 @@ html, body {
 .container-grid {
     display: grid;
     grid-template-areas:
-            'header'
+            'menu-grid'
+            'header-grid'
             'content'
             'footer';
-    grid-auto-rows: 500px auto 200px;
-    height: 100%;
+    grid-template-rows: 300px auto 1fr 200px;
+}
+
+.container-grid .menu-grid{
+    grid-area: menu-grid;
+    display: grid;
+    grid-template-areas: '. logo .';
+    grid-template-columns: 20px 1fr 20px;
+    grid-template-rows: 1fr;
+    background-color: black;
+}
+
+.container-grid .menu-grid .logo{
+    grid-area: logo;
+    background: url('/img/BalkanMotoLogo_1000x267_white.png') no-repeat center;
+    background-size: contain;
+    grid-column: 2 / 3;
+}
+
+.container-grid .menu-grid .nav-grid{
+    display: none;
+    grid-column: 2 / 3;
 }
 
 .container-grid .header-grid {
-    grid-area: header;
+    grid-area: header-grid;
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr;
+}
+
+.container-grid .header-grid .tutorials {
+    //grid-area: header;
+    height: 0px;
+    padding-bottom: 66.66%;
+    background: url('/img/header/tutorials_1080x720.jpg') no-repeat center;
+    grid-row: 1 / 2 ;
+}
+
+.container-grid .header-grid .builds {
+    //grid-area: header;
+    height: 0px;
+    padding-bottom: 66.66%;
+    background: url('/img/header/builds_1080x720.jpg') no-repeat center;
+    grid-row: 2 / 3 ;
+}
+
+.container-grid .header-grid .youtube {
+    //grid-area: header;
+    height: 0px;
+    padding-bottom: 66.66%;
+    background: url('/img/header/youtube_1080x720.jpg') no-repeat center;
+    grid-row: 3 / 4;
 }
 
 .container-grid .content-grid {
@@ -40,151 +80,49 @@ html, body {
 
 .container-grid .footer-grid {
     grid-area: footer;
-}
-
-.logo {
-    background: center url('/img/BalkanMotoLogo_300x80_white.png');
-    width: 300px;
-    height: 80px;
-}
-
-.header-grid {
-    display: grid;
-    grid-template-areas:
-            'tutorials builds youtube'
-            'logo-nav logo-nav logo-nav';
-    height: 100%;
-    grid-template-rows: 300px 200px;
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.header-grid .tutorials {
-    grid-area: tutorials;
-}
-
-.header-grid .builds {
-    grid-area: builds;
-}
-
-.header-grid .youtube {
-    grid-area: youtube;
-}
-
-.header-grid .logo-nav-grid {
-    grid-area: logo-nav;
-}
-
-.logo-nav-grid {
-    display: grid;
-    grid-template-areas:
-            'logo-grid'
-            'nav-grid';
-    height: 100%;
-    grid-template-columns: 1fr;
-    grid-template-rows: 120px 80px;
-    grid-gap: 0px;
-    background-color: #383838;
-}
-
-.logo-nav-grid .log-grid {
-    grid-area: logo-grid;
-}
-
-.logo-nav-grid .nav-grid {
-    grid-area: nav-grid;
-}
-
-.logo-grid {
-    display: grid;
-    height: 100%;
-    grid-template-areas:
-            '. . .'
-            '. logo .';
-    grid-template-rows: 1fr 80px;
-    grid-template-columns: 1fr 300px 1fr;
-    justify-items: center;
-}
-
-.logo-grid .logo {
-    grid-area: logo;
-}
-
-.nav-grid {
-    display: grid;
-    height: 100%;
-    grid-template-areas:
-            '. nav-item nav-item nav-item nav-item .';
-    grid-template-columns: 1fr repeat(4, 100px) 1fr;
-    font-size: 16pt;
-    color: white;
-}
-
-.nav-grid .nav-item{
-    grid-area: nav-item;
-    margin-top: 10px;
-}
-
-.nav-grid .nav-item1{
-    grid-column: 2 / 3;
-    color: chartreuse;
-}
-
-.nav-grid .nav-item2{
-    grid-column: 3 / 4;
-}
-
-.nav-grid .nav-item3{
-    grid-column: 4 / 5;
-}
-
-.nav-grid .nav-item4{
-    grid-column: 5 / 6;
-}
-
-.footer-grid {
     display: grid;
     grid-template-areas:
             '. . . . .'
             '. tweets links social .';
             '. . . . .'
     height: 100%;
-    grid-template-columns: 1fr repeat(3, 400px) 1fr;
+    grid-template-columns: 20px repeat(3, 320px) 20px;
     grid-template-rows: 1fr 150px 1fr;
     background-color: #383838;
     grid-gap: 20px;
 
 }
 
-.footer-grid .tweets {
+.container-grid .footer-grid .tweets {
     grid-area: tweets;
     grid-column: 2 / 3;
 }
 
-.footer-grid .links {
+.container-grid .footer-grid .links {
     grid-area: tweets;
     grid-column: 3 / 4;
 }
 
-.footer-grid .social {
+.container-grid .footer-grid .social {
     grid-area: tweets;
     grid-column: 4 / 5;
 }
 
-.footer-grid .footer-title {
+.container-grid .footer-grid .footer-title {
     font-size: 16pt;
     color: chartreuse;
     text-align: left;
     margin-bottom: 10px;
 }
 
-.footer-grid ul {
+.container-grid .footer-grid ul {
     list-style-type: none;
     text-align: left;
     margin: 0px;
     padding: 0px;
 }
 
-.footer-grid ul li {
+.container-grid .footer-grid ul li {
     font-size: 12pt;
     color: white;
 }
