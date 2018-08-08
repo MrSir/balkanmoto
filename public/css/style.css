@@ -8,6 +8,10 @@ html, body {
     margin: 0;
 }
 
+a{
+    color: white;
+}
+
 .content {
     text-align: center;
 }
@@ -19,28 +23,43 @@ html, body {
             'header-grid'
             'content'
             'footer';
-    grid-template-rows: 300px auto 1fr 200px;
+    grid-template-rows: 150px auto 1fr auto;
 }
 
 .container-grid .menu-grid{
     grid-area: menu-grid;
     display: grid;
-    grid-template-areas: '. logo .';
+    grid-template-areas: '. item .';
     grid-template-columns: 20px 1fr 20px;
-    grid-template-rows: 1fr;
     background-color: black;
 }
 
 .container-grid .menu-grid .logo{
-    grid-area: logo;
+    grid-area: item;
     background: url('/img/BalkanMotoLogo_1000x267_white.png') no-repeat center;
     background-size: contain;
-    grid-column: 2 / 3;
+    height: 100px;
+    grid-row: 1 / 2;
 }
 
 .container-grid .menu-grid .nav-grid{
-    display: none;
-    grid-column: 2 / 3;
+    grid-area: item;
+    grid-row: 2 / 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    grid-gap: 10px;
+    justify-content: center;
+    height: 24px;
+}
+
+.container-grid .menu-grid .nav-grid a{
+    text-decoration: none;
+    font-size: 14pt;
+}
+
+.container-grid .menu-grid .nav-grid a:hover{
+    text-decoration: none;
+    color: lime;
 }
 
 .container-grid .header-grid {
@@ -55,6 +74,7 @@ html, body {
     height: 0px;
     padding-bottom: 66.66%;
     background: url('/img/header/tutorials_1080x720.jpg') no-repeat center;
+    background-size: contain;
     grid-row: 1 / 2 ;
 }
 
@@ -63,6 +83,7 @@ html, body {
     height: 0px;
     padding-bottom: 66.66%;
     background: url('/img/header/builds_1080x720.jpg') no-repeat center;
+    background-size: contain;
     grid-row: 2 / 3 ;
 }
 
@@ -71,6 +92,7 @@ html, body {
     height: 0px;
     padding-bottom: 66.66%;
     background: url('/img/header/youtube_1080x720.jpg') no-repeat center;
+    background-size: contain;
     grid-row: 3 / 4;
 }
 
@@ -81,48 +103,88 @@ html, body {
 .container-grid .footer-grid {
     grid-area: footer;
     display: grid;
-    grid-template-areas:
-            '. . . . .'
-            '. tweets links social .';
-            '. . . . .'
     height: 100%;
-    grid-template-columns: 20px repeat(3, 320px) 20px;
-    grid-template-rows: 1fr 150px 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 700px));
     background-color: #383838;
-    grid-gap: 20px;
-
-}
-
-.container-grid .footer-grid .tweets {
-    grid-area: tweets;
-    grid-column: 2 / 3;
-}
-
-.container-grid .footer-grid .links {
-    grid-area: tweets;
-    grid-column: 3 / 4;
-}
-
-.container-grid .footer-grid .social {
-    grid-area: tweets;
-    grid-column: 4 / 5;
+    justify-content: center;
+    padding: 20px;
+    grid-column-gap: 20px;
 }
 
 .container-grid .footer-grid .footer-title {
     font-size: 16pt;
-    color: chartreuse;
+    color: lime;
     text-align: left;
     margin-bottom: 10px;
 }
 
-.container-grid .footer-grid ul {
+.container-grid .footer-grid .tweeter .tweets .tweet{
+    display: grid;
+    grid-template-areas:
+            'image name'
+            'image handle'
+            'message message';
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: repeat(2, 20px) 1fr;
+    grid-gap: 10px;
+}
+
+.container-grid .footer-grid .tweeter .tweets .tweet img{
+    grid-area: image;
+}
+
+.container-grid .footer-grid .tweeter .tweets .tweet .name{
+    grid-area: name;
+    font-size: 14pt;
+    font-weight: bold;
+    color: white;
+    justify-self: left;
+}
+
+.container-grid .footer-grid .tweeter .tweets .tweet .handle{
+    grid-area: handle;
+    font-size: 14pt;
+    color: #d8d8e2;
+    justify-self: left;
+}
+
+.container-grid .footer-grid .tweeter .tweets .tweet .handle a{
+    color: #d8d8e2;
+    text-decoration: none;
+}
+
+.container-grid .footer-grid .tweeter .tweets .tweet .message{
+    grid-area: message;
+    font-size: 12pt;
+    color: white;
+    justify-self: left;
+}
+
+.container-grid .footer-grid .links ul {
     list-style-type: none;
     text-align: left;
     margin: 0px;
     padding: 0px;
 }
 
-.container-grid .footer-grid ul li {
+.container-grid .footer-grid .links ul li{
     font-size: 12pt;
-    color: white;
+    border-bottom: 1px solid gray;
 }
+
+.container-grid .footer-grid .links ul li a{
+    text-decoration: none;
+}
+
+.container-grid .footer-grid .links ul li a:hover{
+    color: lime;
+}
+
+.container-grid .footer-grid .social .icons{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 45px);
+}
+
+
+
+
