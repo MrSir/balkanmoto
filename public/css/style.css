@@ -36,7 +36,7 @@ a{
 
 .container-grid .menu-grid .logo{
     grid-area: item;
-    background: url('/img/BalkanMotoLogo_1000x267_white.png') no-repeat center;
+    background: url('/img/logos/BalkanMotoLogo_1000x267_white.png') no-repeat center;
     background-size: contain;
     height: 100px;
     grid-row: 1 / 2;

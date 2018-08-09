@@ -62,7 +62,7 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    <img src="img/BalkanMotoLogo_1000x267.png"/><br/>
+                    <img src="img/logos/BalkanMotoLogo_1000x267_white.png"/><br/>
                     Coming Soon ...
                 </div>
             </div>
