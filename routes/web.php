@@ -24,3 +24,10 @@ Route::get(
         return view('pages.home');
     }
 );
+
+Route::get(
+    '/privacy',
+    function() {
+        return view('pages.home');
+    }
+);
