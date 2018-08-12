@@ -28,6 +28,6 @@ Route::get(
 Route::get(
     '/privacy',
     function() {
-        return view('pages.home');
+        return view('pages.privacy');
     }
 );
