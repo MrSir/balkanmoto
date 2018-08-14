@@ -40,7 +40,7 @@ class Controller extends BaseController
 
         $body = json_decode($response->getBody(),true);
         $data = $body['data'];
-dump($body);
+
         return view('pages.home', ['instagrams' => $data]);
     }
 }
