@@ -20,9 +20,7 @@ Route::get(
 
 Route::get(
     '/home',
-    function() {
-        return view('pages.home');
-    }
+    'Controller@home'
 );
 
 Route::get(

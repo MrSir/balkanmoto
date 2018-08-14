@@ -51,41 +51,11 @@
         <span class="fab fa-instagram"></span>BalkanMoto2018
     </div>
     <div class="grid-item instagram-grid">
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
+        @foreach($instagrams as $instagram)
+        <div class="post-grid grid-item"
+             style="background-image: url('{{ $instagram['media_url'] }}');"
+             onclick="window.open('{{$instagram['permalink']}}');">
         </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
-        <div class="post-grid grid-item">
-            <img src="/img/header/builds_1080x720.jpg">
-        </div>
+        @endforeach
     </div>
 @endsection
