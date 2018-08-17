@@ -1,0 +1,51 @@
+@media all and (min-device-width: 768px) {
+    .container-grid {
+        grid-template-areas: 'menu-grid' 'header-grid' 'content' 'footer';
+        grid-template-rows: 150px auto 1fr auto;
+    }
+
+    .container-grid .header-grid {
+        grid-area: header-grid;
+        display: grid;
+        height: 100%;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .container-grid .header-grid .tutorials {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+    }
+
+    .container-grid .header-grid .builds {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+    }
+
+    .container-grid .header-grid .travel {
+        grid-column: 3 / 4;
+        grid-row: 1 / 2;
+    }
+
+    .container-grid .menu-grid{
+        grid-template-areas: '. logo nav-grid .';
+        grid-template-columns: 20px repeat(2, 1fr) 20px;
+    }
+
+    .container-grid .menu-grid .logo{
+        grid-area: logo;
+        margin-top: 0px;
+        height: 100%;
+    }
+
+    .container-grid .menu-grid .nav-grid{
+        grid-area: nav-grid;
+        grid-template-columns: repeat(auto-fit, 70px);
+        grid-gap: 0px;
+        justify-content: right;
+        margin-top: 20px;
+    }
+
+    .container-grid .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

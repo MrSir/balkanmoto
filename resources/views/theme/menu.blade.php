@@ -3,6 +3,7 @@
     <div class="nav-grid grid-item">
         <a href="#">ABOUT</a>
         <a href="#">ARTICLES</a>
+        <a href="#">YOUTUBE</a>
         <a href="#">INSTAGRAM</a>
         <a href="#">CONTACT</a>
     </div>
