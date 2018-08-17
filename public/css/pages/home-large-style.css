@@ -1,0 +1,9 @@
+@media all and (min-device-width: 1080px) {
+    .content-grid .main-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content-grid .instagram-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
