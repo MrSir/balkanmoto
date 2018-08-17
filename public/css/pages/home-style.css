@@ -13,9 +13,9 @@
     grid-area: main-grid;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(440px, 690px));
-    grid-gap: 20px;
+    grid-gap: 50px;
     justify-content: center;
-    padding: 0px 20px;
+    padding: 50px 50px;
 }
 
 .content-grid .main-grid .post-grid{
@@ -36,7 +36,7 @@
 .content-grid .main-grid .post-grid .title{
     grid-area: title;
     color: #636b6f;
-    font-size: 14pt;
+    font-size: 18pt;
     text-align: left;
 }
 
@@ -47,14 +47,14 @@
 
 .content-grid .main-grid .post-grid .date{
     grid-area: date;
-    font-size: 12pt;
+    font-size: 16pt;
     color: lightgray;
     text-align: left;
 }
 
 .content-grid .main-grid .post-grid .summary{
     grid-area: summary;
-    font-size: 12pt;
+    font-size: 16pt;
     text-align: left;
 }
 
@@ -62,30 +62,29 @@
     color: #636b6f;
 }
 
+.content-grid .divider{
+    height: 55px;
+    line-height: 55px;
+    background-color: #ced4da;
+    font-size: 25pt;
+}
+
 .content-grid .divider1{
     grid-area: divider1;
-    height: 50px;
-    line-height: 50px;
-    background-color: #ced4da;
-    font-size: 16pt;
 }
 
 .content-grid .divider2{
     grid-area: divider2;
-    height: 50px;
-    line-height: 50px;
-    background-color: #ced4da;
-    font-size: 16pt;
 }
 
 .content-grid .instagram-grid{
     grid-area: instagram-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 440px));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 410px));
     grid-auto-flow: dense;
-    grid-gap: 20px;
+    grid-gap: 50px;
     justify-content: center;
-    padding: 0px 20px 20px 20px;
+    padding: 30px 50px 50px 50px;
 }
 
 

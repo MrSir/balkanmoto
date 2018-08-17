@@ -1,9 +1,4 @@
-@media all and (min-device-width: 768px) {
-    .container-grid {
-        grid-template-areas: 'menu-grid' 'header-grid' 'content' 'footer';
-        grid-template-rows: 150px auto 1fr auto;
-    }
-
+@media all and (min-device-width: 768px) AND (min-width: 1080px) {
     .container-grid .header-grid {
         grid-area: header-grid;
         display: grid;
@@ -33,13 +28,13 @@
 
     .container-grid .menu-grid .logo{
         grid-area: logo;
-        margin-top: 0px;
+        margin: 15px 0px 0px 0px;
         height: 100%;
     }
 
     .container-grid .menu-grid .nav-grid{
         grid-area: nav-grid;
-        grid-template-columns: repeat(auto-fit, 70px);
+        grid-template-columns: repeat(auto-fit, 100px);
         grid-gap: 0px;
         justify-content: right;
         margin-top: 20px;
