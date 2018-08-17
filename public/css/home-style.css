@@ -11,7 +11,7 @@
 .content-grid .main-grid{
     grid-area: main-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 440px));
+    grid-template-columns: repeat(auto-fit, minmax(440px, 690px));
     grid-gap: 20px;
     justify-content: center;
     padding: 20px 20px 0px 20px;
