@@ -5,6 +5,9 @@
 @endsection
 
 @section('content')
+    <div class="divider1">
+        FEATURED ARTICLES
+    </div>
     <div class="grid-item main-grid">
         <div class="post-grid">
             <img src="img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
@@ -47,7 +50,7 @@
             </div>
         </div>
     </div>
-    <div class="divider">
+    <div class="divider2">
         <span class="fab fa-instagram"></span>BalkanMoto2018
     </div>
     <div class="grid-item instagram-grid">
