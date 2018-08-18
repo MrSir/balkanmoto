@@ -40,6 +40,10 @@
         margin-top: 20px;
     }
 
+    .container-grid .menu-grid .nav-grid a{
+        font-size: 18pt;
+    }
+
     .container-grid .footer-grid {
         grid-template-columns: repeat(3, 1fr);
     }

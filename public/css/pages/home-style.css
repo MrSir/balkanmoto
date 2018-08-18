@@ -12,10 +12,10 @@
 .content-grid .main-grid{
     grid-area: main-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(440px, 690px));
-    grid-gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 690px));
+    grid-gap: 20px;
     justify-content: center;
-    padding: 50px 50px;
+    padding: 0px 20px;
 }
 
 .content-grid .main-grid .post-grid{
@@ -82,9 +82,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 410px));
     grid-auto-flow: dense;
-    grid-gap: 50px;
+    grid-gap: 20px;
     justify-content: center;
-    padding: 30px 50px 50px 50px;
+    padding: 0px 20px 20px 20px;
 }
 
 

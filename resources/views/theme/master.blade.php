@@ -18,8 +18,8 @@
 </head>
 <body>
 <div class="content container-grid">
-    @include('theme.header')
     @include('theme.menu')
+    @include('theme.header')
     @include('theme.content')
     @include('theme.footer')
 </div>

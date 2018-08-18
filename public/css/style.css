@@ -49,14 +49,14 @@ a{
 .container-grid .menu-grid .nav-grid{
     grid-area: nav-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(34px, 56px));
     grid-gap: 10px;
     justify-content: center;
 }
 
 .container-grid .menu-grid .nav-grid a{
     text-decoration: none;
-    font-size: 18pt;
+    font-size: 14pt;
     color: #cbcbcb;
 }
 
