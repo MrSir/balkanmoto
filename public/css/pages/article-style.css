@@ -1,0 +1,72 @@
+.content-grid {
+    margin: 20px;
+}
+
+.content-grid .post-grid{
+    display: grid;
+    grid-template-areas:
+            'image'
+            'title'
+            'date'
+            'summary'
+            'tags';
+    grid-template-columns: 1fr;
+}
+
+.content-grid .post-grid img{
+    grid-area: image;
+    width: 100%;
+}
+
+.content-grid .post-grid .title{
+    grid-area: title;
+    color: #636b6f;
+    font-size: 18pt;
+    text-align: left;
+}
+
+.content-grid .post-grid .title a{
+    text-decoration: none;
+    color: #636b6f;
+}
+
+.content-grid .post-grid .date{
+    grid-area: date;
+    font-size: 16pt;
+    color: lightgray;
+    text-align: left;
+}
+
+.content-grid .post-grid .body{
+    grid-area: summary;
+    font-size: 16pt;
+    text-align: justify;
+}
+
+.content-grid .post-grid .body p{
+    margin: 0px 0px 20px 0px;
+    text-indent: 30px;
+}
+
+.content-grid .post-grid .body a{
+    color: #636b6f;
+}
+
+.content-grid .tags{
+    font-size: 16pt;
+    color: lightgray;
+    text-align: justify;
+}
+
+.content-grid .post-grid .tags .tag{
+    display: inline-block;
+}
+
+.content-grid .post-grid .tags .tag a{
+    text-decoration: none;
+    color: lightgray;
+}
+
+.content-grid .post-grid .tags .tag a:hover{
+    text-decoration: underline;
+}

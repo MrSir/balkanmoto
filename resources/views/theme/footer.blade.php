@@ -13,10 +13,10 @@
     <div class="links grid-item">
         <div class="footer-title">Links</div>
         <ul>
-            <li><a href="#">ABOUT</a></li>
-            <li><a href="#">ARTICLES</a></li>
-            <li><a href="#">CONTACT</a></li>
-            <li><a href="#">LOG IN</a></li>
+            <li><a href="/about">ABOUT</a></li>
+            <li><a href="/articles">ARTICLES</a></li>
+            <li><a href="/contact">CONTACT</a></li>
+            <li><a href="/login">LOG IN</a></li>
         </ul>
     </div>
     <div class="social grid-item">

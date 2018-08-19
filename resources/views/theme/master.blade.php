@@ -12,8 +12,8 @@
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
 
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/large-style.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/large-style.css" rel="stylesheet">
     @yield('page-header')
 </head>
 <body>

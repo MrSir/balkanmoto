@@ -1,5 +1,5 @@
 <div class="menu-grid grid-item ">
-    <div class="logo grid-item"></div>
+    <div class="logo grid-item" onclick="window.open('/home','_self');"></div>
     <div class="nav-grid grid-item">
         <a href="/about">ABOUT</a>
         <a href="/articles">ARTICLES</a>

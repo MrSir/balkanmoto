@@ -45,6 +45,7 @@ a{
     width: 100%;
     max-width: 380px;
     margin: 10px auto 0px auto;
+    cursor: pointer;
 }
 
 .container-grid .menu-grid .nav-grid{

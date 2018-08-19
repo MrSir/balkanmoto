@@ -1,14 +1,14 @@
 @extends('theme.master')
 
 @section('page-header')
-    <link href="css/pages/articles-style.css" rel="stylesheet">
-    <link href="css/pages/articles-large-style.css" rel="stylesheet">
+    <link href="/css/pages/articles-style.css" rel="stylesheet">
+    <link href="/css/pages/articles-large-style.css" rel="stylesheet">
 @endsection
 
 @section('content')
     <div class="posts">
         <div class="post-grid">
-            <img src="img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
+            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
             <div class="title"><a href="#">Garage Build Episode 1</a></div>
             <div class="date">Date: 2018-01-24</div>
             <div class="summary">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="post-grid">
-            <img src="img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
+            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
             <div class="title"><a href="#">Garage Build Episode 1</a></div>
             <div class="date">Date: 2018-01-24</div>
             <div class="summary">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="post-grid">
-            <img src="img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
+            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
             <div class="title"><a href="#">Garage Build Episode 1</a></div>
             <div class="date">Date: 2018-01-24</div>
             <div class="summary">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="post-grid">
-            <img src="img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
+            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
             <div class="title"><a href="#">Garage Build Episode 1</a></div>
             <div class="date">Date: 2018-01-24</div>
             <div class="summary">
