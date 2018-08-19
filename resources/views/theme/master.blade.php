@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
 
     <link href="css/style.css" rel="stylesheet">
-    <link href="css/medium-style.css" rel="stylesheet">
+    <link href="css/large-style.css" rel="stylesheet">
     @yield('page-header')
 </head>
 <body>

@@ -1,0 +1,107 @@
+.content-grid {
+    margin: 20px;
+    display: grid;
+    grid-template-areas:
+            'posts'
+            'pagination'
+            'sidebar';
+    grid-template-columns: 1fr;
+}
+
+.content-grid .posts{
+    grid-area: posts;
+    display: grid;
+    grid-gap: 20px;
+}
+
+.content-grid .posts .post-grid{
+    display: grid;
+    grid-template-areas:
+            'image'
+            'title'
+            'date'
+            'summary';
+    grid-template-columns: 1fr;
+}
+
+.content-grid .posts .post-grid img{
+    grid-area: image;
+    width: 100%;
+}
+
+.content-grid .posts .post-grid .title{
+    grid-area: title;
+    color: #636b6f;
+    font-size: 18pt;
+    text-align: left;
+}
+
+.content-grid .posts .post-grid .title a{
+    text-decoration: none;
+    color: #636b6f;
+}
+
+.content-grid .posts .post-grid .date{
+    grid-area: date;
+    font-size: 16pt;
+    color: lightgray;
+    text-align: left;
+}
+
+.content-grid .posts .post-grid .summary{
+    grid-area: summary;
+    font-size: 16pt;
+    text-align: left;
+}
+
+.content-grid .posts .post-grid .summary a{
+    color: #636b6f;
+}
+
+.content-grid .pagination{
+    grid-area: pagination;
+}
+
+.content-grid .pagination a{
+    text-decoration: none;
+    color: #636b6f;
+    font-size: 20pt;
+}
+
+.content-grid .pagination a.active{
+    font-weight: bold;
+}
+
+.content-grid .sidebar{
+    grid-area: sidebar;
+    text-align: justify;
+}
+
+.content-grid .sidebar .tags .tag{
+    display: inline-block;
+}
+
+.content-grid .sidebar .tags .tag a{
+    text-decoration: none;
+    color: #636b6f;
+}
+
+.content-grid .sidebar .tags .tag a:hover{
+    text-decoration: underline;
+}
+
+.content-grid .sidebar .tags .small {
+    font-size: 18pt;
+}
+
+.content-grid .sidebar .tags .medium {
+    font-size: 22pt;
+}
+
+.content-grid .sidebar .tags .large {
+    font-size: 26pt;
+}
+
+.content-grid .sidebar .tags .very-large {
+    font-size: 30pt;
+}

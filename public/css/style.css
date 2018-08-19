@@ -21,9 +21,10 @@ a{
     grid-template-areas:
             'menu-grid'
             'header-grid'
+            'divider'
             'content'
             'footer';
-    grid-template-rows: 150px auto 1fr auto;
+    grid-template-rows: 150px auto 55px 1fr auto;
 }
 
 .container-grid .menu-grid{
@@ -95,6 +96,14 @@ a{
     background: url('/img/header/travel_1080x720.jpg') center;
     background-size: cover;
     grid-row: 3 / 4;
+}
+
+.container-grid .divider {
+    grid-area: divider;
+    height: 55px;
+    line-height: 55px;
+    background-color: #ced4da;
+    font-size: 25pt;
 }
 
 .container-grid .content-grid {

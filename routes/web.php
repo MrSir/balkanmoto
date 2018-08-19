@@ -20,7 +20,38 @@ Route::get(
 
 Route::get(
     '/home',
-    'Controller@home'
+    [
+        'as' => 'home',
+        'uses' => 'Controller@home',
+    ]
+
+);
+
+Route::get(
+    '/about',
+    [
+        'as' => 'about',
+        'uses' => 'Controller@about',
+    ]
+);
+
+Route::resource(
+    '/articles',
+    'ArticleController',
+    [
+        'only' => [
+            'index',
+            'show'
+        ]
+    ]
+);
+
+Route::get(
+    '/contact',
+    [
+        'as' => 'contact',
+        'uses' => 'Controller@contact',
+    ]
 );
 
 Route::get(

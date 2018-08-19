@@ -14,6 +14,9 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /*
+     * Home Page Route
+     */
     public function home()
     {
         try {
@@ -30,9 +33,6 @@ class Controller extends BaseController
             $response = $fb->get(
                 '/17841408382862564/media?fields=media_url,permalink&limit=12'
             );
-        } catch(FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
         } catch(FacebookSDKException $e) {
             echo 'Facebook SDK returned an error: ' . $e->getMessage();
             exit;
@@ -41,6 +41,32 @@ class Controller extends BaseController
         $body = json_decode($response->getBody(),true);
         $data = $body['data'];
 
-        return view('pages.home', ['instagrams' => $data]);
+        return view(
+            'pages.home',
+            [
+                'headerText' => 'FEATURED ARTICLES',
+                'instagrams' => $data,
+            ]
+        );
+    }
+
+    public function about()
+    {
+        return view(
+            'pages.about',
+            [
+                'headerText' => 'ABOUT',
+            ]
+        );
+    }
+
+    public function contact()
+    {
+        return view(
+            'pages.contact',
+            [
+                'headerText' => 'CONTACT US',
+            ]
+        );
     }
 }

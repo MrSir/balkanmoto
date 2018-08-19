@@ -3,3 +3,6 @@
     <div class="builds grid-item"></div>
     <div class="travel grid-item"></div>
 </div>
+<div class="divider">
+    {{ $headerText }}
+</div>
