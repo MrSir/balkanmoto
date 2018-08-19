@@ -49,14 +49,14 @@ a{
 .container-grid .menu-grid .nav-grid{
     grid-area: nav-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(34px, 56px));
+    grid-template-columns: repeat(auto-fit, minmax(34px, 48px));
     grid-gap: 10px;
     justify-content: center;
 }
 
 .container-grid .menu-grid .nav-grid a{
     text-decoration: none;
-    font-size: 14pt;
+    font-size: 12pt;
     color: #cbcbcb;
 }
 
@@ -104,7 +104,7 @@ a{
     grid-area: footer;
     display: grid;
     height: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 700px));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 700px));
     background-color: #383838;
     justify-content: center;
     padding: 20px;
