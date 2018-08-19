@@ -91,7 +91,7 @@
 .content-grid .instagram-grid .post-grid{
     border: 1px solid black;
     padding-bottom: 100%;
-    background-position: left center;
+    background-position: left bottom;
     background-repeat: no-repeat;
     background-size: cover;
     cursor: pointer;
