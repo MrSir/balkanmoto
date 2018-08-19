@@ -41,7 +41,11 @@ Route::resource(
     [
         'only' => [
             'index',
-            'show'
+            'create',
+            'store',
+            'show',
+            'edit',
+            'update'
         ]
     ]
 );
