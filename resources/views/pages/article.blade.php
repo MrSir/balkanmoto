@@ -8,7 +8,14 @@
 @section('content')
     <div class="post-grid">
         <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
-        <div class="title"><a href="#">Garage Build Episode 1</a></div>
+        <div class="title">
+            <a href="#">Garage Build Episode 1</a>
+            @if(Auth::check())
+                <a href="/articles/1/edit">
+                    <span class="fas fa-edit"></span>
+                </a>
+            @endif
+        </div>
         <div class="date">Date: 2018-01-24</div>
         <div class="body">
             <p>

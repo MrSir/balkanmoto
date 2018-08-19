@@ -60,6 +60,10 @@
         <a href="#">Last</a>
     </div>
     <div class="sidebar">
+        <form id="search" name="search" action="/articles" method="GET">
+            <input type="text" id="keyword" name="keyword" placeholder="Search"/>
+            <input type="submit" hidden="hidden"/>
+        </form>
         <div class="tags">
             <div class="tag medium"><a href="#">CB750</a></div>
             <div class="tag very-large"><a href="#">Builds</a></div>
@@ -76,5 +80,11 @@
             <div class="tag large"><a href="#">Brat</a></div>
             <div class="tag small"><a href="#">Scrambler</a></div>
         </div>
+        @if(Auth::check())
+            <a href="/articles/create" class="create">
+                <span class="fa fa-plus-circle"></span>
+                Create Article
+            </a>
+        @endif
     </div>
 @endsection
