@@ -52,6 +52,7 @@ a{
     grid-template-columns: repeat(auto-fit, minmax(34px, 48px));
     grid-gap: 10px;
     justify-content: center;
+    align-content: center;
 }
 
 .container-grid .menu-grid .nav-grid a{
