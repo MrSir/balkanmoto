@@ -1,3 +1,3 @@
-<div class="content-grid grid-item">
+<div class="content-grid">
     @yield('content')
 </div>

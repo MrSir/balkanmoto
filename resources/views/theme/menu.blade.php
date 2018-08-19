@@ -1,6 +1,6 @@
-<div class="menu-grid grid-item ">
-    <div class="logo grid-item" onclick="window.open('/home','_self');"></div>
-    <div class="nav-grid grid-item">
+<div class="menu-grid ">
+    <div class="logo" onclick="window.open('/home','_self');"></div>
+    <div class="nav-grid">
         <a href="/about">ABOUT</a>
         <a href="/articles">ARTICLES</a>
         <a href="https://www.youtube.com/channel/UCHbSArk-BwFhFQmtV_ws2Ng" target="_blank">YOUTUBE</a>

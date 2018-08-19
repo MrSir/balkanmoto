@@ -3,22 +3,8 @@
         grid-area: header-grid;
         display: grid;
         height: 100%;
+        grid-template-areas: 'tutorials builds cruises';
         grid-template-columns: repeat(3, 1fr);
-    }
-
-    .container-grid .header-grid .tutorials {
-        grid-column: 1 / 2;
-        grid-row: 1 / 2;
-    }
-
-    .container-grid .header-grid .builds {
-        grid-column: 2 / 3;
-        grid-row: 1 / 2;
-    }
-
-    .container-grid .header-grid .travel {
-        grid-column: 3 / 4;
-        grid-row: 1 / 2;
     }
 
     .container-grid .menu-grid{

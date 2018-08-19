@@ -1,5 +1,5 @@
-<div class="footer-grid grid-item">
-    <div class="tweeter grid-item">
+<div class="footer-grid">
+    <div class="tweeter">
         <div class="footer-title">Tweets</div>
         <div class="tweets">
             <div class="tweet">
@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="links grid-item">
+    <div class="links">
         <div class="footer-title">Links</div>
         <ul>
             <li><a href="/about">ABOUT</a></li>
@@ -19,7 +19,7 @@
             <li><a href="/login">LOG IN</a></li>
         </ul>
     </div>
-    <div class="social grid-item">
+    <div class="social">
         <div class="footer-title">Social</div>
         <div class="icons">
             <div class="youtube">

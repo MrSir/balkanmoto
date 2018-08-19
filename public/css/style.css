@@ -72,31 +72,84 @@ a{
     grid-area: header-grid;
     display: grid;
     height: 100%;
+    grid-template-areas:
+            'tutorials'
+            'builds'
+            'cruises';
     grid-template-columns: 1fr;
 }
 
 .container-grid .header-grid .tutorials {
+    grid-area: tutorials;
     height: 0px;
     padding-bottom: 66.66%;
     background: url('/img/header/tutorials_1080x720.jpg') center;
     background-size: cover;
-    grid-row: 1 / 2 ;
+}
+
+.container-grid .header-grid .overlay {
+    background-color: rgba(0,0,0,0.7);
+    display: none;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.container-grid .header-grid .overlay .overlay-text {
+    color: white;
+    font-size: 20pt;
+    align-self: center;
+}
+
+.container-grid .header-grid .tutorials-overlay {
+    grid-area: tutorials;
+}
+
+.container-grid .header-grid .tutorials:hover + .tutorials-overlay{
+    display: grid;
+}
+
+.container-grid .header-grid .tutorials-overlay:hover {
+    display: grid;
+}
+
+.container-grid .header-grid .builds-overlay {
+    grid-area: builds;
+}
+
+.container-grid .header-grid .builds:hover + .builds-overlay{
+    display: grid;
+}
+
+.container-grid .header-grid .builds-overlay:hover {
+    display: grid;
+}
+
+.container-grid .header-grid .cruises-overlay {
+    grid-area: cruises;
+}
+
+.container-grid .header-grid .cruises:hover + .cruises-overlay{
+    display: grid;
+}
+
+.container-grid .header-grid .cruises-overlay:hover {
+    display: grid;
 }
 
 .container-grid .header-grid .builds {
+    grid-area: builds;
     height: 0px;
     padding-bottom: 66.66%;
     background: url('/img/header/builds_1080x720.jpg') center;
     background-size: cover;
-    grid-row: 2 / 3 ;
 }
 
-.container-grid .header-grid .travel {
+.container-grid .header-grid .cruises {
+    grid-area: cruises;
     height: 0px;
     padding-bottom: 66.66%;
-    background: url('/img/header/travel_1080x720.jpg') center;
+    background: url('/img/header/cruises_1080x720.jpg') center;
     background-size: cover;
-    grid-row: 3 / 4;
 }
 
 .container-grid .divider {
