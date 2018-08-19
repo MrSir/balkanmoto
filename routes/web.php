@@ -55,6 +55,33 @@ Route::get(
 );
 
 Route::get(
+    '/login',
+    [
+        'as' => 'showlogin',
+        'uses' => 'Auth\LoginController@showLoginForm',
+    ]
+);
+
+Route::post(
+    '/login',
+    [
+        'as' => 'login',
+        'uses' => 'Auth\LoginController@login',
+    ]
+);
+
+Route::get(
+    '/logout',
+    [
+        'as' => 'logout',
+        'uses' => 'Auth\LoginController@logout',
+    ]
+);
+
+Route::get('login/google', 'Auth\LoginController@redirectToProvider');
+Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::get(
     '/privacy',
     function() {
         return view('pages.privacy');
