@@ -1,0 +1,151 @@
+.content-grid {
+    margin: 20px;
+    display: grid;
+    grid-template-areas:
+            'search'
+            'create'
+            'images'
+            'pagination';
+    grid-template-columns: 1fr;
+}
+
+.content-grid #search {
+    grid-area: search;
+}
+
+.content-grid #search #keyword {
+    width: 100%;
+    height: 40px;
+    display: block;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    border: 2px solid  #636b6f;
+    border-radius: 5px;
+    font-size: 14pt;
+    text-align: right;
+    box-sizing : border-box;
+}
+
+.content-grid #create {
+    grid-area: create;
+}
+
+.content-grid #create #image{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.content-grid #create #image + label {
+    font-size: 17pt;
+    background-color: #a1a1a1;
+    color: white;
+    display: inline-block;
+    cursor: pointer;
+    height: 40px;
+    max-width: 205px;
+    vertical-align: top;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    line-height: 40px;
+    padding: 0px 15px;
+}
+
+.content-grid #create #image + label:hover {
+    background-color: #636b6f;
+}
+
+.content-grid #create button {
+    font-size: 17pt;
+    height: 40px;
+    vertical-align: top;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    line-height: 40px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+    display: none;
+}
+
+.content-grid .images{
+    grid-area: images;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 5px;
+    color: #a1a1a1;
+}
+
+.content-grid .images .image{
+    display: grid;
+    grid-template-areas:
+            'thumb name size actions';
+    grid-template-columns: 50px auto 50px 30px;
+    border-bottom: 1px solid #636b6f;
+    font-size: 14pt;
+    cursor: pointer;
+    padding-bottom: 5px;
+    align-items: center;
+}
+
+.content-grid .images .image:hover .name, .content-grid .images .image:hover .size{
+    color: #636b6f;
+}
+
+.content-grid .images .image .thumbnail{
+    grid-area: thumb;
+    width: 100%;
+}
+
+.content-grid .images .image .name{
+    grid-area: name;
+}
+
+.content-grid .images .image .url{
+    display: none;
+}
+
+.content-grid .images .image .size{
+    grid-area: size;
+}
+
+.content-grid .images .image .actions{
+    grid-area: actions;
+}
+
+.content-grid .images .image .actions button{
+    border: none;
+    background: none;
+}
+
+.content-grid .images .image .actions span{
+    color: #960500;
+    height: 100%;
+    cursor: pointer;
+}
+
+.content-grid .pagination{
+    grid-area: pagination;
+}
+
+.content-grid .pagination a{
+    text-decoration: none;
+    color: #a1a1a1;
+    font-size: 20pt;
+}
+
+.content-grid .pagination a:hover{
+    color: #636b6f;
+}
+
+.content-grid .pagination a.active{
+    font-weight: bold;
+    color: #636b6f;
+}
+
+.content-grid .preview{
+    display: none;
+}

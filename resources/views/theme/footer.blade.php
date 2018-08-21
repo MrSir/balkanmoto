@@ -16,7 +16,9 @@
             <li><a href="/about">ABOUT</a></li>
             <li><a href="/articles">ARTICLES</a></li>
             <li><a href="/contact">CONTACT</a></li>
-            @if(!Auth::check())
+            @if(Auth::check())
+                <li><a href="/images">IMAGE MANAGER</a></li>
+            @else
                 <li><a href="/login/google">LOG IN</a></li>
             @endif
         </ul>

@@ -50,6 +50,18 @@ Route::resource(
     ]
 );
 
+Route::resource(
+    '/images',
+    'ImageController',
+    [
+        'only' => [
+            'index',
+            'store',
+            'destroy'
+        ]
+    ]
+);
+
 Route::get(
     '/contact',
     [
