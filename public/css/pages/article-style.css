@@ -2,6 +2,10 @@
     margin: 20px;
 }
 
+.content-grid #edit input{
+    display: block;
+}
+
 .content-grid .post-grid{
     display: grid;
     grid-template-areas:
