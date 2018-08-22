@@ -11,53 +11,35 @@
         <input type="submit" hidden="hidden"/>
     </form>
     <div class="images">
-        @for($i=0; $i<5; $i++)
+        @if(count($images) === 0)
+            <div>
+                No images uploaded yet.
+            </div>
+        @endif
+        @foreach($images as $image)
             <div class="image" onclick="previewImage(this);">
-                <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg" class="thumbnail"/>
-                <div class="name">Garage Build Episode 1.jpg</div>
-                <div class="url">https://s3.amazonaws.com/balkanmoto/abs3jh23k23jdnspow.jpg</div>
-                <div class="size">1.3MB</div>
+                <img src="{{ $image->thumbnail }}" class="thumbnail"/>
+                <div class="name">{{ $image->title }}</div>
+                <div class="url">{{ $image->path }}</div>
+                <div class="size">{{ $image->size }}</div>
                 <div class="actions">
-                    <form id="delete1" name="delete1" method="DELETE" action="/images/1">
+                    <form id="delete" name="delete" method="POST" action="/images/{{ $image->id }}">
+                        {{ csrf_field() }}
+                        <input type="hidden" id="_method" name="_method" value="DELETE" hidden="hidden"/>
                         <button type="submit">
                             <span class="fa fa-times-circle"></span>
                         </button>
                     </form>
                 </div>
             </div>
-        @endfor
-        @for($i=0; $i<5; $i++)
-            <div class="image" onclick="previewImage(this);">
-                <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg" class="thumbnail"/>
-                <div class="name">Garage Build Episode 2.jpg</div>
-                <div class="url">https://s3.amazonaws.com/balkanmoto/abs3jh23k23jdnspow2.jpg</div>
-                <div class="size">2.3MB</div>
-                <div class="actions">
-                    <form id="delete1" name="delete1" method="DELETE" action="/images/1">
-                        <button type="submit">
-                            <span class="fa fa-times-circle"></span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @endfor
+        @endforeach
     </div>
-    <div class="pagination">
-        <a href="#">First</a>
-        <a href="#">&lt;</a>
-        <a href="#">1</a>
-        <a href="#">2</a>
-        <a href="#" class="active">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">&gt;</a>
-        <a href="#">Last</a>
-    </div>
-    <form id="create" name="create" method="POST" action="/images">
+    {{ $images->appends(['keyword' => $keyword])->links() }}
+    <form id="create" name="create" method="POST" action="/images" enctype="multipart/form-data">
         {{ csrf_field() }}
-        <input type="file" id="image" name="image" data-multiple-caption="{count} files selected" multiple
+        <input type="file" id="images" name="images[]" data-multiple-caption="{count} files selected" multiple
                onchange="updateLabel(this);"/>
-        <label for="image"><span class="fas fa-upload"></span> Choose a file...</label>
+        <label for="images"><span class="fas fa-upload"></span> Choose a file...</label>
         <button type="submit" id="submit" name="submit">
             <span class="fa fa-check-circle"></span>
         </button>
@@ -79,7 +61,7 @@
        * @param input
        */
       function updateLabel(input) {
-        let fileName = '';
+        let fileName = ''
 
         if (input.files) {
           fileName = (input.getAttribute('data-multiple-caption') || '').replace('{count}', input.files.length)
@@ -102,12 +84,11 @@
           previewUrl = preview.querySelector('.url'),
           previewSize = preview.querySelector('.size')
 
-        let imageImage = image.querySelector('img'),
-          imageName = image.querySelector('.name'),
+        let imageName = image.querySelector('.name'),
           imageUrl = image.querySelector('.url'),
           imageSize = image.querySelector('.size')
 
-        previewImage.setAttribute('src', imageImage.getAttribute('src'))
+        previewImage.setAttribute('src', imageUrl.innerHTML)
         previewName.innerHTML = '<span class="label">Name:</span> ' + imageName.innerHTML
         previewUrl.querySelector('a').href = imageUrl.innerHTML
         previewSize.innerHTML = '<span class="label">Size:</span> ' + imageSize.innerHTML
