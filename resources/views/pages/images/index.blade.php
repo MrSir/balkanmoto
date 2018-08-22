@@ -79,8 +79,7 @@
        * @param input
        */
       function updateLabel(input) {
-        let fileName = '',
-          labelVal = input.nextElementSibling.innerHTML
+        let fileName = '';
 
         if (input.files) {
           fileName = (input.getAttribute('data-multiple-caption') || '').replace('{count}', input.files.length)
