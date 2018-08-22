@@ -9,6 +9,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+/**
+ * Class ImageController
+ * @package App\Http\Controllers
+ */
 class ImageController extends Controller
 {
     /**
@@ -35,7 +39,7 @@ class ImageController extends Controller
             );
         }
 
-        $images = $query->paginate(25);
+        $images = $query->paginate(10);
 
         return view(
             'pages.images.index',

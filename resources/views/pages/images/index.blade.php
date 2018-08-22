@@ -7,7 +7,7 @@
 
 @section('content')
     <form id="search" name="search" action="/images" method="GET">
-        <input type="text" id="keyword" name="keyword" placeholder="Search"/>
+        <input type="text" id="keyword" name="keyword" placeholder="Search" value="{{ $keyword }}"/>
         <input type="submit" hidden="hidden"/>
     </form>
     <div class="images">
@@ -44,16 +44,16 @@
             <span class="fa fa-check-circle"></span>
         </button>
     </form>
-    <div id="preview" class="preview">
-        <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
-        <div class="name"><span class="label">Name:</span> Garage Build Episode 1.jpg</div>
+    <div id="preview" class="preview" style="display: none;">
+        <img src="#"/>
+        <div class="name"><span class="label">Name:</span> Nothing Selected...</div>
         <div class="url">
             <span class="label">Direct URL:</span>
-            <a href="https://s3.amazonaws.com/balkanmoto/abs3jh23k23jdnspow.jpg" target="_blank">
+            <a href="#" target="_blank">
                 Click Here
             </a>
         </div>
-        <div class="size"><span class="label">Size:</span> 1.3MB</div>
+        <div class="size"><span class="label">Size:</span> Nothing Selected...</div>
     </div>
     <script type="text/javascript">
       /**
@@ -83,6 +83,8 @@
           previewName = preview.querySelector('.name'),
           previewUrl = preview.querySelector('.url'),
           previewSize = preview.querySelector('.size')
+
+        preview.style.display = 'grid';
 
         let imageName = image.querySelector('.name'),
           imageUrl = image.querySelector('.url'),

@@ -3,9 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Tag
@@ -13,8 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Tag extends Model
 {
-    use SoftDeletes;
-
     protected $fillable = [
         'name',
         'tagged_count',
@@ -36,8 +32,50 @@ class Tag extends Model
     public function articles(): BelongsToMany
     {
         return $this->belongsToMany(
-           Article::class,
-           'articles_tags'
+            Article::class,
+            'articles_tags'
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpperCaseNameAttribute(): string
+    {
+        return strtoupper($this->name);
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassAttribute(): string
+    {
+        $class = 'very-small';
+
+        if ($this->tagged_count > 1) {
+            $class = 'small';
+        }
+
+        if ($this->tagged_count > 10) {
+            $class = 'medium';
+        }
+
+        if ($this->tagged_count > 15) {
+            $class = 'large';
+        }
+
+        if ($this->tagged_count > 25) {
+            $class = 'very-large';
+        }
+
+        return $class;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkAttribute(): string
+    {
+        return '/articles?tagId=' . $this->id;
     }
 }

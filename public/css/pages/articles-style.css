@@ -89,6 +89,10 @@
     text-decoration: underline;
 }
 
+.content-grid .sidebar .tags .very-small {
+    font-size: 14pt;
+}
+
 .content-grid .sidebar .tags .small {
     font-size: 18pt;
 }
