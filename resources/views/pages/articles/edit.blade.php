@@ -10,13 +10,26 @@
 @section('content')
     <form id="edit" name="edit" method="POST" action="/articles/1">
         {{ csrf_field() }}
-        <input type="hidden" id="_method" name="_method" value="PUT"/>
-        <input type="checkbox" id="published" name="published"/>
-        <input type="file" id="image" name="image"/>
-        <input type="text" id="title" name="title"/>
-        <textarea id="body" name="body"></textarea>
-        <input type="text-area" id="tags" name="tags"/>
-        <input type="submit" id="submit" name="submit" value="SAVE"/>
+        <input type="hidden" id="_method" name="_method" value="PUT" hidden="hidden"/>
+        <label class="switch">
+            <input type="checkbox" id="is_published" name="is_published"/>
+            <span class="slider round"></span>
+        </label>
+        <label class="publishedLabel">
+            Published 2018-01-01 13:47:12
+            {{--<a href="/articles/1?preview=yes">Preview</a>--}}
+        </label>
+        <label for="image" class="imageLabel">Image:</label>
+        <input type="text" id="image" name="image"/>
+        <label for="title" class="titleLabel">Title:</label>
+        <input type="text" id="title" name="title" placeholder="e.g. My New Article"/>
+        <textarea id="body" name="body" placeholder="Body"></textarea>
+        <label for="tags" class="tagsLabel">Tags:</label>
+        <input type="text" id="tags" name="tags" placeholder="e.g. caferacer, CB750" />
+        <div class="buttons">
+            <input type="submit" id="submit" name="submit" value="SAVE"/>
+            <input type="button" id="cancel" name="cancel" value="CANCEL"/>
+        </div>
     </form>
     <script type="text/javascript">
       tinymce.init(
@@ -33,9 +46,7 @@
             '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
             '//www.tinymce.com/css/codepen.min.css'
           ],
-          mobile: {
-            theme: 'mobile',
-          }
+          height: 500
         }
       )
     </script>

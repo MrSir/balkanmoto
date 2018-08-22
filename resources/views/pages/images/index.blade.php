@@ -82,17 +82,13 @@
         let fileName = '',
           labelVal = input.nextElementSibling.innerHTML
 
-        if (input.files && input.files.length > 1) {
+        if (input.files) {
           fileName = (input.getAttribute('data-multiple-caption') || '').replace('{count}', input.files.length)
-        } else {
-          fileName = input.value.split('\\').pop()
         }
 
         if (fileName) {
           input.nextElementSibling.innerHTML = fileName
           input.nextElementSibling.nextElementSibling.style.display = 'inline-block'
-        } else {
-          input.nextElementSibling.innerHTML = labelVal
         }
       }
 
