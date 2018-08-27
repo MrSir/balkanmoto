@@ -9,7 +9,7 @@
         margin: 20px auto;
     }
 
-    .content-grid #create #image + label {
+    .content-grid #create #images + label {
         max-width: 225px;
     }
 

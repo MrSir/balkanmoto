@@ -30,7 +30,7 @@
     grid-area: create;
 }
 
-.content-grid #create #image{
+.content-grid #create #images{
     width: 0.1px;
     height: 0.1px;
     opacity: 0;
@@ -39,7 +39,7 @@
     z-index: -1;
 }
 
-.content-grid #create #image + label {
+.content-grid #create #images + label {
     font-size: 17pt;
     background-color: #a1a1a1;
     color: white;
@@ -54,7 +54,7 @@
     padding: 0px 15px;
 }
 
-.content-grid #create #image + label:hover {
+.content-grid #create #images + label:hover {
     background-color: #636b6f;
 }
 
@@ -126,25 +126,6 @@
     color: #f44336;
     height: 100%;
     cursor: pointer;
-}
-
-.content-grid .pagination{
-    grid-area: pagination;
-}
-
-.content-grid .pagination a{
-    text-decoration: none;
-    color: #a1a1a1;
-    font-size: 20pt;
-}
-
-.content-grid .pagination a:hover{
-    color: #636b6f;
-}
-
-.content-grid .pagination a.active{
-    font-weight: bold;
-    color: #636b6f;
 }
 
 .content-grid .preview{

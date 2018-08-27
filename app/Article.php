@@ -56,7 +56,7 @@ class Article extends Model
      */
     public function cover(): BelongsTo
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
     /**
