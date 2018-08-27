@@ -11,14 +11,17 @@
     <form id="edit" name="edit" method="POST" action="/articles/1">
         {{ csrf_field() }}
         <input type="hidden" id="_method" name="_method" value="PUT" hidden="hidden"/>
-        <label class="switch">
+        <label class="switch isPublished">
             <input type="checkbox" id="is_published" name="is_published"/>
             <span class="slider round"></span>
         </label>
-        <label class="publishedLabel">
-            Published 2018-01-01 13:47:12
-            {{--<a href="/articles/1?preview=yes">Preview</a>--}}
+        <label class="featuredLabel" for="is_featured">Featured: </label>
+        <label class="switch isFeatured">
+            <input type="checkbox" id="is_featured" name="is_featured"/>
+            <span class="slider round"></span>
         </label>
+        <label for="slug" class="slugLabel">Slug:</label>
+        <input type="text" id="slug" name="slug" placeholder="e.g. garage-build-episode-1"/>
         <label for="image" class="imageLabel">Image:</label>
         <input type="text" id="image" name="image"/>
         <label for="title" class="titleLabel">Title:</label>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -44,12 +45,22 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        return view(
-            'pages.articles.show',
-            [
-                'headerText' => 'ARTICLE',
-            ]
-        );
+        $input = $request->input();
+
+        $article = new Article();
+        $article->slug = $input['slug'];
+        $article->title = $input['title'];
+        $article->body = $input['body'];
+        $article->is_featured = $input['is_featured'];
+
+        if ($input['is_published']){
+            $article->is_published = true;
+            $article->published_at = now();
+        }
+
+        $article->save();
+
+        return redirect('');
     }
 
     /**
