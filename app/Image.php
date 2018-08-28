@@ -13,8 +13,6 @@ class Image extends Model
     protected $fillable = [
         'title',
         'filename',
-        'thumbnailName',
-        'path',
         'thumbnail',
         'size',
     ];
@@ -22,8 +20,6 @@ class Image extends Model
     protected $casts = [
         'title' => 'string',
         'filename' => 'string',
-        'thumbnailName' => 'string',
-        'path' => 'string',
         'thumbnail' => 'string',
         'size' => 'string',
     ];
@@ -32,4 +28,14 @@ class Image extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function getLinkAttribute()
+    {
+        return '/images/' . $this->id;
+    }
+
+    public function getThumbnailLinkAttribute()
+    {
+        return '/images/' . $this->id . '?thumb';
+    }
 }

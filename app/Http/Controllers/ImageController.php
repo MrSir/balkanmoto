@@ -90,9 +90,7 @@ class ImageController extends Controller
             $image = new Image();
             $image->title = $file->getClientOriginalName();
             $image->filename = $newFileName;
-            $image->thumbnailName = $thumbFileName;
-            $image->path = Storage::url($newFileName);
-            $image->thumbnail = Storage::url($thumbFileName);
+            $image->thumbnail = $thumbFileName;
             $image->size = number_format(
                     $file->getSize() / 1000000,
                     2
@@ -108,13 +106,23 @@ class ImageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param Request $request
+     * @param $id
+     *
+     * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $image = Image::find($id);
 
-        return Storage::get($image->path);
+        $input = $request->input();
+
+        if (array_key_exists('thumb', $input)) {
+            return Storage::get($image->thumbnailName);
+        }
+
+        return Storage::get($image->filename);
     }
 
     /**

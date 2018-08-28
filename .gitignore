@@ -5,6 +5,7 @@
 /storage/*.key
 /storage/logs/*.log
 /storage/debugbar
+/storage/app/*
 /storage/temp
 /storage/files
 /vendor
