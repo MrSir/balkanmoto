@@ -18,13 +18,9 @@
         <div class="date">Date: {{ $article->published_at->format('Y-m-d') }}</div>
         <div class="tags">
             Tags:
-            <div class="tag"><a href="#">CB750</a></div>
-            ,
-            <div class="tag"><a href="#">Builds</a></div>
-            ,
-            <div class="tag"><a href="#">Honda</a></div>
-            ,
-            <div class="tag"><a href="#">Cafe Racer</a></div>
+            @foreach($article->tags as $tag)
+                <div class="tag"><a href="{{ $tag->link }}">{{ strtoupper($tag->name) }}</a></div>&nbsp;
+            @endforeach
         </div>
         <div class="body">{!! $article->body !!}</div>
     </div>

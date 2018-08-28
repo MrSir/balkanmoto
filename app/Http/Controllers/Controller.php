@@ -44,10 +44,11 @@ class Controller extends BaseController
 
         $articles = Article::query()
             ->where('is_published','=', true)
+            ->where('is_featured','=', true)
             ->orderBy('published_at', 'asc')
             ->take(4)
             ->get();
-        
+
         return view(
             'pages.home',
             [

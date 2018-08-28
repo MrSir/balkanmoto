@@ -131,6 +131,21 @@ class ArticleController extends Controller
 
         $article->save();
 
+        if (array_key_exists('tags', $input)) {
+            $tagNames = explode(',', $input['tags']);
+
+            foreach ($tagNames as $tagName) {
+                $tag = Tag::query()
+                    ->firstOrCreate(
+                        [
+                            'name' => strtolower($tagName),
+                        ]
+                    );
+
+                $article->tags()->attach($tag->id);
+            }
+        }
+
         return redirect()->route('articles.edit', ['id' => $article->id]);
     }
 
@@ -149,7 +164,7 @@ class ArticleController extends Controller
             'pages.articles.show',
             [
                 'headerText' => 'ARTICLE',
-                'article' => $article
+                'article' => $article,
             ]
         );
     }
@@ -216,6 +231,24 @@ class ArticleController extends Controller
         }
 
         $article->save();
+
+        if (array_key_exists('tags', $input)) {
+            $tagNames = explode(',', $input['tags']);
+            $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                $tag = Tag::query()
+                    ->firstOrCreate(
+                        [
+                            'name' => strtolower($tagName),
+                        ]
+                    );
+
+                $tagIds[] = $tag->id;
+            }
+
+            $article->tags()->sync($tagIds);
+        }
 
         return redirect('/articles');
     }

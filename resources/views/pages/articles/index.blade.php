@@ -9,7 +9,7 @@
     <div class="posts">
         @if(count($articles) === 0)
             <div>
-                No articles published yet.
+                No articles found.
             </div>
         @endif
         @foreach($articles as $article)
