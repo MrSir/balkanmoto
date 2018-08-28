@@ -22,6 +22,7 @@ class Article extends Model
         'is_published',
         'is_featured',
         'title',
+        'summary',
         'body',
         'published_at',
     ];
@@ -33,6 +34,7 @@ class Article extends Model
         'is_published' => 'boolean',
         'is_featured' => 'boolean',
         'title' => 'string',
+        'summary' => 'string',
         'body' => 'string',
     ];
 
@@ -46,7 +48,7 @@ class Article extends Model
     /**
      * @return BelongsTo
      */
-    public function author(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

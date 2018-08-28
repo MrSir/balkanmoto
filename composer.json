@@ -3,15 +3,24 @@
   "description": "Balkan Moto",
   "license": "MIT",
   "type": "project",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "./nova"
+    }
+  ],
   "require": {
     "php": "7.2.*",
     "ext-json": "1.6.0",
+    "ext-gd": "*",
     "facebook/graph-sdk": "5.6.*",
     "fideloper/proxy": "^4.0",
     "google/apiclient": "2.2.*",
     "laravel/framework": "5.6.*",
     "laravel/socialite": "3.1.*",
     "laravel/tinker": "v1.0.7",
+    "johnathan/nova-trumbowyg": "1.0.5",
+    "laravel/nova": "*",
     "league/flysystem-aws-s3-v3": "1.0.19"
   },
   "require-dev": {

@@ -10,7 +10,7 @@
         <div class="title">
             <a href="#">{{ $article->title }}</a>
             @if(Auth::check())
-                <a href="/articles/{{ $article->id }}/edit">
+                <a href="/nova/resources/articles/{{ $article->id }}/edit">
                     <span class="fas fa-edit"></span>
                 </a>
             @endif

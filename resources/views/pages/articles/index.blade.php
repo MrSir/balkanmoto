@@ -14,9 +14,9 @@
         @endif
         @foreach($articles as $article)
             <div class="post-grid">
-                <img src="{{ $article->cover->path }}"/>
+                <img src="{{ $article->cover->link }}"/>
                 <div class="title"><a href="/articles/{{ $article->id }}">{{ $article->title }}</a></div>
-                <div class="date">Date: {{ $article->published_at }}</div>
+                <div class="date">Date: {{ $article->published_at->format('Y-m-d') }}</div>
                 <div class="summary">
                     {{ $article->summary }}... <a href="/articles/{{ $article->id }}">Read More</a>
                 </div>
@@ -37,7 +37,7 @@
             @endforeach
         </div>
         @if(Auth::check())
-            <a href="/articles/create" class="create">
+            <a href="/nova/resources/articles/new" class="create">
                 <span class="fa fa-plus-circle"></span>
                 Create Article
             </a>
