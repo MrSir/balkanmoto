@@ -18,9 +18,9 @@
         @endif
         @foreach($images as $image)
             <div class="image" onclick="previewImage(this);">
-                <img src="{{ $image->thumbnail }}" class="thumbnail"/>
+                <img src="/images/{{ $image->id }}" class="thumbnail"/>
                 <div class="name">{{ $image->title }}</div>
-                <div class="url">{{ $image->path }}</div>
+                <div class="url">/images/{{ $image->id }}</div>
                 <div class="size">{{ $image->size }}</div>
                 <div class="actions">
                     <form id="delete" name="delete" method="POST" action="/images/{{ $image->id }}">

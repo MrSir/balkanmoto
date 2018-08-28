@@ -57,6 +57,7 @@ Route::resource(
         'only' => [
             'index',
             'store',
+            'show',
             'destroy'
         ]
     ]
