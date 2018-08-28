@@ -29,6 +29,7 @@ class CreateArticlesTable extends Migration
                     ->default(false);
 
                 $table->string('title');
+                $table->string('summary');
                 $table->text('body');
 
                 $table->timestamp('published_at');

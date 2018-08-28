@@ -11,6 +11,7 @@
     <form id="edit" name="edit" method="POST" action="/articles/1">
         {{ csrf_field() }}
         <input type="hidden" id="_method" name="_method" value="PUT" hidden="hidden"/>
+        <label class="publishedLabel">Published: </label>
         <label class="switch isPublished">
             <input type="checkbox" id="is_published" name="is_published"/>
             <span class="slider round"></span>
@@ -21,12 +22,15 @@
             <span class="slider round"></span>
         </label>
         <label for="slug" class="slugLabel">Slug:</label>
-        <input type="text" id="slug" name="slug" placeholder="e.g. garage-build-episode-1"/>
+        <input type="text" id="slug" name="slug" placeholder="e.g. garage-build-episode-1" value="{{ $article->slug }}"/>
         <label for="image" class="imageLabel">Image:</label>
-        <input type="text" id="image" name="image"/>
+        <input type="text" id="image" name="image" value="{{ url($article->cover->path) }}"/>
         <label for="title" class="titleLabel">Title:</label>
-        <input type="text" id="title" name="title" placeholder="e.g. My New Article"/>
-        <textarea id="body" name="body" placeholder="Body"></textarea>
+        <input type="text" id="title" name="title" placeholder="e.g. My New Article" value="{{ $article->title }}"/>
+        <label for="summary" class="summaryLabel">Summary:</label>
+        <textarea id="summary" name="summary" rows="10" maxlength="200">{{ $article->summary }}</textarea>
+        <label for="body" class="bodyLabel">Body:</label>
+        <textarea id="body" name="body" placeholder="Body">{{ $article->body }}</textarea>
         <label for="tags" class="tagsLabel">Tags:</label>
         <input type="text" id="tags" name="tags" placeholder="e.g. caferacer, CB750" />
         <div class="buttons">

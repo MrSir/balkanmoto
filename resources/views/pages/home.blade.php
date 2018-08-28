@@ -7,46 +7,14 @@
 
 @section('content')
     <div class="grid-item main-grid">
+        @foreach($articles as $article)
         <div class="post-grid">
-            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
-            <div class="title"><a href="#">Garage Build Episode 1</a></div>
-            <div class="date">Date: 2018-01-24</div>
-            <div class="summary">
-                Bacon ipsum dolor amet landjaeger strip steak drumstick pork chop chicken pork loin shoulder jerky
-                pork belly capicola flank bacon rump jowl. Brisket pork belly short ribs, beef tenderloin beef ribs
-                doner rump. Jerky pork strip steak short loin... <a href="#">Read More</a>
-            </div>
+            <img src="{{ $article->cover->path }}"/>
+            <div class="title"><a href="/articles/{{ $article->id }}">{{ $article->title }}</a></div>
+            <div class="date">Date: {{ $article->published_at->format('Y-m-d') }}</div>
+            <div class="summary">{{ $article->summary }}... <a href="/articles/{{ $article->id }}">Read More</a></div>
         </div>
-        <div class="post-grid">
-            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
-            <div class="title"><a href="#">Garage Build Episode 1</a></div>
-            <div class="date">Date: 2018-01-24</div>
-            <div class="summary">
-                Bacon ipsum dolor amet landjaeger strip steak drumstick pork chop chicken pork loin shoulder jerky
-                pork belly capicola flank bacon rump jowl. Brisket pork belly short ribs, beef tenderloin beef ribs
-                doner rump. Jerky pork strip steak short loin... <a href="#">Read More</a>
-            </div>
-        </div>
-        <div class="post-grid">
-            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
-            <div class="title"><a href="#">Garage Build Episode 1</a></div>
-            <div class="date">Date: 2018-01-24</div>
-            <div class="summary">
-                Bacon ipsum dolor amet landjaeger strip steak drumstick pork chop chicken pork loin shoulder jerky
-                pork belly capicola flank bacon rump jowl. Brisket pork belly short ribs, beef tenderloin beef ribs
-                doner rump. Jerky pork strip steak short loin... <a href="#">Read More</a>
-            </div>
-        </div>
-        <div class="post-grid">
-            <img src="/img/articles/Garage Build - Episode 1 Thumbnail.jpg"/>
-            <div class="title"><a href="#">Garage Build Episode 1</a></div>
-            <div class="date">Date: 2018-01-24</div>
-            <div class="summary">
-                Bacon ipsum dolor amet landjaeger strip steak drumstick pork chop chicken pork loin shoulder jerky
-                pork belly capicola flank bacon rump jowl. Brisket pork belly short ribs, beef tenderloin beef ribs
-                doner rump. Jerky pork strip steak short loin... <a href="#">Read More</a>
-            </div>
-        </div>
+        @endforeach
     </div>
     <div class="divider2 divider">
         <span class="fab fa-instagram"></span>BalkanMoto2018

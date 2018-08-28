@@ -15,7 +15,7 @@
         @foreach($articles as $article)
             <div class="post-grid">
                 <img src="{{ $article->cover->path }}"/>
-                <div class="title"><a href="#">{{ $article->title }}</a></div>
+                <div class="title"><a href="/articles/{{ $article->id }}">{{ $article->title }}</a></div>
                 <div class="date">Date: {{ $article->published_at }}</div>
                 <div class="summary">
                     {{ $article->summary }}... <a href="/articles/{{ $article->id }}">Read More</a>

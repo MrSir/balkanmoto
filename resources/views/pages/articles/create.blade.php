@@ -26,6 +26,9 @@
         <input type="text" id="image" name="image"/>
         <label for="title" class="titleLabel">Title:</label>
         <input type="text" id="title" name="title" placeholder="e.g. My New Article"/>
+        <label for="summary" class="summaryLabel">Summary:</label>
+        <textarea id="summary" name="summary" rows="10" maxlength="200"></textarea>
+        <label for="body" class="bodyLabel">Body:</label>
         <textarea id="body" name="body" placeholder="Body"></textarea>
         <label for="tags" class="tagsLabel">Tags:</label>
         <input type="text" id="tags" name="tags" placeholder="e.g. caferacer, CB750"/>
@@ -49,6 +52,9 @@
             '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
             '//www.tinymce.com/css/codepen.min.css',
           ],
+          relative_urls : false,
+          remove_script_host : false,
+          convert_urls : true,
           height: 500,
         },
       )

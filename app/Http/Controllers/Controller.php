@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
@@ -41,10 +42,17 @@ class Controller extends BaseController
         $body = json_decode($response->getBody(),true);
         $data = $body['data'];
 
+        $articles = Article::query()
+            ->where('is_published','=', true)
+            ->orderBy('published_at', 'asc')
+            ->take(4)
+            ->get();
+        
         return view(
             'pages.home',
             [
                 'headerText' => 'FEATURED ARTICLES',
+                'articles' => $articles,
                 'instagrams' => $data,
             ]
         );

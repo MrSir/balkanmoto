@@ -16,6 +16,9 @@
             'slugLabel slug'
             'imageLabel image'
             'titleLabel title'
+            'summaryLabel summaryLabel'
+            'summary summary'
+            'bodyLabel bodyLabel'
             'body body'
             'tagsLabel tags'
             'buttons buttons';
@@ -73,6 +76,19 @@
     grid-area: title;
 }
 
+.content-grid form .summaryLabel {
+    grid-area: summaryLabel;
+}
+
+.content-grid form #summary {
+    grid-area: summary;
+    resize: none;
+}
+
+.content-grid form .bodyLabel {
+    grid-area: bodyLabel;
+}
+
 .content-grid form .mce-panel {
     grid-area: body;
 }
@@ -117,11 +133,10 @@
 .content-grid .post-grid{
     display: grid;
     grid-template-areas:
-            'image'
             'title'
             'date'
-            'summary'
-            'tags';
+            'tags'
+            'body';
     grid-template-columns: 1fr;
 }
 
@@ -150,14 +165,9 @@
 }
 
 .content-grid .post-grid .body{
-    grid-area: summary;
+    grid-area: body;
     font-size: 16pt;
     text-align: justify;
-}
-
-.content-grid .post-grid .body p{
-    margin: 0px 0px 20px 0px;
-    text-indent: 30px;
 }
 
 .content-grid .post-grid .body a{
