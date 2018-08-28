@@ -73,7 +73,7 @@ class ImageController extends Controller
             $this->make_thumb(
                 $file->getRealPath(),
                 $file->getRealPath() . '_thumb',
-                250
+                300
             );
 
             // store files

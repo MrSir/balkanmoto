@@ -87,10 +87,11 @@
         preview.style.display = 'grid';
 
         let imageName = image.querySelector('.name'),
+          imageThumbnail = image.querySelector('.thumbnail'),
           imageUrl = image.querySelector('.url'),
           imageSize = image.querySelector('.size')
 
-        previewImage.setAttribute('src', imageUrl.innerHTML)
+        previewImage.setAttribute('src', imageThumbnail.src)
         previewName.innerHTML = '<span class="label">Name:</span> ' + imageName.innerHTML
         previewUrl.querySelector('a').href = imageUrl.innerHTML
         previewSize.innerHTML = '<span class="label">Size:</span> ' + imageSize.innerHTML
