@@ -109,10 +109,8 @@ class ImageController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     *
-     * @return View
      */
-    public function show($id): View
+    public function show($id)
     {
         $image = Image::find($id);
 
