@@ -114,8 +114,7 @@ class ImageController extends Controller
     {
         $image = Image::find($id);
 
-
-        Storage::download($image->path);
+        return Storage::get($image->path);
     }
 
     /**
