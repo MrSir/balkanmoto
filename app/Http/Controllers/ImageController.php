@@ -119,7 +119,7 @@ class ImageController extends Controller
         $input = $request->input();
 
         if (array_key_exists('thumb', $input)) {
-            return Storage::get($image->thumbnailName);
+            return Storage::get($image->thumbnail);
         }
 
         return Storage::get($image->filename);
@@ -138,7 +138,7 @@ class ImageController extends Controller
         $image = Image::find($imageId);
 
         Storage::delete($image->filename);
-        Storage::delete($image->thumbnailName);
+        Storage::delete($image->thumbnail);
 
         $image->delete();
 
