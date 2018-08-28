@@ -6,12 +6,13 @@
   "require": {
     "php": "7.2.*",
     "ext-json": "1.6.0",
+    "facebook/graph-sdk": "5.6.*",
     "fideloper/proxy": "^4.0",
-    "laravel/framework": "5.6.*",
-    "laravel/tinker": "^1.0",
-    "laravel/socialite": "3.1.*",
     "google/apiclient": "2.2.*",
-    "facebook/graph-sdk": "5.6.*"
+    "laravel/framework": "5.6.*",
+    "laravel/socialite": "3.1.*",
+    "laravel/tinker": "v1.0.7",
+    "league/flysystem-aws-s3-v3": "1.0.19"
   },
   "require-dev": {
     "filp/whoops": "^2.0",
