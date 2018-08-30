@@ -9,7 +9,7 @@
     <div class="grid-item main-grid">
         @foreach($articles as $article)
         <div class="post-grid">
-            <img src="{{ $article->cover->path }}"/>
+            <img src="{{ $article->cover->link }}"/>
             <div class="title"><a href="/articles/{{ $article->id }}">{{ $article->title }}</a></div>
             <div class="date">Date: {{ $article->published_at->format('Y-m-d') }}</div>
             <div class="summary">{{ $article->summary }}... <a href="/articles/{{ $article->id }}">Read More</a></div>

@@ -41,11 +41,7 @@ Route::resource(
     [
         'only' => [
             'index',
-            'create',
-            'store',
             'show',
-            'edit',
-            'update'
         ]
     ]
 );
@@ -55,10 +51,7 @@ Route::resource(
     'ImageController',
     [
         'only' => [
-            'index',
-            'store',
             'show',
-            'destroy'
         ]
     ]
 );
@@ -68,22 +61,6 @@ Route::get(
     [
         'as' => 'contact',
         'uses' => 'Controller@contact',
-    ]
-);
-
-Route::get(
-    '/login',
-    [
-        'as' => 'showlogin',
-        'uses' => 'Auth\LoginController@showLoginForm',
-    ]
-);
-
-Route::post(
-    '/login',
-    [
-        'as' => 'login',
-        'uses' => 'Auth\LoginController@login',
     ]
 );
 

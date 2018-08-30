@@ -293,7 +293,9 @@ a{
 }
 
 /* Hide default HTML checkbox */
-.switch input {display:none;}
+.switch input {
+    display:none !important;
+}
 
 /* The slider */
 .slider {

@@ -8,14 +8,16 @@
 @section('content')
     <div class="post-grid">
         <div class="title">
-            <a href="#">{{ $article->title }}</a>
+            <a href="/articles/{{ $article->id }}">{{ $article->title }}</a>
+        </div>
+        <div class="date">
+            Date: <span class="theDate">{{ $article->published_at->format('Y-m-d') }}</span>
             @if(Auth::check())
-                <a href="/articles/{{ $article->id }}/edit">
+                <a href="/nova/resources/articles/{{ $article->id }}/edit">
                     <span class="fas fa-edit"></span>
                 </a>
             @endif
         </div>
-        <div class="date">Date: {{ $article->published_at->format('Y-m-d') }}</div>
         <div class="tags">
             Tags:
             @foreach($article->tags as $tag)
