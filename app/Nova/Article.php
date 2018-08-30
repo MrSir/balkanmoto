@@ -98,6 +98,7 @@ class Article extends Resource
                 )
                 ->hideFromIndex(),
             Fields\BelongsToMany::make('Tags')
+                ->searchable(true)
         ];
     }
 

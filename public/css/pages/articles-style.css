@@ -6,6 +6,7 @@
             'pagination'
             'sidebar';
     grid-template-columns: 1fr;
+    grid-gap: 10px;
 }
 
 .content-grid .posts{
@@ -32,7 +33,7 @@
 .content-grid .posts .post-grid .title{
     grid-area: title;
     color: #636b6f;
-    font-size: 18pt;
+    font-size: 24pt;
     text-align: left;
 }
 
@@ -43,7 +44,7 @@
 
 .content-grid .posts .post-grid .date{
     grid-area: date;
-    font-size: 16pt;
+    font-size: 20pt;
     color: lightgray;
     text-align: left;
 }

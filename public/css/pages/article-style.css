@@ -22,6 +22,7 @@
     color: #636b6f;
     font-size: 1.25em;
     text-align: left;
+    line-height: 50px;
 }
 
 .content-grid .post-grid .title a{
@@ -31,7 +32,7 @@
 
 .content-grid .post-grid .date{
     grid-area: date;
-    color: #636b6f;
+    color: lightgray;
     font-size: 0.75em;
     text-align: left;
 }
@@ -54,8 +55,8 @@
     color: #636b6f;
 }
 
-.content-grid .tags{
-    font-size: 0.75em;
+.content-grid .post-grid .tags{
+    font-size: 0.5em;
     color: #636b6f;
     text-align: justify;
 }

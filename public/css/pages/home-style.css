@@ -49,6 +49,7 @@
     grid-area: date;
     font-size: 20pt;
     text-align: left;
+    color: lightgray;
 }
 
 .content-grid .main-grid .post-grid .summary{

@@ -18,7 +18,8 @@
                 <div class="title"><a href="/articles/{{ $article->id }}">{{ $article->title }}</a></div>
                 <div class="date">Date: {{ $article->published_at->format('Y-m-d') }}</div>
                 <div class="summary">
-                    {{ $article->summary }}... <a href="/articles/{{ $article->id }}">Read More</a>
+                    {{ $article->summary }}<br/>
+                    <a href="/articles/{{ $article->id }}">Read More</a>
                 </div>
             </div>
         @endforeach
