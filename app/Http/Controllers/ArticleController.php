@@ -106,7 +106,7 @@ class ArticleController extends Controller
         $imagePath = substr($imagePath, strlen(url('/')));
 
         $image = Image::query()
-            ->where('path', '=', $imagePath)
+            ->where('filename', '=', $imagePath)
             ->first();
 
         $article = new Article();
