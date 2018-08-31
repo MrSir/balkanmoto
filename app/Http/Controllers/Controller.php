@@ -78,4 +78,14 @@ class Controller extends BaseController
             ]
         );
     }
+
+    public function privacy()
+    {
+        return view(
+            'pages.privacy',
+            [
+                'headerText' => 'Privacy',
+            ]
+        );
+    }
 }

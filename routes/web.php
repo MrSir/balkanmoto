@@ -65,6 +65,14 @@ Route::get(
 );
 
 Route::get(
+    '/privacy',
+    [
+        'as' => 'privacy',
+        'uses' => 'Controller@privacy',
+    ]
+);
+
+Route::get(
     '/logout',
     [
         'as' => 'logout',
@@ -74,10 +82,3 @@ Route::get(
 
 Route::get('login/google', 'Auth\LoginController@redirectToProvider');
 Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
-
-Route::get(
-    '/privacy',
-    function() {
-        return view('pages.privacy');
-    }
-);
