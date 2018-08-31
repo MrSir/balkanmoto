@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Image;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
 
 /**
  * Class ImageController

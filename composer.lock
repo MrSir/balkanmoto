@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d5610f62e5c53a9867a9df2d865a497",
+    "content-hash": "4629697cf45f457390d667f84690a3ed",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.67.0",
+            "version": "3.67.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "110008fb199a4a0ceac1798484368dda420fb613"
+                "reference": "894658d3fcb459c5e451663a31db2e6562ee3aba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/110008fb199a4a0ceac1798484368dda420fb613",
-                "reference": "110008fb199a4a0ceac1798484368dda420fb613",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/894658d3fcb459c5e451663a31db2e6562ee3aba",
+                "reference": "894658d3fcb459c5e451663a31db2e6562ee3aba",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-08-27T22:48:01+00:00"
+            "time": "2018-08-30T19:19:19+00:00"
         },
         {
             "name": "cakephp/chronos",

@@ -1,5 +1,5 @@
 {
-  "name": "MrSir/balkanmotol",
+  "name": "MrSir/balkanmoto",
   "description": "Balkan Moto",
   "license": "MIT",
   "type": "project",
@@ -20,7 +20,7 @@
     "laravel/socialite": "3.1.*",
     "laravel/tinker": "v1.0.7",
     "johnathan/nova-trumbowyg": "1.0.5",
-    "laravel/nova": "*",
+    "laravel/nova": "1.*",
     "league/flysystem-aws-s3-v3": "1.0.19"
   },
   "require-dev": {

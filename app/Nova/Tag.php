@@ -64,7 +64,8 @@ class Tag extends Resource
                 'Count',
                 'tagged_count'
             ),
-            Fields\BelongsToMany::make('Articles'),
+            Fields\BelongsToMany::make('Articles')
+                ->searchable(true),
         ];
     }
 
