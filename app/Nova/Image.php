@@ -45,7 +45,7 @@ class Image extends Resource
             Fields\Image::make('Image')
                 ->thumbnail(
                     function(){
-                        return $this->link;
+                        return $this->thumbnail_link;
                     }
                 )
                 ->hideWhenCreating()

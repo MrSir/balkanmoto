@@ -13,13 +13,6 @@
 
 Route::get(
     '/',
-    function () {
-        return view('welcome');
-    }
-);
-
-Route::get(
-    '/home',
     [
         'as' => 'home',
         'uses' => 'Controller@home',
