@@ -24,7 +24,7 @@
 
       gtag('config', 'UA-126646318-1');
     </script>
-    
+
     @yield('page-header')
 </head>
 <body>

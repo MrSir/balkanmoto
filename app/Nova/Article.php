@@ -49,7 +49,7 @@ class Article extends Resource
             Fields\Image::make('Image')
                 ->thumbnail(
                     function() {
-                        return $this->cover->link;
+                        return $this->cover->thumbnail_link;
                     }
                 )
                 ->hideWhenCreating()
