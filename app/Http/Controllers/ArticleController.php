@@ -22,7 +22,8 @@ class ArticleController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = Article::query();
+        $query = Article::query()
+            ->select('articles.*');
 
         $keyword = '';
         $input = collect($request->all());
