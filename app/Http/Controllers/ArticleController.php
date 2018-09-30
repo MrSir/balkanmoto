@@ -80,6 +80,8 @@ class ArticleController extends Controller
                 );
         }
 
+        $query->orderBy('published_at', 'DESC');
+
         $articles = $query->paginate(10);
 
         $tags = Tag::all();

@@ -45,7 +45,7 @@ class Controller extends BaseController
         $articles = Article::query()
             ->where('is_published','=', true)
             ->where('is_featured','=', true)
-            ->orderBy('published_at', 'asc')
+            ->orderBy('published_at', 'DESC')
             ->take(4)
             ->get();
 

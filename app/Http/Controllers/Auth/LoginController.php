@@ -98,6 +98,6 @@ class LoginController extends Controller
 
         $this->guard()->login($user, true);
 
-        return redirect('/home');
+        return redirect('/');
     }
 }
