@@ -27,13 +27,13 @@
         <div class="footer-title">Social</div>
         <div class="icons">
             <div class="youtube">
-                <a href="#"><span class="fab fa-youtube"></span></a>
+                <a href="https://www.youtube.com/channel/UCHbSArk-BwFhFQmtV_ws2Ng" target="_blank"><span class="fab fa-youtube"></span></a>
             </div>
             <div class="instagram">
-                <a href="#"><span class="fab fa-instagram"></span></a>
+                <a href="https://www.instagram.com/balkanmoto2018/" target="_blank"><span class="fab fa-instagram"></span></a>
             </div>
             <div class="twitter">
-                <a href="#"><span class="fab fa-twitter-square"></span></a>
+                <a href="https://twitter.com/BalkanMoto2018" target="_blank"><span class="fab fa-twitter-square"></span></a>
             </div>
         </div>
     </div>
