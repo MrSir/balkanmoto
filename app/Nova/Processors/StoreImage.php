@@ -16,18 +16,13 @@ class StoreImage
     public function __invoke(Request $request)
     {
         $file = $request->image;
+        $ext = $file->getClientOriginalExtension();
 
         $newFileName = uniqid(
                 'IMAGE',
                 true
-            ) . '.' . $file->getClientOriginalExtension();
+            ) . '.' . $ext;
         $thumbFileName = 'THUMB' . $newFileName;
-
-        $this->make_thumb(
-            $file->getRealPath(),
-            $file->getRealPath() . '_thumb',
-            300
-        );
 
         // store files
         Storage::put(
@@ -35,10 +30,18 @@ class StoreImage
             file_get_contents($file->getRealPath())
         );
 
-        Storage::put(
-            $thumbFileName,
-            file_get_contents($file->getRealPath() . '_thumb')
-        );
+        if ($ext === 'jpg'){
+            $this->make_thumb(
+                $file->getRealPath(),
+                $file->getRealPath() . '_thumb',
+                300
+            );
+
+            Storage::put(
+                $thumbFileName,
+                file_get_contents($file->getRealPath() . '_thumb')
+            );
+        }
 
         return [
             'title' => $file->getClientOriginalName(),
