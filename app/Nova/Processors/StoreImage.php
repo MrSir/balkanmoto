@@ -30,7 +30,7 @@ class StoreImage
             file_get_contents($file->getRealPath())
         );
 
-        if ($ext === 'jpg'){
+        if (strtolower($ext) === 'jpg'){
             $this->make_thumb(
                 $file->getRealPath(),
                 $file->getRealPath() . '_thumb',
