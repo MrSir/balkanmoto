@@ -56,7 +56,8 @@ class Article extends Resource
                 ->hideWhenUpdating(),
             Fields\BelongsTo::make('Image', 'cover')
                 ->hideFromIndex()
-                ->hideFromDetail(),
+                ->hideFromDetail()
+                ->searchable(),
             Fields\Boolean::make('Is Published')
                 ->sortable(),
             Fields\Boolean::make('Is Featured')
