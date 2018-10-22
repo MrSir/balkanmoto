@@ -80,7 +80,7 @@ class ArticleController extends Controller
                 );
         }
 
-        $query->orderBy('published_at', 'DESC');
+        $query->orderBy('created_at', 'DESC');
 
         $articles = $query->paginate(10);
 
