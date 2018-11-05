@@ -9,6 +9,7 @@
     <meta name="description" content="Custom Motorcycle Builder">
     <meta name="keywords" content="cafe racers,cafe racer,classic motorcycles,custom motorcycles,bobber">
     <meta name="author" content="Mitko Tochev">
+    <meta name="theme-color" content="#383838">
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
