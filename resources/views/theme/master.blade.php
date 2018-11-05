@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Balkan Moto</title>
+    <meta name="description" content="Custom Motorcycle Builder">
+    <meta name="keywords" content="cafe racers,cafe racer,classic motorcycles,custom motorcycles,bobber">
+    <meta name="author" content="Mitko Tochev">
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"

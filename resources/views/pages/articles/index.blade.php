@@ -14,7 +14,7 @@
         @endif
         @foreach($articles as $article)
             <div class="post-grid">
-                <img src="{{ $article->cover->link }}"/>
+                <img src="{{ $article->cover->link }}"  alt="Article Cover"/>
                 <div class="title"><a href="/articles/{{ $article->id }}">{{ $article->title }}</a></div>
                 <div class="date">Date: {{ $article->published_at->format('Y-m-d') }}</div>
                 <div class="summary">
