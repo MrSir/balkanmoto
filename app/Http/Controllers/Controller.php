@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Cache;
 
 class Controller extends BaseController
 {
@@ -20,27 +21,34 @@ class Controller extends BaseController
      */
     public function home()
     {
-        try {
-            $fb = new Facebook(
-                [
-                    'app_id' => env('FB_APP_ID'),
-                    'app_secret' => env('FB_APP_SECRET'),
-                    'default_graph_version' => 'v3.1',
-                    'default_access_token' => env('FB_APP_ACCESS_TOKEN')
-                ]
-            );
+        $data = [];
 
-            // Returns a `FacebookFacebookResponse` object
-            $response = $fb->get(
-                '/17841408382862564/media?fields=media_url,permalink&limit=12'
-            );
-        } catch(FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
+        if (Cache::has('instagram-data')) {
+            $data = Cache::get('instagram-data');
+        } else {
+            try {
+                $fb = new Facebook(
+                    [
+                        'app_id' => env('FB_APP_ID'),
+                        'app_secret' => env('FB_APP_SECRET'),
+                        'default_graph_version' => 'v3.1',
+                        'default_access_token' => env('FB_APP_ACCESS_TOKEN')
+                    ]
+                );
+
+                // Returns a `FacebookFacebookResponse` object
+                $response = $fb->get(
+                    '/17841408382862564/media?fields=media_url,permalink&limit=12'
+                );
+
+                $body = json_decode($response->getBody(), true);
+                $data = $body['data'];
+
+                Cache::put('instagram-data', $data, 480);
+            } catch (FacebookSDKException $e) {
+                $data = [];
+            }
         }
-
-        $body = json_decode($response->getBody(),true);
-        $data = $body['data'];
 
         $articles = Article::query()
             ->where('is_published','=', true)
