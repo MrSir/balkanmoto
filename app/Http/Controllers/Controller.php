@@ -43,11 +43,11 @@ class Controller extends BaseController
 
                 $body = json_decode($response->getBody(), true);
                 $data = $body['data'];
-
-                Cache::put('instagram-data', $data, 480);
             } catch (FacebookSDKException $e) {
                 $data = [];
             }
+
+            Cache::put('instagram-data', $data, 480);
         }
 
         $articles = Article::query()
