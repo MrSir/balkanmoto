@@ -3,8 +3,8 @@
     grid-template-areas:
             'divider1'
             'main-grid'
-            'divider2'
-            'instagram-grid';
+            'divider2';
+            /*'instagram-grid';*/
     height: 100%;
     grid-gap: 20px;
 }

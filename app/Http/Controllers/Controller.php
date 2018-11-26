@@ -31,7 +31,7 @@ class Controller extends BaseController
                     [
                         'app_id' => env('FB_APP_ID'),
                         'app_secret' => env('FB_APP_SECRET'),
-                        'default_graph_version' => 'v3.1',
+                        'default_graph_version' => 'v3.2',
                         'default_access_token' => env('FB_APP_ACCESS_TOKEN')
                     ]
                 );
@@ -54,7 +54,7 @@ class Controller extends BaseController
             ->where('is_published','=', true)
             ->where('is_featured','=', true)
             ->orderBy('created_at', 'DESC')
-            ->take(4)
+            ->take(8)
             ->get();
 
         return view(

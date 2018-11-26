@@ -1,4 +1,4 @@
-@media all and (min-device-width: 768px) AND (min-width: 1080px) {
+@media all and (min-width: 768px) AND (min-device-width: 1080px) {
     .container-grid .header-grid {
         grid-area: header-grid;
         display: grid;
@@ -32,6 +32,10 @@
     }
 
     .container-grid .footer-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, minmax(200px, 400px));
+    }
+
+    .container-grid .footer-grid .links ul li{
+        border-bottom: none;
     }
 }

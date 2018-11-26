@@ -19,15 +19,15 @@
         </div>
         @endforeach
     </div>
-    <div class="divider2 divider">
-        <span class="fab fa-instagram"></span>BalkanMoto2018
-    </div>
-    <div class="grid-item instagram-grid">
-        @foreach($instagrams as $instagram)
-        <div class="post-grid"
-             style="background-image: url('{{ $instagram['media_url'] }}');"
-             onclick="window.open('{{$instagram['permalink']}}');">
-        </div>
-        @endforeach
-    </div>
+    {{--<div class="divider2 divider">--}}
+        {{--<span class="fab fa-instagram"></span>BalkanMoto2018--}}
+    {{--</div>--}}
+    {{--<div class="grid-item instagram-grid">--}}
+        {{--@foreach($instagrams as $instagram)--}}
+        {{--<div class="post-grid"--}}
+             {{--style="background-image: url('{{ $instagram['media_url'] }}');"--}}
+             {{--onclick="window.open('{{$instagram['permalink']}}');">--}}
+        {{--</div>--}}
+        {{--@endforeach--}}
+    {{--</div>--}}
 @endsection
