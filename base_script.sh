@@ -10,14 +10,13 @@ apt-get -y install python-software-properties
 
 # add needed repos and update #
 add-apt-repository -y ppa:ondrej/php
-add-apt-repository -y ppa:ondrej/mysql-5.6
 apt-get update
 
 # basic tools #
 apt-get -y install vim curl nginx sqlite
 
 # install php and enable it should be v7.2#
-apt-get -y install php7.2 php7.2-fpm php-curl php-gd php-imap php-xml php-mbstring php-zip php-soap php7.2-bcmath
+apt-get -y install php7.2 php7.2-fpm php7.2-curl php7.2-gd php7.2-imap php7.2-xml php7.2-mbstring php7.2-zip php7.2-soap php7.2-bcmath
 phpenmod gd
 phpenmod imap
 
@@ -36,7 +35,7 @@ apt-get -y install redis-server
 # install mysql-server #
 debconf-set-selections <<< 'mysql-server mysql-server/root_password password Test1234'
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password Test1234'
-apt-get -y install mysql-server-5.6 php-mysql
+apt-get -y install mysql-server-5.7 php7.2-mysql
 
 # add root user to specific IP to differentiate between vagrant boxes #
 mysql -uroot -pTest1234 -e "CREATE USER 'root'@'%' IDENTIFIED BY 'Test1234'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
