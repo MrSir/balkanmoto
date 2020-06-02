@@ -2,11 +2,13 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 
 class ValueCommand extends GeneratorCommand
 {
+    use ResolvesStubPath;
+
     /**
      * The console command name.
      *
@@ -38,7 +40,9 @@ class ValueCommand extends GeneratorCommand
     {
         $stub = parent::buildClass($name);
 
-        return str_replace('uri-key', Str::snake($this->argument('name'), '-'), $stub);
+        $key = preg_replace('/[^a-zA-Z0-9]+/', '', $this->argument('name'));
+
+        return str_replace('uri-key', Str::kebab($key), $stub);
     }
 
     /**
@@ -48,7 +52,7 @@ class ValueCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/value.stub';
+        return $this->resolveStubPath('/stubs/nova/value.stub');
     }
 
     /**

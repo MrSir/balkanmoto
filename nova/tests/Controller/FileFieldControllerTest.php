@@ -2,21 +2,22 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Fields\Image;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Tests\Fixtures\File;
 use Laravel\Nova\Tests\Fixtures\Role;
-use Laravel\Nova\Tests\Fixtures\User;
-use Illuminate\Support\Facades\Storage;
-use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\UserPolicy;
 use Laravel\Nova\Tests\Fixtures\SoftDeletingFile;
+use Laravel\Nova\Tests\Fixtures\User;
+use Laravel\Nova\Tests\Fixtures\UserPolicy;
+use Laravel\Nova\Tests\IntegrationTest;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileFieldControllerTest extends IntegrationTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -37,6 +38,78 @@ class FileFieldControllerTest extends IntegrationTest
 
         $file = File::first();
         $this->assertEquals('avatars/avatar.png', $file->avatar);
+    }
+
+    public function test_update_prunable_file()
+    {
+        $_SERVER['nova.fileResource.imageField'] = function () {
+            return Image::make('Avatar', 'avatar')->prunable();
+        };
+
+        $this->withExceptionHandling()
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
+
+        $_SERVER['__nova.fileResource.imageName'] = 'avatar2.png';
+
+        $file = File::first();
+
+        $filename = $file->avatar;
+        Storage::disk('public')->assertExists($file->avatar);
+
+        $this->withExceptionHandling()
+            ->postJson('/nova-api/files/'.$file->id, [
+                '_method'=>'PUT',
+                'avatar' => UploadedFile::fake()->image('avatar2.png'),
+            ]);
+
+        unset($_SERVER['nova.fileResource.imageField']);
+
+        $file = File::first();
+
+        Storage::disk('public')->assertMissing($filename);
+        Storage::disk('public')->assertExists($file->avatar);
+        $this->assertnotEquals($filename, $file->avatar);
+    }
+
+    public function test_update_prunable_file_with_custom_delete_callback()
+    {
+        $_SERVER['nova.fileResource.imageField'] = function () {
+            return Image::make('Avatar', 'avatar')
+                ->prunable()
+                ->delete(function ($request, $model, $disk, $path) {
+                    Storage::disk($disk)->delete($path);
+                });
+        };
+
+        $response = $this->withExceptionHandling()
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
+
+        $response->assertStatus(201);
+
+        $_SERVER['__nova.fileResource.imageName'] = 'avatar2.png';
+
+        $file = File::first();
+
+        $filename = $file->avatar;
+        Storage::disk('public')->assertExists($file->avatar);
+
+        $this->withExceptionHandling()
+            ->postJson('/nova-api/files/'.$file->id, [
+                '_method'=>'PUT',
+                'avatar' => UploadedFile::fake()->image('avatar2.png'),
+            ]);
+
+        unset($_SERVER['nova.fileResource.imageField']);
+
+        $file = File::first();
+
+        Storage::disk('public')->assertMissing($filename);
+        Storage::disk('public')->assertExists($file->avatar);
+        $this->assertnotEquals($filename, $file->avatar);
     }
 
     public function test_proper_response_returned_when_required_file_not_provided()
@@ -93,7 +166,7 @@ class FileFieldControllerTest extends IntegrationTest
                         ->deleteJson('/nova-api/files/'.File::first()->id.'/field/avatar');
 
         $response->assertStatus(200);
-        $this->assertCount(1, File::first()->actions);
+        $this->assertCount(2, File::first()->actions);
     }
 
     public function test_pivot_file_field_can_be_deleted()
@@ -230,7 +303,7 @@ class FileFieldControllerTest extends IntegrationTest
         $file = File::first();
         $this->assertEquals('avatars/avatar.png', $file->avatar);
         $this->assertEquals('avatar.png', $file->original_name);
-        $this->assertEquals(91, $file->size);
+        $this->assertGreaterThan(0, $file->size);
     }
 
     public function test_file_fields_are_deleted_when_resource_is_deleted()
@@ -295,5 +368,49 @@ class FileFieldControllerTest extends IntegrationTest
         $this->assertTrue($_SERVER['__nova.fileDeleted']);
 
         unset($_SERVER['__nova.fileDeleted']);
+    }
+
+    public function test_property_name_collision()
+    {
+        Storage::fake();
+
+        $_SERVER['nova.fileResource.imageField'] = function ($request) {
+            return Image::make('Files', 'files', 'public')
+                ->path('avatars');
+        };
+
+        $response = $this->withExceptionHandling()
+            ->postJson('/nova-api/files', [
+                'files' => UploadedFile::fake()->image('avatar.png'),
+            ]);
+
+        unset($_SERVER['nova.fileResource.imageField']);
+
+        $response->assertStatus(201);
+    }
+
+    public function test_callable_result_on_store_callback()
+    {
+        Storage::fake();
+
+        $_SERVER['nova.fileResource.imageField'] = function ($request) {
+            return Image::make('Avatar', 'avatar', 'public')
+                        ->store(function (Request $request, $model) {
+                            return function () use ($request, $model) {
+                                $model->avatar = $request->file('avatar')->store('avatars', 'public');
+                            };
+                        });
+        };
+
+        $response = $this->withExceptionHandling()
+             ->postJson('/nova-api/files', [
+                 'avatar' => UploadedFile::fake()->image('avatar.png'),
+             ]);
+
+        unset($_SERVER['nova.fileResource.imageField']);
+
+        $response->assertStatus(201);
+        $this->assertNotEmpty($response->original['resource']['avatar']);
+        $this->assertEmpty(File::query()->first()->avatar);
     }
 }

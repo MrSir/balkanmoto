@@ -17,7 +17,7 @@ trait FillsFields
     {
         return static::fillFields(
             $request, $model,
-            (new static($model))->creationFields($request)
+            (new static($model))->creationFieldsWithoutReadonly($request)
         );
     }
 
@@ -32,7 +32,7 @@ trait FillsFields
     {
         return static::fillFields(
             $request, $model,
-            (new static($model))->updateFields($request)
+            (new static($model))->updateFieldsWithoutReadonly($request)
         );
     }
 
@@ -51,6 +51,24 @@ trait FillsFields
         return static::fillFields(
             $request, $pivot,
             $instance->creationPivotFields($request, $request->relatedResource)
+        );
+    }
+
+    /**
+     * Fill a new pivot model instance using the given request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  \Illuminate\Database\Eloquent\Relations\Pivot  $pivot
+     * @return array
+     */
+    public static function fillPivotForUpdate(NovaRequest $request, $model, $pivot)
+    {
+        $instance = new static($model);
+
+        return static::fillFields(
+            $request, $pivot,
+            $instance->updatePivotFields($request, $request->relatedResource)
         );
     }
 

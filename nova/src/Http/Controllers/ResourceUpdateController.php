@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Http\Requests\UpdateResourceRequest;
+use Laravel\Nova\Nova;
 
 class ResourceUpdateController extends Controller
 {
@@ -14,31 +14,37 @@ class ResourceUpdateController extends Controller
      * Create a new resource.
      *
      * @param  \Laravel\Nova\Http\Requests\UpdateResourceRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function handle(UpdateResourceRequest $request)
     {
-        $request->findResourceOrFail()->authorizeToUpdate($request);
-
-        $resource = $request->resource();
-
-        $resource::validateForUpdate($request);
-
-        return DB::transaction(function () use ($request, $resource) {
+        [$model, $resource] = DB::transaction(function () use ($request) {
             $model = $request->findModelQuery()->lockForUpdate()->firstOrFail();
 
+            $resource = $request->newResourceWith($model);
+            $resource->authorizeToUpdate($request);
+            $resource::validateForUpdate($request, $resource);
+
             if ($this->modelHasBeenUpdatedSinceRetrieval($request, $model)) {
-                return response('', 409);
+                return response('', 409)->throwResponse();
             }
 
             [$model, $callbacks] = $resource::fillForUpdate($request, $model);
 
-            return tap(tap($model)->save(), function ($model) use ($request, $callbacks) {
-                ActionEvent::forResourceUpdate($request->user(), $model)->save();
+            Nova::actionEvent()->forResourceUpdate($request->user(), $model)->save();
 
-                collect($callbacks)->each->__invoke();
-            });
+            $model->save();
+
+            collect($callbacks)->each->__invoke();
+
+            return [$model, $resource];
         });
+
+        return response()->json([
+            'id' => $model->getKey(),
+            'resource' => $model->attributesToArray(),
+            'redirect' => $resource::redirectAfterUpdate($request, $resource),
+        ]);
     }
 
     /**
@@ -46,10 +52,17 @@ class ResourceUpdateController extends Controller
      *
      * @param  \Laravel\Nova\Http\Requests\UpdateResourceRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return void
+     * @return bool
      */
     protected function modelHasBeenUpdatedSinceRetrieval(UpdateResourceRequest $request, $model)
     {
+        $resource = $request->newResource();
+
+        // Check to see whether Traffic Cop is enabled for this resource...
+        if ($resource::trafficCop($request) === false) {
+            return false;
+        }
+
         $column = $model->getUpdatedAtColumn();
 
         if (! $model->{$column}) {

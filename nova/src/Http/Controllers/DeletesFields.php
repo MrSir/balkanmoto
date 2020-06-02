@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Laravel\Nova\DeleteField;
 use Laravel\Nova\Contracts\Deletable;
+use Laravel\Nova\DeleteField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait DeletesFields
@@ -39,7 +39,7 @@ trait DeletesFields
                     ->whereInstanceOf(Deletable::class)
                     ->filter->isPrunable()
                     ->each(function ($field) use ($request, $model) {
-                        DeleteField::forRequest($request, $field, $model)->save();
+                        DeleteField::forRequest($request, $field, $model);
                     });
     }
 }

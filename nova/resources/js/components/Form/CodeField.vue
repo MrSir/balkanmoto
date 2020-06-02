@@ -1,21 +1,11 @@
 <template>
-    <field-wrapper>
-        <div class="w-1/5 px-8 py-6">
-            <form-label>
-                {{ field.name }}
-            </form-label>
-        </div>
-
-        <div class="w-4/5 px-8 py-6">
-            <div class="form-input form-input-bordered px-0 overflow-hidden">
-                <textarea ref="theTextarea" />
-            </div>
-
-            <p v-if="hasError" class="my-2 text-danger">
-                {{ firstError }}
-            </p>
-        </div>
-    </field-wrapper>
+  <default-field :field="field" :errors="errors" :full-width-content="true">
+    <template slot="field">
+      <div class="form-input form-input-bordered px-0 overflow-hidden">
+        <textarea ref="theTextarea" />
+      </div>
+    </template>
+  </default-field>
 </template>
 
 <style src="codemirror/lib/codemirror.css" />
@@ -93,64 +83,54 @@ import 'codemirror/mode/xml/xml'
 import 'codemirror/mode/vue/vue'
 import 'codemirror/mode/dockerfile/dockerfile'
 import 'codemirror/keymap/vim'
+import 'codemirror/mode/sql/sql'
+import 'codemirror/mode/twig/twig'
+import 'codemirror/mode/htmlmixed/htmlmixed'
+
+CodeMirror.defineMode('htmltwig', function (config, parserConfig) {
+  return CodeMirror.overlayMode(
+    CodeMirror.getMode(config, parserConfig.backdrop || 'text/html'),
+    CodeMirror.getMode(config, 'twig')
+  )
+})
 
 import { FormField, HandlesValidationErrors } from 'laravel-nova'
 
 export default {
-    mixins: [HandlesValidationErrors, FormField],
+  mixins: [HandlesValidationErrors, FormField],
 
-    data: () => ({ codemirror: null }),
+  data: () => ({ codemirror: null }),
 
-    /**
-     * Mount the component.
-     */
-    mounted() {
-        const config = {
-            ...{
-                tabSize: 4,
-                indentWithTabs: true,
-                lineWrapping: true,
-                lineNumbers: true,
-                theme: 'dracula',
-            },
-            ...this.field.options,
-        }
+  /**
+   * Mount the component.
+   */
+  mounted() {
+    const config = {
+      ...{
+        tabSize: 4,
+        indentWithTabs: true,
+        lineWrapping: true,
+        lineNumbers: true,
+        theme: 'dracula',
+        ...{ readOnly: this.isReadonly },
+      },
+      ...this.field.options,
+    }
 
-        this.codemirror = CodeMirror.fromTextArea(this.$refs.theTextarea, config)
+    this.codemirror = CodeMirror.fromTextArea(this.$refs.theTextarea, config)
 
-        this.doc.on('change', (cm, changeObj) => {
-            this.value = cm.getValue()
-        })
+    this.doc.on('change', (cm, changeObj) => {
+      this.value = cm.getValue()
+    })
 
-        this.doc.setValue(this.field.value)
+    this.doc.setValue(this.field.value)
+    this.codemirror.setSize('100%', this.field.height)
+  },
+
+  computed: {
+    doc() {
+      return this.codemirror.getDoc()
     },
-
-    computed: {
-        doc() {
-            return this.codemirror.getDoc()
-        },
-    },
+  },
 }
 </script>
-
-<style>
-.CodeMirror {
-    min-height: 50px;
-    font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;
-    box-sizing: border-box;
-    height: auto;
-    margin: auto;
-    position: relative;
-    z-index: 0;
-}
-
-.CodeMirror-wrap {
-    padding: 0.5rem;
-}
-
-.CodeMirror-scroll {
-    height: auto;
-    overflow: visible;
-    box-sizing: border-box;
-}
-</style>

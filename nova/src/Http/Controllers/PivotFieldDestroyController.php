@@ -2,10 +2,10 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Laravel\Nova\DeleteField;
 use Illuminate\Routing\Controller;
-use Laravel\Nova\Actions\ActionEvent;
+use Laravel\Nova\DeleteField;
 use Laravel\Nova\Http\Requests\PivotFieldDestroyRequest;
+use Laravel\Nova\Nova;
 
 class PivotFieldDestroyController extends Controller
 {
@@ -24,7 +24,7 @@ class PivotFieldDestroyController extends Controller
             $pivot = $request->findPivotModel()
         )->save();
 
-        ActionEvent::forAttachedResourceUpdate(
+        Nova::actionEvent()->forAttachedResourceUpdate(
             $request, $request->findModelOrFail(), $pivot
         )->save();
     }

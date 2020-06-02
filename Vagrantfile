@@ -5,7 +5,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "geerlingguy/ubuntu1604"
+  config.vm.box = "geerlingguy/ubuntu1804"
 
   config.vm.hostname = "balkanmoto"
   config.vm.network :forwarded_port, guest: 80, host: 8053, auto_correct: true
@@ -18,11 +18,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.winnfsd.uid = 1
   config.winnfsd.gid = 1
 
-  config.vm.synced_folder "../", "/var/www", nfs: true
+  config.vm.synced_folder "./", "/var/www", nfs: true
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
-    #vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.customize ["modifyvm", :id, "--name", "balkanmoto"]
     vb.customize ["modifyvm", :id, "--memory", "1024"]
     vb.customize ["modifyvm", :id, "--vram", "12"]

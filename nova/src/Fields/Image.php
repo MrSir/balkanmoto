@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Image extends File
 {
+    use PresentsImages;
+
     /**
      * Indicates if the element should be shown on the index view.
      *
@@ -26,10 +28,22 @@ class Image extends File
     {
         parent::__construct($name, $attribute, $disk, $storageCallback);
 
+        $this->acceptedTypes('image/*');
+
         $this->thumbnail(function () {
-            return $this->value ? Storage::disk($this->disk)->url($this->value) : null;
+            return $this->value ? Storage::disk($this->getStorageDisk())->url($this->value) : null;
         })->preview(function () {
-            return $this->value ? Storage::disk($this->disk)->url($this->value) : null;
+            return $this->value ? Storage::disk($this->getStorageDisk())->url($this->value) : null;
         });
+    }
+
+    /**
+     * Prepare the field element for JSON serialization.
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array_merge(parent::jsonSerialize(), $this->imageAttributes());
     }
 }

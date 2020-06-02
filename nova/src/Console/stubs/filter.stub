@@ -1,12 +1,19 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
-class DummyClass extends Filter
+class {{ class }} extends Filter
 {
+    /**
+     * The filter's component.
+     *
+     * @var string
+     */
+    public $component = 'select-filter';
+
     /**
      * Apply the filter to the given query.
      *

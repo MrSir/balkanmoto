@@ -3,14 +3,8 @@
 use Faker\Generator as Faker;
 
 $factory->define(\App\Article::class, function (Faker $faker) {
-    $slug = $faker->word;
-
-    while (!\App\Article::where('slug', '=', $slug)->first()) {
-        $slug = $faker->word();
-    }
-
     return [
-        'slug' => $faker->word,
+        'slug' => $faker->word . now()->format('YmdHis'),
         'is_published' => $faker->boolean,
         'is_featured' => $faker->boolean,
         'user_id' => \App\User::first(),
@@ -18,5 +12,6 @@ $factory->define(\App\Article::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'summary' => $faker->sentence,
         'body' => $faker->randomHtml(),
+        'published_at' => now(),
     ];
 });

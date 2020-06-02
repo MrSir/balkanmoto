@@ -11,7 +11,7 @@ class ResourceIndexController extends Controller
      * List the resources for administration.
      *
      * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function handle(ResourceIndexRequest $request)
     {
@@ -24,6 +24,8 @@ class ResourceIndexController extends Controller
             'resources' => $paginator->getCollection()->mapInto($resource)->map->serializeForIndex($request),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),
+            'per_page' => $paginator->perPage(),
+            'per_page_options' => $resource::perPageOptions(),
             'softDeletes' => $resource::softDeletes(),
         ]);
     }
@@ -40,7 +42,7 @@ class ResourceIndexController extends Controller
         return $request->toQuery()->simplePaginate(
             $request->viaRelationship()
                         ? $resource::$perPageViaRelationship
-                        : ($request->perPage ?? 25)
+                        : ($request->perPage ?? $resource::perPageOptions()[0])
         );
     }
 }

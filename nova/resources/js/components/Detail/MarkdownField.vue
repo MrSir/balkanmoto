@@ -1,24 +1,21 @@
 <template>
-    <panel-item :field="field">
-        <template slot="value">
-            <excerpt :content="excerpt" />
-        </template>
-    </panel-item>
+  <panel-item :field="field">
+    <template slot="value">
+      <excerpt :content="excerpt" :should-show="field.shouldShow" />
+    </template>
+  </panel-item>
 </template>
 
 <script>
-import Excerpt from '../Excerpt'
 const md = require('markdown-it')()
 
 export default {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 
-    components: { Excerpt },
-
-    computed: {
-        excerpt() {
-            return md.render(this.field.value)
-        },
+  computed: {
+    excerpt() {
+      return md.render(this.field.value || '')
     },
+  },
 }
 </script>

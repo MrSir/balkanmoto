@@ -2,30 +2,33 @@
 
 namespace Laravel\Nova\Filters;
 
-use Closure;
-use JsonSerializable;
-use Laravel\Nova\Nova;
-use Illuminate\Http\Request;
 use Illuminate\Container\Container;
+use Illuminate\Http\Request;
+use JsonSerializable;
+use Laravel\Nova\AuthorizedToSee;
+use Laravel\Nova\Contracts\Filter as FilterContract;
+use Laravel\Nova\Makeable;
+use Laravel\Nova\Metable;
+use Laravel\Nova\Nova;
 use Laravel\Nova\ProxiesCanSeeToGate;
 
-abstract class Filter implements JsonSerializable
+abstract class Filter implements FilterContract, JsonSerializable
 {
-    use ProxiesCanSeeToGate;
+    use Metable, AuthorizedToSee, ProxiesCanSeeToGate, Makeable;
 
     /**
-     * The displayable name of the action.
+     * The displayable name of the filter.
      *
      * @var string
      */
     public $name;
 
     /**
-     * The callback used to authorize viewing the filter.
+     * The filter's component.
      *
-     * @var \Closure|null
+     * @var string
      */
-    public $seeCallback;
+    public $component = 'select-filter';
 
     /**
      * Apply the filter to the given query.
@@ -46,27 +49,13 @@ abstract class Filter implements JsonSerializable
     abstract public function options(Request $request);
 
     /**
-     * Determine if the filter should be available for the given request.
+     * Get the component name for the filter.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
+     * @return string
      */
-    public function authorizedToSee(Request $request)
+    public function component()
     {
-        return $this->seeCallback ? call_user_func($this->seeCallback, $request) : true;
-    }
-
-    /**
-     * Set the callback to be run to authorize viewing the filter.
-     *
-     * @param  \Closure  $callback
-     * @return $this
-     */
-    public function canSee(Closure $callback)
-    {
-        $this->seeCallback = $callback;
-
-        return $this;
+        return $this->component;
     }
 
     /**
@@ -80,6 +69,26 @@ abstract class Filter implements JsonSerializable
     }
 
     /**
+     * Get the key for the filter.
+     *
+     * @return string
+     */
+    public function key()
+    {
+        return get_class($this);
+    }
+
+    /**
+     * Set the default options for the filter.
+     *
+     * @return array|mixed
+     */
+    public function default()
+    {
+        return '';
+    }
+
+    /**
      * Prepare the filter for JSON serialization.
      *
      * @return array
@@ -88,13 +97,14 @@ abstract class Filter implements JsonSerializable
     {
         $container = Container::getInstance();
 
-        return [
-            'class' => get_class($this),
+        return array_merge([
+            'class' => $this->key(),
             'name' => $this->name(),
+            'component' => $this->component(),
             'options' => collect($this->options($container->make(Request::class)))->map(function ($value, $key) {
-                return ['name' => $key, 'value' => $value];
+                return is_array($value) ? ($value + ['value' => $key]) : ['name' => $key, 'value' => $value];
             })->values()->all(),
-            'currentValue' => '',
-        ];
+            'currentValue' => $this->default() ?? '',
+        ], $this->meta());
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Http\Requests;
 
-use LogicException;
 use Illuminate\Database\Eloquent\Builder;
+use LogicException;
 
 class LensActionRequest extends ActionRequest
 {
@@ -21,5 +21,17 @@ class LensActionRequest extends ActionRequest
                 throw new LogicException('Lens must return an Eloquent query instance in order to apply actions.');
             }
         });
+    }
+
+    /**
+     * Get the all actions for the request.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function resolveActions()
+    {
+        return $this->isPivotAction()
+                    ? $this->lens()->resolvePivotActions($this)
+                    : $this->lens()->resolveActions($this);
     }
 }

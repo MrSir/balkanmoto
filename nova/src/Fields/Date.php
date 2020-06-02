@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Fields;
 
-use Exception;
 use DateTimeInterface;
+use Exception;
 
 class Date extends Field
 {
@@ -25,12 +25,25 @@ class Date extends Field
     public function __construct($name, $attribute = null, $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback ?? function ($value) {
-            if (! $value instanceof DateTimeInterface) {
+            if (! is_null($value)) {
+                if ($value instanceof DateTimeInterface) {
+                    return $value->format('Y-m-d');
+                }
+
                 throw new Exception("Date field must cast to 'date' in Eloquent model.");
             }
-
-            return $value->format('Y-m-d');
         });
+    }
+
+    /**
+     * Set the first day of the week.
+     *
+     * @param  int  $day
+     * @return $this
+     */
+    public function firstDayOfWeek($day)
+    {
+        return $this->withMeta([__FUNCTION__ => $day]);
     }
 
     /**
@@ -41,16 +54,17 @@ class Date extends Field
      */
     public function format($format)
     {
-        return $this->withMeta(['format' => $format]);
+        return $this->withMeta([__FUNCTION__ => $format]);
     }
 
     /**
-     * Indicate that the date field is nullable.
+     * Set the date format (flatpickr.js) that should be used to display the date in the input field (picker).
      *
+     * @param  string  $format
      * @return $this
      */
-    public function nullable()
+    public function pickerFormat($format)
     {
-        return $this->withMeta(['nullable' => true]);
+        return $this->withMeta([__FUNCTION__ => $format]);
     }
 }

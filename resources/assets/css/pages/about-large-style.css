@@ -1,0 +1,13 @@
+@media all and (min-width: 768px) AND (min-device-width: 1080px) {
+    .content-grid {
+        text-align: justify;
+        margin: 20px auto;
+        font-size: 16pt;
+        max-width: 800px;
+    }
+
+    .content-grid p {
+        margin: 0px 0px 10px 0px;
+        text-indent: 30px;
+    }
+}

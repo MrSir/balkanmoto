@@ -1,0 +1,14 @@
+{
+    "/css/style.css": "/css/style.css",
+    "/css/large-style.css": "/css/large-style.css",
+    "/css/pages/about-style.css": "/css/pages/about-style.css",
+    "/css/pages/home-style.css": "/css/pages/home-style.css",
+    "/css/pages/article-style.css": "/css/pages/article-style.css",
+    "/css/pages/articles-style.css": "/css/pages/articles-style.css",
+    "/css/pages/tools/engineFix-style.css": "/css/pages/tools/engineFix-style.css",
+    "/css/pages/about-large-style.css": "/css/pages/about-large-style.css",
+    "/css/pages/home-large-style.css": "/css/pages/home-large-style.css",
+    "/css/pages/article-large-style.css": "/css/pages/article-large-style.css",
+    "/css/pages/articles-large-style.css": "/css/pages/articles-large-style.css",
+    "/css/pages/tools/engineFix-large-style.css": "/css/pages/tools/engineFix-large-style.css"
+}

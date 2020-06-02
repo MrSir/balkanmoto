@@ -2,11 +2,12 @@
 
 namespace Laravel\Nova\Metrics;
 
-use DateTime;
 use Cake\Chronos\Chronos;
-use InvalidArgumentException;
-use Illuminate\Support\Facades\DB;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
+use Laravel\Nova\Nova;
 
 abstract class Trend extends RangedMetric
 {
@@ -42,12 +43,12 @@ abstract class Trend extends RangedMetric
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
+     * @param  string|null  $column
      * @return \Laravel\Nova\Metrics\TrendResult
      */
-    public function countByMonths($request, $model, $column = 'created_at')
+    public function countByMonths($request, $model, $column = null)
     {
-        return $this->count($request, $model, Trend::BY_MONTHS, $column);
+        return $this->count($request, $model, self::BY_MONTHS, $column);
     }
 
     /**
@@ -55,12 +56,12 @@ abstract class Trend extends RangedMetric
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
+     * @param  string|null  $column
      * @return \Laravel\Nova\Metrics\TrendResult
      */
-    public function countByWeeks($request, $model, $column = 'created_at')
+    public function countByWeeks($request, $model, $column = null)
     {
-        return $this->count($request, $model, Trend::BY_WEEKS, $column);
+        return $this->count($request, $model, self::BY_WEEKS, $column);
     }
 
     /**
@@ -68,12 +69,12 @@ abstract class Trend extends RangedMetric
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
+     * @param  string|null  $column
      * @return \Laravel\Nova\Metrics\TrendResult
      */
-    public function countByDays($request, $model, $column = 'created_at')
+    public function countByDays($request, $model, $column = null)
     {
-        return $this->count($request, $model, Trend::BY_DAYS, $column);
+        return $this->count($request, $model, self::BY_DAYS, $column);
     }
 
     /**
@@ -81,12 +82,12 @@ abstract class Trend extends RangedMetric
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
+     * @param  string|null  $column
      * @return \Laravel\Nova\Metrics\TrendResult
      */
-    public function countByHours($request, $model, $column = 'created_at')
+    public function countByHours($request, $model, $column = null)
     {
-        return $this->count($request, $model, Trend::BY_HOURS, $column);
+        return $this->count($request, $model, self::BY_HOURS, $column);
     }
 
     /**
@@ -94,12 +95,12 @@ abstract class Trend extends RangedMetric
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
+     * @param  string|null  $column
      * @return \Laravel\Nova\Metrics\TrendResult
      */
-    public function countByMinutes($request, $model, $column = 'created_at')
+    public function countByMinutes($request, $model, $column = null)
     {
-        return $this->count($request, $model, Trend::BY_MINUTES, $column);
+        return $this->count($request, $model, self::BY_MINUTES, $column);
     }
 
     /**
@@ -108,16 +109,16 @@ abstract class Trend extends RangedMetric
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string  $unit
-     * @param  string  $column
+     * @param  string|null  $column
      * @return \Laravel\Nova\Metrics\TrendResult
      */
-    public function count($request, $model, $unit, $column = 'created_at')
+    public function count($request, $model, $unit, $column = null)
     {
-        $keyName = $model instanceof Builder
-                        ? $model->getModel()->getQualifiedKeyName()
-                        : (new $model)->getQualifiedKeyName();
+        $resource = $model instanceof Builder ? $model->getModel() : new $model;
 
-        return $this->aggregate($request, $model, $unit, 'count', $keyName);
+        $column = $column ?? $resource->getCreatedAtColumn();
+
+        return $this->aggregate($request, $model, $unit, 'count', $resource->getQualifiedKeyName(), $column);
     }
 
     /**
@@ -131,7 +132,7 @@ abstract class Trend extends RangedMetric
      */
     public function averageByMonths($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MONTHS, 'avg', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MONTHS, 'avg', $column, $dateColumn);
     }
 
     /**
@@ -145,7 +146,7 @@ abstract class Trend extends RangedMetric
      */
     public function averageByWeeks($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_WEEKS, 'avg', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_WEEKS, 'avg', $column, $dateColumn);
     }
 
     /**
@@ -159,7 +160,7 @@ abstract class Trend extends RangedMetric
      */
     public function averageByDays($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_DAYS, 'avg', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_DAYS, 'avg', $column, $dateColumn);
     }
 
     /**
@@ -173,7 +174,7 @@ abstract class Trend extends RangedMetric
      */
     public function averageByHours($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_HOURS, 'avg', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_HOURS, 'avg', $column, $dateColumn);
     }
 
     /**
@@ -187,7 +188,7 @@ abstract class Trend extends RangedMetric
      */
     public function averageByMinutes($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MINUTES, 'avg', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MINUTES, 'avg', $column, $dateColumn);
     }
 
     /**
@@ -216,7 +217,7 @@ abstract class Trend extends RangedMetric
      */
     public function sumByMonths($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MONTHS, 'sum', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MONTHS, 'sum', $column, $dateColumn);
     }
 
     /**
@@ -230,7 +231,7 @@ abstract class Trend extends RangedMetric
      */
     public function sumByWeeks($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_WEEKS, 'sum', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_WEEKS, 'sum', $column, $dateColumn);
     }
 
     /**
@@ -244,7 +245,7 @@ abstract class Trend extends RangedMetric
      */
     public function sumByDays($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_DAYS, 'sum', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_DAYS, 'sum', $column, $dateColumn);
     }
 
     /**
@@ -258,7 +259,7 @@ abstract class Trend extends RangedMetric
      */
     public function sumByHours($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_HOURS, 'sum', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_HOURS, 'sum', $column, $dateColumn);
     }
 
     /**
@@ -272,7 +273,7 @@ abstract class Trend extends RangedMetric
      */
     public function sumByMinutes($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MINUTES, 'sum', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MINUTES, 'sum', $column, $dateColumn);
     }
 
     /**
@@ -301,7 +302,7 @@ abstract class Trend extends RangedMetric
      */
     public function maxByMonths($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MONTHS, 'max', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MONTHS, 'max', $column, $dateColumn);
     }
 
     /**
@@ -315,7 +316,7 @@ abstract class Trend extends RangedMetric
      */
     public function maxByWeeks($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_WEEKS, 'max', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_WEEKS, 'max', $column, $dateColumn);
     }
 
     /**
@@ -329,7 +330,7 @@ abstract class Trend extends RangedMetric
      */
     public function maxByDays($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_DAYS, 'max', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_DAYS, 'max', $column, $dateColumn);
     }
 
     /**
@@ -343,7 +344,7 @@ abstract class Trend extends RangedMetric
      */
     public function maxByHours($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_HOURS, 'max', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_HOURS, 'max', $column, $dateColumn);
     }
 
     /**
@@ -357,7 +358,7 @@ abstract class Trend extends RangedMetric
      */
     public function maxByMinutes($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MINUTES, 'max', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MINUTES, 'max', $column, $dateColumn);
     }
 
     /**
@@ -386,7 +387,7 @@ abstract class Trend extends RangedMetric
      */
     public function minByMonths($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MONTHS, 'min', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MONTHS, 'min', $column, $dateColumn);
     }
 
     /**
@@ -400,7 +401,7 @@ abstract class Trend extends RangedMetric
      */
     public function minByWeeks($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_WEEKS, 'min', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_WEEKS, 'min', $column, $dateColumn);
     }
 
     /**
@@ -414,7 +415,7 @@ abstract class Trend extends RangedMetric
      */
     public function minByDays($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_DAYS, 'min', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_DAYS, 'min', $column, $dateColumn);
     }
 
     /**
@@ -428,7 +429,7 @@ abstract class Trend extends RangedMetric
      */
     public function minByHours($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_HOURS, 'min', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_HOURS, 'min', $column, $dateColumn);
     }
 
     /**
@@ -442,7 +443,7 @@ abstract class Trend extends RangedMetric
      */
     public function minByMinutes($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, Trend::BY_MINUTES, 'min', $column, $dateColumn);
+        return $this->aggregate($request, $model, self::BY_MINUTES, 'min', $column, $dateColumn);
     }
 
     /**
@@ -475,7 +476,7 @@ abstract class Trend extends RangedMetric
     {
         $query = $model instanceof Builder ? $model : (new $model)->newQuery();
 
-        $timezone = $request->timezone;
+        $timezone = Nova::resolveUserTimezone($request) ?? $request->timezone;
 
         $expression = (string) TrendDateExpressionFactory::make(
             $query, $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn(),
@@ -502,7 +503,7 @@ abstract class Trend extends RangedMetric
         $results = array_merge($possibleDateResults, $results->mapWithKeys(function ($result) use ($request, $unit) {
             return [$this->formatAggregateResultDate(
                 $result->date_result, $unit, $request->twelveHourTime === 'true'
-            ) => (int) number_format($result->aggregate, 0, '.', '')];
+            ) => round($result->aggregate, 0)];
         })->all());
 
         if (count($results) > $request->range) {
@@ -649,15 +650,15 @@ abstract class Trend extends RangedMetric
         )] = 0;
 
         while ($nextDate->lt($endingDate)) {
-            if ($unit === Trend::BY_MONTHS) {
+            if ($unit === self::BY_MONTHS) {
                 $nextDate = $nextDate->addMonths(1);
-            } elseif ($unit === Trend::BY_WEEKS) {
+            } elseif ($unit === self::BY_WEEKS) {
                 $nextDate = $nextDate->addWeeks(1);
-            } elseif ($unit === Trend::BY_DAYS) {
+            } elseif ($unit === self::BY_DAYS) {
                 $nextDate = $nextDate->addDays(1);
-            } elseif ($unit === Trend::BY_HOURS) {
+            } elseif ($unit === self::BY_HOURS) {
                 $nextDate = $nextDate->addHours(1);
-            } elseif ($unit === Trend::BY_MINUTES) {
+            } elseif ($unit === self::BY_MINUTES) {
                 $nextDate = $nextDate->addMinutes(1);
             }
 
@@ -704,5 +705,15 @@ abstract class Trend extends RangedMetric
                         ? __($date->format('F')).' '.$date->format('j').' - '.$date->format('g:i A')
                         : __($date->format('F')).' '.$date->format('j').' - '.$date->format('G:i');
         }
+    }
+
+    /**
+     * Get default timezone.
+     *
+     * @return mixed
+     */
+    private function getDefaultTimezone()
+    {
+        return request()->timezone;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Http\Middleware;
 
+use Laravel\Nova\Events\NovaServiceProviderRegistered;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaServiceProvider;
 
@@ -18,6 +19,8 @@ class ServeNova
     {
         if ($this->isNovaRequest($request)) {
             app()->register(NovaServiceProvider::class);
+
+            NovaServiceProviderRegistered::dispatch();
         }
 
         return $next($request);
@@ -31,10 +34,11 @@ class ServeNova
      */
     protected function isNovaRequest($request)
     {
-        $path = trim(Nova::path(), '/');
+        $path = trim(Nova::path(), '/') ?: '/';
 
         return $request->is($path) ||
-               $request->is($path.'/*') ||
-               $request->is('nova-api/*');
+               $request->is(trim($path.'/*', '/')) ||
+               $request->is('nova-api/*') ||
+               $request->is('nova-vendor/*');
     }
 }

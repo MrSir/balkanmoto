@@ -2,13 +2,13 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Tests\Fixtures\Tag;
 use Laravel\Nova\Tests\Fixtures\Post;
+use Laravel\Nova\Tests\Fixtures\Tag;
 use Laravel\Nova\Tests\IntegrationTest;
 
 class MorphableResourceAttachmentUpdateTest extends IntegrationTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

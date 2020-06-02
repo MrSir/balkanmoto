@@ -2,8 +2,9 @@
 
 namespace Laravel\Nova\Metrics;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Laravel\Nova\Nova;
 
 abstract class Value extends RangedMetric
 {
@@ -15,16 +16,24 @@ abstract class Value extends RangedMetric
     public $component = 'value-metric';
 
     /**
+     * The value's precision when rounding.
+     *
+     * @var int
+     */
+    public $precision = 0;
+
+    /**
      * Return a value result showing the growth of an count aggregate over time.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string|null  $column
+     * @param  string|null  $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
-    public function count($request, $model, $column = null)
+    public function count($request, $model, $column = null, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, 'count', $column);
+        return $this->aggregate($request, $model, 'count', $column, $dateColumn);
     }
 
     /**
@@ -33,11 +42,12 @@ abstract class Value extends RangedMetric
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string  $column
+     * @param  string|null  $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
-    public function average($request, $model, $column)
+    public function average($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, 'avg', $column);
+        return $this->aggregate($request, $model, 'avg', $column, $dateColumn);
     }
 
     /**
@@ -46,11 +56,12 @@ abstract class Value extends RangedMetric
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string  $column
+     * @param  string|null  $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
-    public function sum($request, $model, $column)
+    public function sum($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, 'sum', $column);
+        return $this->aggregate($request, $model, 'sum', $column, $dateColumn);
     }
 
     /**
@@ -59,11 +70,12 @@ abstract class Value extends RangedMetric
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string  $column
+     * @param  string|null  $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
-    public function max($request, $model, $column)
+    public function max($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, 'max', $column);
+        return $this->aggregate($request, $model, 'max', $column, $dateColumn);
     }
 
     /**
@@ -72,11 +84,12 @@ abstract class Value extends RangedMetric
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string  $column
+     * @param  string|null  $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
-    public function min($request, $model, $column)
+    public function min($request, $model, $column, $dateColumn = null)
     {
-        return $this->aggregate($request, $model, 'min', $column);
+        return $this->aggregate($request, $model, 'min', $column, $dateColumn);
     }
 
     /**
@@ -86,22 +99,27 @@ abstract class Value extends RangedMetric
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string  $function
      * @param  string|null  $column
+     * @param  string|null  $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
-    protected function aggregate($request, $model, $function, $column = null)
+    protected function aggregate($request, $model, $function, $column = null, $dateColumn = null)
     {
         $query = $model instanceof Builder ? $model : (new $model)->newQuery();
 
         $column = $column ?? $query->getModel()->getQualifiedKeyName();
 
-        $previousValue = number_format(with(clone $query)->whereBetween(
-            $query->getModel()->getCreatedAtColumn(), $this->previousRange($request->range)
-        )->{$function}($column), 0);
+        $timezone = Nova::resolveUserTimezone($request) ?? $request->timezone;
+
+        $previousValue = round(with(clone $query)->whereBetween(
+            $dateColumn ?? $query->getModel()->getCreatedAtColumn(),
+            $this->previousRange($request->range, $timezone)
+        )->{$function}($column), $this->precision);
 
         return $this->result(
-            number_format(with(clone $query)->whereBetween(
-                $query->getModel()->getCreatedAtColumn(), $this->currentRange($request->range)
-            )->{$function}($column), 0)
+            round(with(clone $query)->whereBetween(
+                $dateColumn ?? $query->getModel()->getCreatedAtColumn(),
+                $this->currentRange($request->range, $timezone)
+            )->{$function}($column), $this->precision)
         )->previous($previousValue);
     }
 
@@ -109,44 +127,54 @@ abstract class Value extends RangedMetric
      * Calculate the previous range and calculate any short-cuts.
      *
      * @param  string|int  $range
+     * @param  string  $timezone
      * @return array
      */
-    protected function previousRange($range)
+    protected function previousRange($range, $timezone)
     {
+        if ($range == 'TODAY') {
+            return [
+                now($timezone)->modify('yesterday')->setTime(0, 0),
+                now($timezone)->subDays(1),
+            ];
+        }
+
         if ($range == 'MTD') {
             return [
-                now()->modify('first day of previous month')->setTime(0, 0),
-                now()->subMonthsNoOverflow(1),
+                now($timezone)->modify('first day of previous month')->setTime(0, 0),
+                now($timezone)->subMonthsNoOverflow(1),
             ];
         }
 
         if ($range == 'QTD') {
-            return $this->previousQuarterRange();
+            return $this->previousQuarterRange($timezone);
         }
 
         if ($range == 'YTD') {
             return [
-                now()->subYears(1)->firstOfYear(),
-                now()->subYearsNoOverflow(1),
+                now($timezone)->subYears(1)->firstOfYear()->setTime(0, 0),
+                now($timezone)->subYearsNoOverflow(1),
             ];
         }
 
         return [
-            now()->subDays($range * 2),
-            now()->subDays($range),
+            now($timezone)->subDays($range * 2),
+            now($timezone)->subDays($range),
         ];
     }
 
     /**
      * Calculate the previous quarter range.
      *
+     * @param string $timezone
+     *
      * @return array
      */
-    protected function previousQuarterRange()
+    protected function previousQuarterRange($timezone)
     {
         return [
-            Carbon::firstDayOfPreviousQuarter(),
-            now()->subMonthsNoOverflow(3),
+            Carbon::firstDayOfPreviousQuarter($timezone)->setTimezone($timezone)->setTime(0, 0),
+            now($timezone)->subMonthsNoOverflow(3),
         ];
     }
 
@@ -154,45 +182,68 @@ abstract class Value extends RangedMetric
      * Calculate the current range and calculate any short-cuts.
      *
      * @param  string|int  $range
+     * @param  string  $timezone
      * @return array
      */
-    protected function currentRange($range)
+    protected function currentRange($range, $timezone)
     {
+        if ($range == 'TODAY') {
+            return [
+                now($timezone)->today(),
+                now($timezone),
+            ];
+        }
+
         if ($range == 'MTD') {
             return [
-                now()->firstOfMonth(),
-                now(),
+                now($timezone)->firstOfMonth(),
+                now($timezone),
             ];
         }
 
         if ($range == 'QTD') {
-            return $this->currentQuarterRange();
+            return $this->currentQuarterRange($timezone);
         }
 
         if ($range == 'YTD') {
             return [
-                now()->firstOfYear(),
-                now(),
+                now($timezone)->firstOfYear(),
+                now($timezone),
             ];
         }
 
         return [
-            now()->subDays($range),
-            now(),
+            now($timezone)->subDays($range),
+            now($timezone),
         ];
     }
 
     /**
      * Calculate the previous quarter range.
      *
+     * @param  string  $timezone
+     *
      * @return array
      */
-    protected function currentQuarterRange()
+    protected function currentQuarterRange($timezone)
     {
         return [
-            Carbon::firstDayOfQuarter(),
-            now(),
+            Carbon::firstDayOfQuarter($timezone),
+            now($timezone),
         ];
+    }
+
+    /**
+     * Set the precision level used when rounding the value.
+     *
+     * @param  int  $precision
+     * @return $this
+     */
+    public function precision($precision = 0)
+    {
+        $this->precision = $precision;
+
+        return $this;
     }
 
     /**
