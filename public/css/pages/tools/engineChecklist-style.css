@@ -18,3 +18,7 @@
     width: 800px;
     height: 600px;
 }
+
+.content-grid #canvas .dg {
+    position: absolute;
+}

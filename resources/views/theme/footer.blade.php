@@ -23,10 +23,10 @@
             @endif
         </ul>
     </div>
-    <div class="tools">
+    <div class="links">
         <div class="footer-title">Tools</div>
         <ul>
-            <li><a href="/tools/engine-fix">Engine Fix</a></li>
+            <li><a href="/tools/engine-checklist">ENGINE CHECKLIST</a></li>
         </ul>
     </div>
     <div class="social">

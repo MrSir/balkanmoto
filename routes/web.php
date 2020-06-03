@@ -39,8 +39,7 @@ Route::resource(
     ]
 );
 
-Route::get('/tools', 'ToolController@index');
-Route::get('/tools/engine-fix', 'ToolController@engineFix');
+Route::get('/tools/engine-checklist', 'Tools\EngineChecklistController');
 
 Route::resource(
     '/images',
