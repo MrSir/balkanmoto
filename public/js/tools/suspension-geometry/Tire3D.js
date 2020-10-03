@@ -11,7 +11,7 @@ class Tire3D {
         this.aspect = aspect
         this.rimDiameterInInches = rimDiameterInInches
 
-        this.torusMaterial = new THREE.MeshPhongMaterial({ color: 0x666666666, depthWrite: true })
+        this.torusMaterial = new THREE.MeshPhongMaterial({ color: 0x333333333, depthWrite: true })
     }
 
     get radialSegments() {
@@ -62,9 +62,9 @@ class Tire3D {
 
     buildTorus() {
         this.torusGeometry = new THREE.TorusGeometry(this.torusRadius, this.torusTube, this.radialSegments, this.tubularSegments)
-
+        this.torusGeometry.castShadow = true
         this.torus = new THREE.Mesh(this.torusGeometry, this.torusMaterial)
-
+        this.torus.castShadow = true
         this.torus.position.setX(this.x)
         this.torus.position.setY(this.y)
 

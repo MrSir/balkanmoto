@@ -26,11 +26,21 @@
         hemiLight.position.set(0, 20, 0)
         scene.add(hemiLight)
 
-        let floorGeometry = new THREE.PlaneGeometry(10000, 10000, 1, 1)
-        let floorMaterial = new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: true })
-        let floor = new THREE.Mesh(floorGeometry, floorMaterial)
-        floor.rotation.x = -Math.PI / 2
-        floor.position.y = floorY
+        let dirLight = new THREE.DirectionalLight( 0xffffff );
+        dirLight.position.set( 200, 500, 1500 );
+        dirLight.castShadow = true;
+        dirLight.shadow.camera.top = 5000;
+        dirLight.shadow.camera.bottom = -5000;
+        dirLight.shadow.camera.left = -5000;
+        dirLight.shadow.camera.right = 5000;
+        dirLight.shadow.camera.near = 0.01;
+        dirLight.shadow.camera.far = 100000;
+        scene.add( dirLight );
+
+        let floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(10000, 10000), new THREE.MeshPhongMaterial( { color: 0xaaaaaaaaa, depthWrite: true } ))
+        floor.rotation.x = - Math.PI / 2
+        floor.position.y = floorY - 10
+        floor.receiveShadow = true;
         scene.add(floor)
 
         let rearTire = new Tire3D(scene, renderer, camera, floorY, 130, 90, 17)
