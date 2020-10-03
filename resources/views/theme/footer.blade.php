@@ -26,7 +26,7 @@
     <div class="links">
         <div class="footer-title">Tools</div>
         <ul>
-            <li><a href="/tools/engine-checklist">ENGINE CHECKLIST</a></li>
+            <li><a href="/tools/suspension-geometry">SUSPENSION GEOMETRY</a></li>
         </ul>
     </div>
     <div class="social">

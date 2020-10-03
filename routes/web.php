@@ -17,7 +17,6 @@ Route::get(
         'as' => 'home',
         'uses' => 'Controller@home',
     ]
-
 );
 
 Route::get(
@@ -35,11 +34,11 @@ Route::resource(
         'only' => [
             'index',
             'show',
-        ]
+        ],
     ]
 );
 
-Route::get('/tools/engine-checklist', 'Tools\EngineChecklistController');
+Route::get('/tools/suspension-geometry', 'Tools\SuspensionGeometryController');
 
 Route::resource(
     '/images',
@@ -47,7 +46,7 @@ Route::resource(
     [
         'only' => [
             'show',
-        ]
+        ],
     ]
 );
 
