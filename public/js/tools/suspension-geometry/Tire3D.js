@@ -2,7 +2,15 @@ class Tire3D {
     x = 0
     y = 0
 
-    constructor(scene, renderer, camera, floorY, width, aspect, rimDiameterInInches) {
+    constructor(
+        scene,
+        renderer,
+        camera,
+        floorY,
+        width,
+        aspect,
+        rimDiameterInInches
+    ) {
         this.scene = scene
         this.renderer = renderer
         this.camera = camera
@@ -11,7 +19,13 @@ class Tire3D {
         this.aspect = aspect
         this.rimDiameterInInches = rimDiameterInInches
 
-        this.torusMaterial = new THREE.MeshPhongMaterial({ color: 0x333333333, depthWrite: true })
+        this.torusMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x222222222,
+            roughness: 1,
+            metalness: 0,
+            reflectivity: 0.2,
+            depthWrite: true,
+        })
     }
 
     get radialSegments() {
@@ -50,19 +64,24 @@ class Tire3D {
     calculateTorusSize() {
         let rimDiameterInMillimeters = this.rimDiameterInInches * 25.4
         let tireHeight = this.width * (this.aspect / 100)
-        let wheelDiameter = rimDiameterInMillimeters + (2 * tireHeight)
+        let wheelDiameter = rimDiameterInMillimeters + 2 * tireHeight
 
-        this.y = this.floorY + (wheelDiameter / 2)
+        this.y = this.floorY + wheelDiameter / 2
 
         this.torusTube = tireHeight / 2
-        this.torusRadius = (wheelDiameter - tireHeight) /2
+        this.torusRadius = (wheelDiameter - tireHeight) / 2
 
         return this
     }
 
     buildTorus() {
-        this.torusGeometry = new THREE.TorusGeometry(this.torusRadius, this.torusTube, this.radialSegments, this.tubularSegments)
-        this.torusGeometry.castShadow = true
+        this.torusGeometry = new THREE.TorusGeometry(
+            this.torusRadius,
+            this.torusTube,
+            this.radialSegments,
+            this.tubularSegments
+        )
+
         this.torus = new THREE.Mesh(this.torusGeometry, this.torusMaterial)
         this.torus.castShadow = true
         this.torus.position.setX(this.x)
@@ -80,7 +99,7 @@ class Tire3D {
 
         this.calculateTorusSize().buildTorus()
 
-        this.scene.add(this.torus)
+        this.addToScene()
         this.renderer.render(this.scene, this.camera)
     }
 }

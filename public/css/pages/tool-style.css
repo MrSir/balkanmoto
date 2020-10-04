@@ -19,7 +19,11 @@
     height: 600px;
 }
 
-.content-grid #canvas .dg.main {
+.content-grid #canvas #control-panel {
     position: absolute;
-    overflow-y: visible
+}
+
+.content-grid #canvas .dg.main {
+    float: left;
+    overflow-y: visible;
 }

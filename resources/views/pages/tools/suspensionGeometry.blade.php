@@ -5,10 +5,14 @@
     <link href="/css/pages/tool-large-style.css" rel="stylesheet">
     <script src="/js/tools/three.js" type="application/javascript"></script>
     <script src="/js/tools/suspension-geometry/Tire3D.js" type="application/javascript"></script>
+    <script src="/js/tools/suspension-geometry/Fork3D.js" type="application/javascript"></script>
+    <script src="/js/tools/suspension-geometry/ControlPanel.js" type="application/javascript"></script>
 @endsection
 
 @section('content')
-    <div id="canvas"></div>
+    <div id="canvas">
+        <div id="control-panel"></div>
+    </div>
     <script type="module">
         const floorY = -500
 
@@ -21,26 +25,36 @@
         let renderer = new THREE.WebGLRenderer()
         renderer.setSize(container.offsetWidth, container.offsetHeight)
         renderer.shadowMap.enabled = true
+        container.appendChild(renderer.domElement)
+
+        let controls = new THREE.OrbitControls(camera, renderer.domElement)
+        controls.enableDamping = true
+        controls.dampingFactor = 0.25
+        controls.minDistance = 1000
+        controls.maxDistance = 100000
 
         let hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444)
         hemiLight.position.set(0, 20, 0)
         scene.add(hemiLight)
 
-        let dirLight = new THREE.DirectionalLight( 0xffffff );
-        dirLight.position.set( 200, 500, 1500 );
-        dirLight.castShadow = true;
-        dirLight.shadow.camera.top = 5000;
-        dirLight.shadow.camera.bottom = -5000;
-        dirLight.shadow.camera.left = -5000;
-        dirLight.shadow.camera.right = 5000;
-        dirLight.shadow.camera.near = 0.01;
-        dirLight.shadow.camera.far = 100000;
-        scene.add( dirLight );
+        let dirLight = new THREE.DirectionalLight(0xffffff)
+        dirLight.position.set(200, 500, 1500)
+        dirLight.castShadow = true
+        dirLight.shadow.camera.top = 5000
+        dirLight.shadow.camera.bottom = -5000
+        dirLight.shadow.camera.left = -5000
+        dirLight.shadow.camera.right = 5000
+        dirLight.shadow.camera.near = 0.01
+        dirLight.shadow.camera.far = 100000
+        scene.add(dirLight)
 
-        let floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(10000, 10000), new THREE.MeshPhongMaterial( { color: 0xaaaaaaaaa, depthWrite: true } ))
-        floor.rotation.x = - Math.PI / 2
+        let floor = new THREE.Mesh(
+            new THREE.PlaneBufferGeometry(10000, 10000),
+            new THREE.MeshPhongMaterial({color: 0xaaaaaaaaa, depthWrite: true,})
+        )
+        floor.rotation.x = -Math.PI / 2
         floor.position.y = floorY - 10
-        floor.receiveShadow = true;
+        floor.receiveShadow = true
         scene.add(floor)
 
         let rearTire = new Tire3D(scene, renderer, camera, floorY, 130, 90, 17)
@@ -49,89 +63,14 @@
         let frontTire = new Tire3D(scene, renderer, camera, floorY, 110, 90, 18)
         frontTire.setX(758).calculateTorusSize().buildTorus().addToScene()
 
-        // function loadModel() {
-        //     object.traverse(function (child) {
-        //         if (child.isMesh) {
-        //             child.material = new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: true } )
-        //         }
-        //     })
-        //     // object.position.y = 0
-        //     scene.add(object)
-        // }
-        //
-        // var manager = new THREE.LoadingManager(loadModel)
-        //
-        // manager.onProgress = function (item, loaded, total) {
-        //     console.log(item, loaded, total)
-        // }
-        //
-        // function onProgress(xhr) {
-        //     if (xhr.lengthComputable) {
-        //         var percentComplete = xhr.loaded / xhr.total * 100
-        //         console.log('model ' + Math.round(percentComplete, 2) + '% downloaded')
-        //     }
-        // }
+        let fork = new Fork3D(scene, renderer, camera, floorY, 37, 240, 1000, 25, 200, frontTire)
+        fork.calculateFork().buildFork().addToScene()
 
-        // function onError() {
-        // }
-
-        // piston
-        // var loader = new THREE.OBJLoader(manager)
-        // loader.load('/models/piston.obj', function (obj) {
-        //     object = obj
-        // }, onProgress, onError)
-
-        let controls = new THREE.OrbitControls(camera, renderer.domElement)
-        controls.enableDamping = true
-        controls.dampingFactor = 0.25
-        controls.minDistance = 1000
-        controls.maxDistance = 100000
-
-        let gui = new THREE.GUI({})
-        container.appendChild(gui.domElement)
-        container.appendChild(renderer.domElement)
-
-        let params = {
-            'Rear Tire Width': 130,
-            'Rear Tire Aspect': 90,
-            'Rear Rim Size': 17,
-            'Front Tire Width': 110,
-            'Front Tire Aspect': 90,
-            'Front Rim Size': 18,
-            'Wheelbase': 1570
-        }
-
-        let rearTireFolder = gui.addFolder('Rear Tire')
-        rearTireFolder.add(params, 'Rear Tire Width', 90, 320, 5).listen().onChange(function (width) {
-            rearTire.setWidth(width).redrawInScene()
-        })
-        rearTireFolder.add(params, 'Rear Tire Aspect', 45, 95, 5).listen().onChange(function (aspect) {
-            rearTire.setAspect(aspect).redrawInScene()
-        })
-        rearTireFolder.add(params, 'Rear Rim Size', 13, 22, 1).listen().onChange(function (rimDiameterInInches) {
-            rearTire.setRimDiameterInInches(rimDiameterInInches).redrawInScene()
-        })
-
-        let frontTireFolder = gui.addFolder('Front Tire')
-        frontTireFolder.add(params, 'Front Tire Width', 90, 320, 5).listen().onChange(function (width) {
-            frontTire.setWidth(width).redrawInScene()
-        })
-        frontTireFolder.add(params, 'Front Tire Aspect', 45, 95, 5).listen().onChange(function (aspect) {
-            frontTire.setAspect(aspect).redrawInScene()
-        })
-        frontTireFolder.add(params, 'Front Rim Size', 13, 22, 1).listen().onChange(function (rimDiameterInInches) {
-            frontTire.setRimDiameterInInches(rimDiameterInInches).redrawInScene()
-        })
-
-        let frameFolder = gui.addFolder('Frame')
-        frameFolder.add(params, 'Wheelbase', 1300, 1800, 1).listen().onChange(function (wheelbase) {
-            rearTire.setX(-wheelbase/2).redrawInScene()
-            frontTire.setX(wheelbase/2).redrawInScene()
-        })
-
-        rearTireFolder.open()
-        frontTireFolder.open()
-        frameFolder.open()
+        let controlPanel = new ControlPanel(document.getElementById('control-panel'))
+        controlPanel.createTireFolder('Rear', {tireWidth: 130, tireAspect: 90, rimSize: 17}, rearTire)
+            .createTireFolder('Front', {tireWidth: 110, tireAspect: 90, rimSize: 18}, frontTire, fork)
+            .createFrameFolder({wheelbase: 1570}, rearTire, frontTire, fork)
+            .createForkFolder({diameter: 37, width: 240, length: 1000, offset: 25, stemHeight: 200, rake: 26.5}, fork)
 
         function onWindowResize() {
             camera.aspect = container.offsetWidth / container.offsetHeight
@@ -150,7 +89,5 @@
         }
 
         animate()
-
-        //TODO on window resize, keep canvas proportionate
     </script>
 @endsection
