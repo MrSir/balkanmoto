@@ -24,6 +24,5 @@
 }
 
 .content-grid #canvas .dg.main {
-    float: left;
     overflow-y: visible;
 }

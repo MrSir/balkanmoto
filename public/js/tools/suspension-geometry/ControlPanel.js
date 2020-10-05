@@ -1,7 +1,13 @@
 class ControlPanel {
-    constructor(element) {
-        this.gui = new THREE.GUI({ width: 325 })
+    constructor(element, labels) {
+        this.gui = new THREE.GUI({
+            width: 350,
+            closeOnTop: true,
+            scrollable: false,
+        })
         element.appendChild(this.gui.domElement)
+
+        this.labels = labels
     }
 
     createTireFolder(name, paramDefaults, tireMesh, forkMesh) {
@@ -46,7 +52,9 @@ class ControlPanel {
         let frameFolder = this.gui.addFolder('Frame')
         let params = {
             'Wheelbase (mm)': paramDefaults.wheelbase,
+            'Backbone (mm)': paramDefaults.backbone,
         }
+        let labels = this.labels
 
         frameFolder
             .add(params, 'Wheelbase (mm)', 1300, 1800, 1)
@@ -55,7 +63,9 @@ class ControlPanel {
                 rearTire.setX(-wheelbase / 2).redrawInScene()
                 frontTire.setX(wheelbase / 2).redrawInScene()
                 fork.redrawInScene()
+                labels.redrawInScene()
             })
+        frameFolder.add(params, 'Backbone (mm)', 1300, 1800, 1).enabled = false
 
         frameFolder.open()
 
@@ -65,16 +75,16 @@ class ControlPanel {
     createForkFolder(paramDefaults, fork) {
         let forkFolder = this.gui.addFolder('Fork')
         let params = {
-            'Fork Diameter (in)': paramDefaults.diameter,
+            'Fork Diameter (mm)': paramDefaults.diameter,
             'Fork Width (mm)': paramDefaults.width,
             'Fork Length (mm)': paramDefaults.length,
             'Fork Offset (mm)': paramDefaults.offset,
-            'Fork Stem Height (mm)': paramDefaults.stemHeight,
+            'Fork Stem Length (mm)': paramDefaults.stemHeight,
             'Fork Rake (deg)': paramDefaults.rake,
         }
 
         forkFolder
-            .add(params, 'Fork Diameter (in)', 37, 41, 1)
+            .add(params, 'Fork Diameter (mm)', 37, 41, 1)
             .listen()
             .onChange(function (diameter) {
                 fork.setRadius(diameter / 2).redrawInScene()
@@ -102,14 +112,14 @@ class ControlPanel {
             })
 
         forkFolder
-            .add(params, 'Fork Stem Height (mm)', 100, 500, 1)
+            .add(params, 'Fork Stem Length (mm)', 100, 250, 1)
             .listen()
             .onChange(function (stemHeight) {
                 fork.setStemHeight(stemHeight).redrawInScene()
             })
 
         forkFolder
-            .add(params, 'Fork Rake (deg)', 21, 45, 0.5)
+            .add(params, 'Fork Rake (deg)', 20, 45, 0.5)
             .listen()
             .onChange(function (rake) {
                 fork.setRake(rake).redrawInScene()

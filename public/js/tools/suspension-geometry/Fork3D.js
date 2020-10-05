@@ -14,6 +14,7 @@ class Fork3D {
         width,
         length,
         offset,
+        rake,
         stemHeight,
         frontTire
     ) {
@@ -25,6 +26,7 @@ class Fork3D {
         this.width = width
         this.length = length
         this.offset = offset
+        this.rake = rake
         this.stemHeight = stemHeight
         this.frontTire = frontTire
 
@@ -86,7 +88,7 @@ class Fork3D {
 
     calculateFork() {
         this.setX(this.frontTire.x)
-        this.setY(this.frontTire.y + this.length / 2)
+        this.setY(this.length / 2)
 
         return this
     }
@@ -105,14 +107,14 @@ class Fork3D {
             this.forkTubeMaterial
         )
         this.forkLeftCylinder.castShadow = true
-        this.forkLeftCylinder.position.set(this.x, this.y, -this.width / 2)
+        this.forkLeftCylinder.position.set(0, this.y, -this.width / 2)
 
         this.forkRightCylinder = new THREE.Mesh(
             this.forkCylinderGeometry,
             this.forkTubeMaterial
         )
         this.forkRightCylinder.castShadow = true
-        this.forkRightCylinder.position.set(this.x, this.y, this.width / 2)
+        this.forkRightCylinder.position.set(0, this.y, this.width / 2)
 
         this.wheelAxleGeometry = new THREE.CylinderGeometry(
             10,
@@ -126,8 +128,8 @@ class Fork3D {
             this.forkMaterial
         )
         this.wheelAxle.castShadow = true
-        this.wheelAxle.rotation.x = -Math.PI / 2
-        this.wheelAxle.position.set(this.x, this.y - this.length / 2, 0)
+        this.wheelAxle.rotateX(THREE.MathUtils.degToRad(90))
+        this.wheelAxle.position.set(0, this.y - this.length / 2, 0)
 
         this.forkStemGeometry = new THREE.CylinderGeometry(
             this.radius,
@@ -139,34 +141,36 @@ class Fork3D {
         this.forkStem = new THREE.Mesh(this.forkStemGeometry, this.forkMaterial)
         this.forkStem.castShadow = true
         this.forkStem.position.set(
-            this.x - this.offset,
-            this.y + this.length / 2 - this.stemHeight / 2,
+            -this.offset,
+            this.length - this.stemHeight / 2,
             0
         )
+
+        this.pivot = new THREE.Group()
+        this.pivot.position.set(this.x, this.frontTire.y, 0)
+        this.pivot.add(this.forkLeftCylinder)
+        this.pivot.add(this.forkRightCylinder)
+        this.pivot.add(this.wheelAxle)
+        this.pivot.add(this.forkStem)
+        this.pivot.rotateZ(THREE.MathUtils.degToRad(this.rake))
+
+        this.scene.add(this.pivot)
 
         return this
     }
 
     removeFromScene() {
-        this.scene.remove(this.forkLeftCylinder)
-        this.scene.remove(this.forkRightCylinder)
-        this.scene.remove(this.wheelAxle)
-        this.scene.remove(this.forkStem)
-    }
-
-    addToScene() {
-        this.scene.add(this.forkLeftCylinder)
-        this.scene.add(this.forkRightCylinder)
-        this.scene.add(this.wheelAxle)
-        this.scene.add(this.forkStem)
+        this.pivot.remove(this.forkLeftCylinder)
+        this.pivot.remove(this.forkRightCylinder)
+        this.pivot.remove(this.wheelAxle)
+        this.pivot.remove(this.forkStem)
+        this.scene.remove(this.pivot)
     }
 
     redrawInScene() {
         this.removeFromScene()
 
         this.calculateFork().buildFork()
-
-        this.addToScene()
         this.renderer.render(this.scene, this.camera)
     }
 }
