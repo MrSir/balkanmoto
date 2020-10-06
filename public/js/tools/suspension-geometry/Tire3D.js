@@ -2,22 +2,11 @@ class Tire3D {
     x = 0
     y = 0
 
-    constructor(
-        scene,
-        renderer,
-        camera,
-        floorY,
-        width,
-        aspect,
-        rimDiameterInInches
-    ) {
-        this.scene = scene
-        this.renderer = renderer
-        this.camera = camera
+    constructor(floorY, width, aspect, rimDiameterInInches) {
         this.floorY = floorY
         this.width = width
         this.aspect = aspect
-        this.rimDiameterInInches = rimDiameterInInches
+        this.setRimDiameterInInches(rimDiameterInInches)
 
         this.torusMaterial = new THREE.MeshPhysicalMaterial({
             color: 0x222222222,
@@ -25,6 +14,7 @@ class Tire3D {
             metalness: 0,
             reflectivity: 0.2,
             depthWrite: true,
+            wireframe: true,
         })
     }
 
@@ -57,20 +47,27 @@ class Tire3D {
     }
 
     setRimDiameterInInches(rimDiameterInInches) {
-        this.rimDiameterInInches = rimDiameterInInches
+        this.rimDiameterInMillimeters = rimDiameterInInches * 25.4
+        return this
+    }
+
+    setRimDiameterInMillimeters(rimDiameterInMillimeters) {
+        this.rimDiameterInMillimeters = rimDiameterInMillimeters
         return this
     }
 
     calculateTorusSize() {
-        let rimDiameterInMillimeters = this.rimDiameterInInches * 25.4
         let tireHeight = this.width * (this.aspect / 100)
-        let wheelDiameter = rimDiameterInMillimeters + 2 * tireHeight
-
-        this.y = this.floorY + wheelDiameter / 2
+        this.wheelDiameter = this.rimDiameterInMillimeters + 2 * tireHeight
 
         this.torusTube = tireHeight / 2
-        this.torusRadius = (wheelDiameter - tireHeight) / 2
+        this.torusRadius = (this.wheelDiameter - tireHeight) / 2
 
+        return this
+    }
+
+    calculateYBasedOnWheelDiameter() {
+        this.y = this.floorY + this.wheelDiameter / 2
         return this
     }
 
@@ -90,16 +87,11 @@ class Tire3D {
         return this
     }
 
-    addToScene() {
-        this.scene.add(this.torus)
+    removeFromObject(object) {
+        object.remove(this.torus)
     }
 
-    redrawInScene() {
-        this.scene.remove(this.torus)
-
-        this.calculateTorusSize().buildTorus()
-
-        this.addToScene()
-        this.renderer.render(this.scene, this.camera)
+    addToObject(object) {
+        object.add(this.torus)
     }
 }

@@ -14,7 +14,6 @@ class Fork3D {
         width,
         length,
         offset,
-        rake,
         stemHeight,
         frontTire
     ) {
@@ -26,7 +25,6 @@ class Fork3D {
         this.width = width
         this.length = length
         this.offset = offset
-        this.rake = rake
         this.stemHeight = stemHeight
         this.frontTire = frontTire
 
@@ -73,11 +71,6 @@ class Fork3D {
 
     setOffset(offset) {
         this.offset = offset
-        return this
-    }
-
-    setRake(rake) {
-        this.rake = rake
         return this
     }
 
@@ -145,32 +138,31 @@ class Fork3D {
             this.length - this.stemHeight / 2,
             0
         )
+        //
+        // this.pivot = new THREE.Group()
+        // this.pivot.position.set(this.x, this.frontTire.y, 0)
+        // this.pivot.add(this.forkLeftCylinder)
+        // this.pivot.add(this.forkRightCylinder)
+        // this.pivot.add(this.wheelAxle)
+        // this.pivot.add(this.forkStem)
+        // this.pivot.rotateZ(THREE.MathUtils.degToRad(this.rake))
 
-        this.pivot = new THREE.Group()
-        this.pivot.position.set(this.x, this.frontTire.y, 0)
-        this.pivot.add(this.forkLeftCylinder)
-        this.pivot.add(this.forkRightCylinder)
-        this.pivot.add(this.wheelAxle)
-        this.pivot.add(this.forkStem)
-        this.pivot.rotateZ(THREE.MathUtils.degToRad(this.rake))
-
-        this.scene.add(this.pivot)
+        //this.scene.add(this.pivot)
 
         return this
     }
 
-    removeFromScene() {
-        this.pivot.remove(this.forkLeftCylinder)
-        this.pivot.remove(this.forkRightCylinder)
-        this.pivot.remove(this.wheelAxle)
-        this.pivot.remove(this.forkStem)
-        this.scene.remove(this.pivot)
+    removeFromObject(object) {
+        object.remove(this.forkLeftCylinder)
+        object.remove(this.forkRightCylinder)
+        object.remove(this.wheelAxle)
+        object.remove(this.forkStem)
     }
 
-    redrawInScene() {
-        this.removeFromScene()
-
-        this.calculateFork().buildFork()
-        this.renderer.render(this.scene, this.camera)
+    addToObject(object) {
+        object.add(this.forkLeftCylinder)
+        object.add(this.forkRightCylinder)
+        object.add(this.wheelAxle)
+        object.add(this.forkStem)
     }
 }

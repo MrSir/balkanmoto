@@ -1,5 +1,5 @@
 class ControlPanel {
-    constructor(element, labels) {
+    constructor(element, labels, frame, frameParameters) {
         this.gui = new THREE.GUI({
             width: 350,
             closeOnTop: true,
@@ -8,39 +8,45 @@ class ControlPanel {
         element.appendChild(this.gui.domElement)
 
         this.labels = labels
+        this.frame = frame
+        this.frameParameters = frameParameters
+
+        this.createTireFolder('Rear', this.frameParameters.rearTire)
+            .createTireFolder('Front', this.frameParameters.frontTire)
+            .createFrameFolder(this.frameParameters)
     }
 
-    createTireFolder(name, paramDefaults, tireMesh, forkMesh) {
+    createTireFolder(name, paramDefaults) {
         let tireFolder = this.gui.addFolder(name + ' Tire')
         let params = {}
-        params[name + ' Tire Width (mm)'] = paramDefaults.tireWidth
-        params[name + ' Tire Aspect'] = paramDefaults.tireAspect
-        params[name + ' Rim Size (in)'] = paramDefaults.rimSize
+        params[name + ' Tire Width (mm)'] = paramDefaults.width
+        params[name + ' Tire Aspect'] = paramDefaults.aspect
+        params[name + ' Rim Size (in)'] = paramDefaults.rimDiameterInInches
 
         tireFolder
             .add(params, name + ' Tire Width (mm)', 90, 320, 5)
             .listen()
-            .onChange(function (width) {
-                tireMesh.setWidth(width).redrawInScene()
-                forkMesh ? forkMesh.redrawInScene() : null
+            .onChange((width) => {
+                this.frame[name.toLowerCase() + 'Tire'].setWidth(width)
+                this.frame.redrawInScene()
             })
 
         tireFolder
             .add(params, name + ' Tire Aspect', 45, 95, 5)
             .listen()
-            .onChange(function (aspect) {
-                tireMesh.setAspect(aspect).redrawInScene()
-                forkMesh ? forkMesh.redrawInScene() : null
+            .onChange((aspect) => {
+                this.frame[name.toLowerCase() + 'Tire'].setAspect(aspect)
+                this.frame.redrawInScene()
             })
 
         tireFolder
             .add(params, name + ' Rim Size (in)', 13, 22, 1)
             .listen()
-            .onChange(function (rimDiameterInInches) {
-                tireMesh
-                    .setRimDiameterInInches(rimDiameterInInches)
-                    .redrawInScene()
-                forkMesh ? forkMesh.redrawInScene() : null
+            .onChange((rimDiameterInInches) => {
+                this.frame[name.toLowerCase() + 'Tire'].setRimDiameterInInches(
+                    rimDiameterInInches
+                )
+                this.frame.redrawInScene()
             })
 
         tireFolder.open()
@@ -48,24 +54,49 @@ class ControlPanel {
         return this
     }
 
-    createFrameFolder(paramDefaults, rearTire, frontTire, fork) {
+    createFrameFolder(paramDefaults) {
         let frameFolder = this.gui.addFolder('Frame')
         let params = {
-            'Wheelbase (mm)': paramDefaults.wheelbase,
-            'Backbone (mm)': paramDefaults.backbone,
+            //'Wheelbase (mm)': paramDefaults.wheelbase,
+            'Backbone Length (mm)': paramDefaults.backboneLength,
+            'Fork Rake (deg)': paramDefaults.rake,
+            'Backbone Angle (deg)': paramDefaults.backboneAngle,
         }
-        let labels = this.labels
+        //let labels = this.labels
 
+        // frameFolder
+        //     .add(params, 'Wheelbase (mm)', 1300, 1800, 1)
+        //     .listen()
+        //     .onChange(function (wheelbase) {
+        //         rearTire.setX(-wheelbase / 2).redrawInScene()
+        //         frontTire.setX(wheelbase / 2).redrawInScene()
+        //         fork.redrawInScene()
+        //         labels.redrawInScene()
+        //     })
         frameFolder
-            .add(params, 'Wheelbase (mm)', 1300, 1800, 1)
+            .add(params, 'Backbone Length (mm)', 0, 1000, 1)
             .listen()
-            .onChange(function (wheelbase) {
-                rearTire.setX(-wheelbase / 2).redrawInScene()
-                frontTire.setX(wheelbase / 2).redrawInScene()
-                fork.redrawInScene()
-                labels.redrawInScene()
+            .onChange((backboneLength) => {
+                this.frame
+                    .setBackboneLength(backboneLength)
+                    .calculateBackboneAngle()
+                    .redrawInScene()
             })
-        frameFolder.add(params, 'Backbone (mm)', 1300, 1800, 1).enabled = false
+        // frameFolder
+        //     .add(params, 'Backbone Angle (deg)', 0, 45, 0.5)
+        //     .listen()
+        //     .onChange((backboneAngle) => {
+        //         this.frame.setBackboneAngle(backboneAngle).redrawInScene()
+        //     })
+        frameFolder
+            .add(params, 'Fork Rake (deg)', 0, 45, 0.5)
+            .listen()
+            .onChange((rake) => {
+                this.frame
+                    .setRake(rake)
+                    .calculateBackboneAngle()
+                    .redrawInScene()
+            })
 
         frameFolder.open()
 
@@ -80,7 +111,6 @@ class ControlPanel {
             'Fork Length (mm)': paramDefaults.length,
             'Fork Offset (mm)': paramDefaults.offset,
             'Fork Stem Length (mm)': paramDefaults.stemHeight,
-            'Fork Rake (deg)': paramDefaults.rake,
         }
 
         forkFolder
@@ -116,13 +146,6 @@ class ControlPanel {
             .listen()
             .onChange(function (stemHeight) {
                 fork.setStemHeight(stemHeight).redrawInScene()
-            })
-
-        forkFolder
-            .add(params, 'Fork Rake (deg)', 20, 45, 0.5)
-            .listen()
-            .onChange(function (rake) {
-                fork.setRake(rake).redrawInScene()
             })
 
         forkFolder.open()

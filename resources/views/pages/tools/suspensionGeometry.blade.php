@@ -8,6 +8,7 @@
     <script src="/js/tools/suspension-geometry/Fork3D.js" type="application/javascript"></script>
     <script src="/js/tools/suspension-geometry/ControlPanel.js" type="application/javascript"></script>
     <script src="/js/tools/suspension-geometry/Labels3D.js" type="application/javascript"></script>
+    <script src="/js/tools/suspension-geometry/Frame3D.js" type="application/javascript"></script>
 @endsection
 
 @section('content')
@@ -16,6 +17,7 @@
     </div>
     <script type="module">
         const floorY = -500
+
 
         let container = document.getElementById('canvas')
         let scene = new THREE.Scene()
@@ -58,23 +60,46 @@
         floor.receiveShadow = true
         scene.add(floor)
 
-        let rearTire = new Tire3D(scene, renderer, camera, floorY, 130, 90, 17)
-        rearTire.setX(-785).calculateTorusSize().buildTorus().addToScene()
+        // frame parameters
+        let frameParameters = {
+            backboneLength: 890,
+            rake: 29.5,
+            fork: {
+                diameter: 37,
+                width: 240,
+                length: 1000,
+                offset: 0,
+                stemHeight: 200
+            },
+            frontTire: {
+                width: 110,
+                aspect: 90,
+                rimDiameterInInches: 18
+            },
+            rearTire: {
+                width: 130,
+                aspect: 90,
+                rimDiameterInInches: 17
+            }
+        }
 
-        let frontTire = new Tire3D(scene, renderer, camera, floorY, 110, 90, 18)
-        frontTire.setX(758).calculateTorusSize().buildTorus().addToScene()
+        let frame = new Frame3D(scene, renderer, camera, floorY, frameParameters)
 
-        let fork = new Fork3D(scene, renderer, camera, floorY, 37, 240, 1000, 25, 29.5, 200, frontTire)
-        fork.calculateFork().buildFork()
+        //let fork = new Fork3D(scene, renderer, camera, floorY, 37, 240, 1000, 25, 200, frontTire)
 
-        let labels = new Labels3D(scene, renderer, camera, floorY, rearTire, frontTire)
-        labels.redrawInScene()
+        frame.drawInScene()
 
-        let controlPanel = new ControlPanel(document.getElementById('control-panel'), labels)
-        controlPanel.createTireFolder('Rear', {tireWidth: 130, tireAspect: 90, rimSize: 17}, rearTire)
-            .createTireFolder('Front', {tireWidth: 110, tireAspect: 90, rimSize: 18}, frontTire, fork)
-            .createFrameFolder({wheelbase: 1570, backbone: 300}, rearTire, frontTire, fork)
-            .createForkFolder({diameter: 37, width: 240, length: 1000, offset: 25, stemHeight: 200, rake: 29.5}, fork)
+
+
+        //frontTire.setX(758).calculateTorusSize().buildTorus().addToScene()
+
+
+        //fork.calculateFork().buildFork()
+        let labels = null
+        //let labels = new Labels3D(scene, renderer, camera, floorY, rearTire, frontTire)
+        // labels.redrawInScene()
+
+        let controlPanel = new ControlPanel(document.getElementById('control-panel'), labels, frame, frameParameters)
 
         // let a = Math.cos(THREE.MathUtils.degToRad(29.5)) * 1000
         // let b = 1570 - a
