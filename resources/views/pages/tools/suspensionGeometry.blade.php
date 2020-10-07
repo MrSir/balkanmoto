@@ -62,12 +62,13 @@
 
         // frame parameters
         let frameParameters = {
-            backboneLength: 890,
+            backboneLength: 1500,
             rake: 29.5,
+            wheelbase: 1570,
             fork: {
                 diameter: 37,
                 width: 240,
-                length: 1000,
+                length: 830.2625,
                 offset: 0,
                 stemHeight: 200
             },

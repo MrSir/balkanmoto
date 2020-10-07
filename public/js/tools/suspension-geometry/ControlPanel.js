@@ -14,6 +14,7 @@ class ControlPanel {
         this.createTireFolder('Rear', this.frameParameters.rearTire)
             .createTireFolder('Front', this.frameParameters.frontTire)
             .createFrameFolder(this.frameParameters)
+            .createForkFolder(this.frameParameters.fork)
     }
 
     createTireFolder(name, paramDefaults) {
@@ -73,15 +74,12 @@ class ControlPanel {
         //         fork.redrawInScene()
         //         labels.redrawInScene()
         //     })
-        frameFolder
-            .add(params, 'Backbone Length (mm)', 0, 1000, 1)
-            .listen()
-            .onChange((backboneLength) => {
-                this.frame
-                    .setBackboneLength(backboneLength)
-                    .calculateBackboneAngle()
-                    .redrawInScene()
-            })
+        // frameFolder
+        //     .add(params, 'Backbone Length (mm)', 980, 2000, 1)
+        //     .listen()
+        //     .onChange((backboneLength) => {
+        //         this.frame.setBackboneLength(backboneLength).redrawInScene()
+        //     })
         // frameFolder
         //     .add(params, 'Backbone Angle (deg)', 0, 45, 0.5)
         //     .listen()
@@ -92,10 +90,7 @@ class ControlPanel {
             .add(params, 'Fork Rake (deg)', 0, 45, 0.5)
             .listen()
             .onChange((rake) => {
-                this.frame
-                    .setRake(rake)
-                    .calculateBackboneAngle()
-                    .redrawInScene()
+                this.frame.setRake(rake).redrawInScene()
             })
 
         frameFolder.open()
@@ -113,40 +108,41 @@ class ControlPanel {
             'Fork Stem Length (mm)': paramDefaults.stemHeight,
         }
 
-        forkFolder
-            .add(params, 'Fork Diameter (mm)', 37, 41, 1)
-            .listen()
-            .onChange(function (diameter) {
-                fork.setRadius(diameter / 2).redrawInScene()
-            })
-
-        forkFolder
-            .add(params, 'Fork Width (mm)', 200, 400, 1)
-            .listen()
-            .onChange(function (width) {
-                fork.setWidth(width).redrawInScene()
-            })
+        // forkFolder
+        //     .add(params, 'Fork Diameter (mm)', 37, 41, 1)
+        //     .listen()
+        //     .onChange(function (diameter) {
+        //         fork.setRadius(diameter / 2).redrawInScene()
+        //     })
+        //
+        // forkFolder
+        //     .add(params, 'Fork Width (mm)', 200, 400, 1)
+        //     .listen()
+        //     .onChange(function (width) {
+        //         fork.setWidth(width).redrawInScene()
+        //     })
 
         forkFolder
             .add(params, 'Fork Length (mm)', 400, 1000, 1)
             .listen()
-            .onChange(function (length) {
-                fork.setLength(length).redrawInScene()
+            .onChange((length) => {
+                this.frame.parameters.fork.length = length
+                this.frame.redrawInScene()
             })
 
-        forkFolder
-            .add(params, 'Fork Offset (mm)', 0, 100, 1)
-            .listen()
-            .onChange(function (offset) {
-                fork.setOffset(offset).redrawInScene()
-            })
-
-        forkFolder
-            .add(params, 'Fork Stem Length (mm)', 100, 250, 1)
-            .listen()
-            .onChange(function (stemHeight) {
-                fork.setStemHeight(stemHeight).redrawInScene()
-            })
+        // forkFolder
+        //     .add(params, 'Fork Offset (mm)', 0, 100, 1)
+        //     .listen()
+        //     .onChange(function (offset) {
+        //         fork.setOffset(offset).redrawInScene()
+        //     })
+        //
+        // forkFolder
+        //     .add(params, 'Fork Stem Length (mm)', 100, 250, 1)
+        //     .listen()
+        //     .onChange(function (stemHeight) {
+        //         fork.setStemHeight(stemHeight).redrawInScene()
+        //     })
 
         forkFolder.open()
 

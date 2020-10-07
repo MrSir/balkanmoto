@@ -14,7 +14,6 @@ class Tire3D {
             metalness: 0,
             reflectivity: 0.2,
             depthWrite: true,
-            wireframe: true,
         })
     }
 
@@ -24,6 +23,10 @@ class Tire3D {
 
     get tubularSegments() {
         return 100
+    }
+
+    get wheelRadius() {
+        return this.wheelDiameter / 2
     }
 
     setX(x) {
