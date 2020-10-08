@@ -1,6 +1,13 @@
 class Frame3D {
     static rearTireX = -700
 
+    blueMaterial
+    redMaterial
+    greenMaterial
+
+    backboneLength = 0
+    parameters = {}
+
     constructor(scene, renderer, camera, floorY, parameters) {
         this.scene = scene
         this.renderer = renderer
@@ -84,6 +91,26 @@ class Frame3D {
         this.lines.push(mesh)
     }
 
+    drawCircle(center, radius) {
+        let points = []
+
+        // 360 full circle will be drawn clockwise
+        for (let i = 0; i <= 360; i++) {
+            points.push(
+                new THREE.Vector3(
+                    center.x + Math.sin(i * (Math.PI / 180)) * radius,
+                    center.y + Math.cos(i * (Math.PI / 180)) * radius,
+                    center.z + 0
+                )
+            )
+        }
+
+        let geometry = new THREE.BufferGeometry().setFromPoints(points)
+        let mesh = new THREE.Line(geometry, this.blueMaterial)
+
+        this.lines.push(mesh)
+    }
+
     initialCalculate() {
         let DC = Math.sin(this.rakeInRadians) * this.parameters.fork.length
         let BD = Math.cos(this.rakeInRadians) * this.parameters.fork.length
@@ -110,7 +137,6 @@ class Frame3D {
     }
 
     calculateFrontTirePosition() {
-        this.drawLine(0, 0, 0, 500, this.redMaterial)
         this.rearTire
             .setX(Frame3D.rearTireX)
             .calculateTorusSize()
@@ -118,72 +144,85 @@ class Frame3D {
 
         this.frontTire.calculateTorusSize().calculateYBasedOnWheelDiameter()
 
-        let frameToForkAngle = this.frameStemAngle + this.rakeInRadians
-        let axleToAxleLength = Math.sqrt(
-            Math.pow(this.backboneLength, 2) +
-                Math.pow(this.parameters.fork.length, 2) -
-                2 *
-                    this.backboneLength *
-                    this.parameters.fork.length *
-                    Math.cos(frameToForkAngle)
+        let AB = this.backboneLength
+        let DFE = THREE.MathUtils.degToRad(this.parameters.fork.tripleTreeRake)
+        let FE = this.parameters.fork.length
+        let BC = Math.cos(DFE) * FE
+        let DE = Math.sin(DFE) * FE
+
+        let ABC = this.frameStemAngle + this.rakeInRadians
+        let CD = this.parameters.fork.offset
+        let CE = CD + DE
+
+        let AC = Math.sqrt(
+            Math.pow(AB, 2) + Math.pow(BC, 2) - 2 * AB * BC * Math.cos(ABC)
+        )
+        let nominatorACB = Math.pow(AC, 2) + Math.pow(BC, 2) - Math.pow(AB, 2)
+        let denominatorACB = 2 * BC * AC
+        let ACB = Math.abs(Math.acos(nominatorACB / denominatorACB))
+        let BCE = THREE.MathUtils.degToRad(90)
+        let ACE = ACB + BCE
+
+        let AE = Math.sqrt(
+            Math.pow(AC, 2) + Math.pow(CE, 2) - 2 * AC * CE * Math.cos(ACE)
         )
 
         let frontTireX =
             Math.sqrt(
-                Math.pow(axleToAxleLength, 2) -
+                Math.pow(AE, 2) -
                     Math.pow(Math.abs(this.rearTire.y - this.frontTire.y), 2)
             ) + this.rearTire.x
 
-        let CAE = Math.abs(
-            Math.acos((frontTireX - this.rearTire.x) / axleToAxleLength)
-        )
-        console.log(THREE.MathUtils.radToDeg(CAE))
-        let nominator =
-            Math.pow(this.backboneLength, 2) +
-            Math.pow(axleToAxleLength, 2) -
-            Math.pow(this.parameters.fork.length, 2)
-        let denominator = 2 * this.backboneLength * axleToAxleLength
-
-        let CAB = Math.abs(Math.acos(nominator / denominator))
-
-        console.log(THREE.MathUtils.radToDeg(CAB))
-
-        let BAE = Math.abs(CAB - CAE)
-        let AE = Math.cos(BAE) * this.backboneLength
-        let BE = Math.sin(BAE) * this.backboneLength
-
         let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
-        let B = new THREE.Vector3(this.rearTire.x + AE, this.rearTire.y + BE, 0)
-        let C = new THREE.Vector3(frontTireX, this.frontTire.y, 0)
+        let E = new THREE.Vector3(frontTireX, this.frontTire.y, 0)
+        let G = new THREE.Vector3(frontTireX, this.floorY, 0)
 
-        this.drawLineWithVectors(A, B, this.blueMaterial)
-        this.drawLineWithVectors(B, C, this.blueMaterial)
-        this.drawLineWithVectors(A, C, this.blueMaterial)
+        let EG = E.distanceTo(G)
+        let CG = Math.sqrt(Math.pow(EG, 2) - Math.pow(CE, 2))
+
+        let areaCEG =
+            Math.sqrt(
+                (CE + EG + CG) *
+                    (-CE + EG + CG) *
+                    (CE - EG + CG) *
+                    (CE + EG - CG)
+            ) / 4
+
+        let IG = (2 * areaCEG) / EG
+
+        let C = new THREE.Vector3(
+            this.frontTire.x - IG,
+            this.floorY + Math.sqrt(Math.pow(CG, 2) - Math.pow(IG, 2)),
+            0
+        )
+
+        let AL = this.rearTire.y - C.y
+        let LCA = Math.asin(AL / AC)
+        let nominatorCAB = Math.pow(AB, 2) + Math.pow(AC, 2) - Math.pow(BC, 2)
+        let denominatorCAB = 2 * AB * AC
+        let CAB = Math.abs(Math.acos(nominatorCAB / denominatorCAB))
+        let KAB = CAB - LCA
+        let AK = Math.cos(KAB) * AB
+        let KB = Math.sin(KAB) * AB
+
+        let B = new THREE.Vector3(this.rearTire.x + AK, this.rearTire.y + KB, 0)
+
+        this.drawLineWithVectors(A, B, this.greenMaterial)
+        this.drawLineWithVectors(A, C, this.greenMaterial)
+        this.drawLineWithVectors(B, C, this.greenMaterial)
+
+        this.drawLineWithVectors(A, E, this.blueMaterial)
+
+        this.drawLineWithVectors(C, E, this.redMaterial)
+        this.drawLineWithVectors(E, G, this.redMaterial)
+        this.drawLineWithVectors(C, G, this.redMaterial)
+
+        this.drawCircle(this.rearTire, AC)
+        this.drawCircle(this.rearTire, AE)
 
         //console.log('wheelbase: ' + (frontTireX - this.rearTire.x))
 
         this.frontTire.setX(frontTireX).buildTorus()
-    }
-
-    calculateFramePivot() {
-        // this.forkPivot = new THREE.Group()
-        //
-        // let forkPivotOffsetX =
-        //     Math.cos(this.backboneAngle) * this.backboneLength + this.rearTire.x
-        // let forkPivotOffestY =
-        //     Math.sin(this.backboneAngle) * this.backboneLength + this.rearTire.y
-        //
-        // let forkPivotMesh = new THREE.Mesh(
-        //     new THREE.SphereGeometry(10),
-        //     this.rearTire.torusMaterial
-        // )
-        // forkPivotMesh.position.set(forkPivotOffsetX, forkPivotOffestY, 0)
-        // this.scene.add(forkPivotMesh)
-        //
-        // this.forkPivot.position.set(forkPivotOffsetX, forkPivotOffestY, 0)
-        //
-        // //this.frontTire.addToObject(this.forkPivot)
-        // this.forkPivot.rotateZ(THREE.MathUtils.degToRad(this.rake))
     }
 
     removeFromScene() {

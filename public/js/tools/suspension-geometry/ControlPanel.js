@@ -98,15 +98,40 @@ class ControlPanel {
         return this
     }
 
-    createForkFolder(paramDefaults, fork) {
+    createForkFolder(paramDefaults) {
         let forkFolder = this.gui.addFolder('Fork')
         let params = {
-            'Fork Diameter (mm)': paramDefaults.diameter,
-            'Fork Width (mm)': paramDefaults.width,
             'Fork Length (mm)': paramDefaults.length,
             'Fork Offset (mm)': paramDefaults.offset,
+            'Triple Tree Rake (deg)': paramDefaults.tripleTreeRake,
+            'Fork Diameter (mm)': paramDefaults.diameter,
+            'Fork Width (mm)': paramDefaults.width,
             'Fork Stem Length (mm)': paramDefaults.stemHeight,
         }
+
+        forkFolder
+            .add(params, 'Fork Length (mm)', 400, 1000, 1)
+            .listen()
+            .onChange((length) => {
+                this.frame.parameters.fork.length = length
+                this.frame.redrawInScene()
+            })
+
+        forkFolder
+            .add(params, 'Fork Offset (mm)', 0, 100, 1)
+            .listen()
+            .onChange((offset) => {
+                this.frame.parameters.fork.offset = offset
+                this.frame.redrawInScene()
+            })
+
+        forkFolder
+            .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
+            .listen()
+            .onChange((tripleTreeRake) => {
+                this.frame.parameters.fork.tripleTreeRake = tripleTreeRake
+                this.frame.redrawInScene()
+            })
 
         // forkFolder
         //     .add(params, 'Fork Diameter (mm)', 37, 41, 1)
@@ -122,20 +147,6 @@ class ControlPanel {
         //         fork.setWidth(width).redrawInScene()
         //     })
 
-        forkFolder
-            .add(params, 'Fork Length (mm)', 400, 1000, 1)
-            .listen()
-            .onChange((length) => {
-                this.frame.parameters.fork.length = length
-                this.frame.redrawInScene()
-            })
-
-        // forkFolder
-        //     .add(params, 'Fork Offset (mm)', 0, 100, 1)
-        //     .listen()
-        //     .onChange(function (offset) {
-        //         fork.setOffset(offset).redrawInScene()
-        //     })
         //
         // forkFolder
         //     .add(params, 'Fork Stem Length (mm)', 100, 250, 1)
