@@ -14,6 +14,8 @@ class Tire3D {
             metalness: 0,
             reflectivity: 0.2,
             depthWrite: true,
+            transparent: true,
+            opacity: 0.25,
         })
     }
 
@@ -27,6 +29,11 @@ class Tire3D {
 
     get wheelRadius() {
         return this.wheelDiameter / 2
+    }
+
+    setTransparency(toggle) {
+        this.torusMaterial.transparent = toggle
+        return this
     }
 
     setX(x) {

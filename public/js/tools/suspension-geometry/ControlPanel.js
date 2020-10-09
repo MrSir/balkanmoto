@@ -1,5 +1,5 @@
 class ControlPanel {
-    constructor(element, labels, frame, frameParameters) {
+    constructor(element, frame, frameParameters) {
         this.gui = new THREE.GUI({
             width: 350,
             closeOnTop: true,
@@ -7,14 +7,40 @@ class ControlPanel {
         })
         element.appendChild(this.gui.domElement)
 
-        this.labels = labels
         this.frame = frame
         this.frameParameters = frameParameters
 
-        this.createTireFolder('Rear', this.frameParameters.rearTire)
+        this.createViewFolder()
+            .createTireFolder('Rear', this.frameParameters.rearTire)
             .createTireFolder('Front', this.frameParameters.frontTire)
             .createFrameFolder(this.frameParameters)
             .createForkFolder(this.frameParameters.fork)
+    }
+
+    createViewFolder() {
+        let viewFolder = this.gui.addFolder('View')
+        let params = {
+            'Show Geometry': true,
+            'Transparent Objects': true,
+        }
+
+        viewFolder
+            .add(params, 'Show Geometry')
+            .listen()
+            .onChange((toggle) => {
+                this.frame.setShowGeometry(toggle).redrawInScene()
+            })
+
+        viewFolder
+            .add(params, 'Transparent Objects')
+            .listen()
+            .onChange((toggle) => {
+                this.frame.setTransparentObjects(toggle).redrawInScene()
+            })
+
+        viewFolder.open()
+
+        return this
     }
 
     createTireFolder(name, paramDefaults) {
@@ -50,7 +76,7 @@ class ControlPanel {
                 this.frame.redrawInScene()
             })
 
-        tireFolder.open()
+        tireFolder.close()
 
         return this
     }
@@ -63,7 +89,6 @@ class ControlPanel {
             'Fork Rake (deg)': paramDefaults.rake,
             'Backbone Angle (deg)': paramDefaults.backboneAngle,
         }
-        //let labels = this.labels
 
         // frameFolder
         //     .add(params, 'Wheelbase (mm)', 1300, 1800, 1)
