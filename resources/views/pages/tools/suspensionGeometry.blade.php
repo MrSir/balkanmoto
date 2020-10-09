@@ -10,6 +10,7 @@
     <script src="/js/tools/suspension-geometry/Labels3D.js" type="application/javascript"></script>
     <script src="/js/tools/suspension-geometry/Frame3D.js" type="application/javascript"></script>
     <script src="/js/tools/suspension-geometry/SceneInitializer.js" type="application/javascript"></script>
+    <script src="/js/tools/suspension-geometry/Defaults.js" type="application/javascript"></script>
 @endsection
 
 @section('content')
@@ -26,39 +27,17 @@
         let sceneInitializer = new SceneInitializer(scene, container, floorY)
         sceneInitializer.initializeScene()
 
-        // frame parameters
-        let frameParameters = {
-            rake: 29.5,
-            wheelbase: 1570,
-            fork: {
-                length: 830.2625,
-                offset: 0,
-                tripleTreeRake: 0,
-                diameter: 37,
-                width: 240,
-                stemHeight: 200
-            },
-            frontTire: {
-                width: 110,
-                aspect: 90,
-                rimDiameterInInches: 18
-            },
-            rearTire: {
-                width: 130,
-                aspect: 90,
-                rimDiameterInInches: 17
-            }
-        }
+        let defaults = new Defaults()
 
-        let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, frameParameters)
+        let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('1982 Honda V45 Saber'))
         frame.drawInScene()
 
-        let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, frameParameters)
+        let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('1982 Honda V45 Saber'))
 
         function onWindowResize() {
             sceneInitializer.camera.aspect = container.offsetWidth / container.offsetHeight
             sceneInitializer.camera.updateProjectionMatrix()
-            renderer.setSize(container.offsetWidth, container.offsetHeight)
+            sceneInitializer.renderer.setSize(container.offsetWidth, container.offsetHeight)
         }
 
         window.addEventListener('resize', onWindowResize, false)

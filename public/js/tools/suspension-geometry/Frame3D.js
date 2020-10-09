@@ -1,5 +1,6 @@
 class Frame3D {
     static rearTireX = -700
+    frontTire
 
     blueMaterial
     redMaterial
@@ -17,7 +18,6 @@ class Frame3D {
         this.camera = camera
         this.floorY = floorY
 
-        this.rake = parameters.rake
         this.parameters = parameters
 
         this.rearTire = new Tire3D(
@@ -39,6 +39,15 @@ class Frame3D {
             .setX(Frame3D.rearTireX + this.parameters.wheelbase)
             .calculateTorusSize()
             .calculateYBasedOnWheelDiameter()
+
+        this.fork = new Fork3D(
+            floorY,
+            parameters.fork.diameter,
+            parameters.fork.width,
+            parameters.fork.length,
+            parameters.fork.offset,
+            parameters.stemHeight
+        )
 
         this.lines = []
 
@@ -65,13 +74,14 @@ class Frame3D {
         return this
     }
 
-    setBackboneLength(backboneLength) {
-        this.backboneLength = backboneLength
+    setParameters(parameters) {
+        this.parameters = parameters
+
         return this
     }
 
-    setRake(rake) {
-        this.rake = rake
+    setBackboneLength(backboneLength) {
+        this.backboneLength = backboneLength
         return this
     }
 
@@ -81,7 +91,7 @@ class Frame3D {
     }
 
     get rakeInRadians() {
-        return THREE.MathUtils.degToRad(this.rake)
+        return THREE.MathUtils.degToRad(this.parameters.rake)
     }
 
     drawLine(x1, y1, x2, y2, color) {
@@ -195,6 +205,8 @@ class Frame3D {
 
         this.setBackboneLength(AB)
         this.setFrameStemAngle(ABE)
+
+        return this
     }
 
     calculateFrontTirePosition() {
@@ -319,7 +331,7 @@ class Frame3D {
         //this.frontTire.removeFromObject(this.forkPivot)
         //temp
 
-        //this.Fork.removeFromObject(this.forkPivot)
+        this.fork.removeFromObject(this.scene)
 
         //this.scene.remove(this.forkPivot)
 
@@ -339,9 +351,14 @@ class Frame3D {
             .setTransparency(this.transparentObjects)
             .addToObject(this.scene)
 
+        this.fork
+            .calculateFork(this.frontTire)
+            .setTransparency(this.transparentObjects)
+            .setParameters(this.parameters)
+            .buildFork()
+            .addToObject(this.scene)
+
         this.lines.forEach((line) => this.scene.add(line))
-        //this.calculateFramePivot()
-        //this.scene.add(this.forkPivot)
 
         this.renderer.render(this.scene, this.camera)
     }

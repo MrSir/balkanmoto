@@ -5,32 +5,19 @@ class Fork3D {
     static radiusSegments = 32
     static heightSegments = 1
 
-    constructor(
-        scene,
-        renderer,
-        camera,
-        floorY,
-        diameter,
-        width,
-        length,
-        offset,
-        stemHeight,
-        frontTire
-    ) {
-        this.scene = scene
-        this.renderer = renderer
-        this.camera = camera
+    constructor(floorY, diameter, width, length, offset, stemHeight) {
         this.floorY = floorY
         this.radius = diameter / 2
         this.width = width
         this.length = length
         this.offset = offset
         this.stemHeight = stemHeight
-        this.frontTire = frontTire
 
         this.forkMaterial = new THREE.MeshPhongMaterial({
             color: 0x333333333,
             depthWrite: true,
+            transparent: true,
+            opacity: 0.25,
         })
 
         this.forkTubeMaterial = new THREE.MeshPhysicalMaterial({
@@ -41,7 +28,16 @@ class Fork3D {
             roughness: 0.5,
             reflectivity: 1,
             clearcoat: 0.7,
+            transparent: true,
+            opacity: 0.25,
         })
+    }
+
+    setTransparency(toggle) {
+        this.forkTubeMaterial.transparent = toggle
+        this.forkMaterial.transparent = toggle
+
+        return this
     }
 
     setX(x) {
@@ -79,8 +75,18 @@ class Fork3D {
         return this
     }
 
-    calculateFork() {
-        this.setX(this.frontTire.x)
+    setParameters(parameters) {
+        this.setRadius(parameters.fork.diameter / 2)
+            .setLength(parameters.fork.length)
+            .setOffset(parameters.fork.offset)
+            .setWidth(parameters.fork.width)
+            .setStemHeight(parameters.stemHeight)
+
+        return this
+    }
+
+    calculateFork(frontTire) {
+        this.setX(frontTire.x)
         this.setY(this.length / 2)
 
         return this

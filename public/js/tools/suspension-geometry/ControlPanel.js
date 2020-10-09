@@ -11,10 +11,29 @@ class ControlPanel {
         this.frameParameters = frameParameters
 
         this.createViewFolder()
-            .createTireFolder('Rear', this.frameParameters.rearTire)
-            .createTireFolder('Front', this.frameParameters.frontTire)
+            .createDefaultsFolder()
+            .createFrontTireFolder()
+            .createRearTireFolder()
             .createFrameFolder(this.frameParameters)
             .createForkFolder(this.frameParameters.fork)
+    }
+
+    resetGuiTo(newParams) {
+        this.frontTireWidth.setValue(newParams.frontTire.width)
+        this.frontTireAspect.setValue(newParams.frontTire.aspect)
+        this.frontRimSize.setValue(newParams.frontTire.rimDiameterInInches)
+
+        this.rearTireWidth.setValue(newParams.rearTire.width)
+        this.rearTireAspect.setValue(newParams.rearTire.aspect)
+        this.rearRimSize.setValue(newParams.rearTire.rimDiameterInInches)
+
+        this.stemRake.setValue(newParams.rake)
+
+        this.forkLength.setValue(newParams.fork.length)
+        this.forkOffset.setValue(newParams.fork.offset)
+        this.trippleTreeRake.setValue(newParams.fork.tripleTreeRake)
+        this.forkDiameter.setValue(newParams.fork.diameter)
+        this.forkWidth.setValue(newParams.fork.width)
     }
 
     createViewFolder() {
@@ -43,51 +62,123 @@ class ControlPanel {
         return this
     }
 
-    createTireFolder(name, paramDefaults) {
-        let tireFolder = this.gui.addFolder(name + ' Tire')
-        let params = {}
-        params[name + ' Tire Width (mm)'] = paramDefaults.width
-        params[name + ' Tire Aspect'] = paramDefaults.aspect
-        params[name + ' Rim Size (in)'] = paramDefaults.rimDiameterInInches
+    createDefaultsFolder() {
+        let defaultsFolder = this.gui.addFolder('Defaults')
+        let params = {
+            Defaults: '1982 Honda V45 Saber',
+        }
 
-        tireFolder
-            .add(params, name + ' Tire Width (mm)', 90, 320, 5)
+        let defaults = new Defaults()
+
+        defaultsFolder
+            .add(params, 'Defaults')
+            .options(defaults.getOptions())
             .listen()
-            .onChange((width) => {
-                this.frame[name.toLowerCase() + 'Tire'].setWidth(width)
-                this.frame.redrawInScene()
+            .onChange((name) => {
+                let selectedParams = defaults.findDefaults(name)
+
+                this.frame.rearTire
+                    .setParameters(selectedParams)
+                    .calculateTorusSize()
+                    .calculateYBasedOnWheelDiameter()
+                this.frame.frontTire
+                    .setParameters(selectedParams)
+                    .calculateTorusSize()
+                    .calculateYBasedOnWheelDiameter()
+                    .setX(this.frame.rearTire.x + selectedParams.wheelbase)
+                this.frame
+                    .setParameters(selectedParams)
+                    .initialCalculate()
+                    .redrawInScene()
+
+                this.resetGuiTo(selectedParams)
+                //todo update gui values
             })
 
-        tireFolder
-            .add(params, name + ' Tire Aspect', 45, 95, 5)
-            .listen()
-            .onChange((aspect) => {
-                this.frame[name.toLowerCase() + 'Tire'].setAspect(aspect)
-                this.frame.redrawInScene()
-            })
-
-        tireFolder
-            .add(params, name + ' Rim Size (in)', 13, 22, 1)
-            .listen()
-            .onChange((rimDiameterInInches) => {
-                this.frame[name.toLowerCase() + 'Tire'].setRimDiameterInInches(
-                    rimDiameterInInches
-                )
-                this.frame.redrawInScene()
-            })
-
-        tireFolder.close()
+        defaultsFolder.open()
 
         return this
     }
 
-    createFrameFolder(paramDefaults) {
+    createFrontTireFolder() {
+        let frontTireFolder = this.gui.addFolder('Front Tire')
+        let params = {
+            'Tire Width (mm)': this.frameParameters.frontTire.width,
+            'Tire Aspect': this.frameParameters.frontTire.aspect,
+            'Rim Size (in)': this.frameParameters.frontTire.rimDiameterInInches,
+        }
+
+        this.frontTireWidth = frontTireFolder
+            .add(params, 'Tire Width (mm)', 90, 320, 5)
+            .listen()
+            .onChange((width) => {
+                this.frame.frontTire.setWidth(width)
+                this.frame.redrawInScene()
+            })
+
+        this.frontTireAspect = frontTireFolder
+            .add(params, 'Tire Aspect', 45, 95, 5)
+            .listen()
+            .onChange((aspect) => {
+                this.frame.frontTire.setAspect(aspect)
+                this.frame.redrawInScene()
+            })
+
+        this.frontRimSize = frontTireFolder
+            .add(params, 'Rim Size (in)', 13, 22, 1)
+            .listen()
+            .onChange((rimDiameterInInches) => {
+                this.frame.frontTire.setRimDiameterInInches(rimDiameterInInches)
+                this.frame.redrawInScene()
+            })
+
+        frontTireFolder.close()
+
+        return this
+    }
+
+    createRearTireFolder() {
+        let rearTireFolder = this.gui.addFolder('Rear Tire')
+        let params = {
+            'Tire Width (mm)': this.frameParameters.rearTire.width,
+            'Tire Aspect': this.frameParameters.rearTire.aspect,
+            'Rim Size (in)': this.frameParameters.rearTire.rimDiameterInInches,
+        }
+
+        this.rearTireWidth = rearTireFolder
+            .add(params, 'Tire Width (mm)', 90, 320, 5)
+            .listen()
+            .onChange((width) => {
+                this.frame.rearTire.setWidth(width)
+                this.frame.redrawInScene()
+            })
+
+        this.rearTireAspect = rearTireFolder
+            .add(params, 'Tire Aspect', 45, 95, 5)
+            .listen()
+            .onChange((aspect) => {
+                this.frame.rearTire.setAspect(aspect)
+                this.frame.redrawInScene()
+            })
+
+        this.rearRimSize = rearTireFolder
+            .add(params, 'Rim Size (in)', 13, 22, 1)
+            .listen()
+            .onChange((rimDiameterInInches) => {
+                this.frame.rearTire.setRimDiameterInInches(rimDiameterInInches)
+                this.frame.redrawInScene()
+            })
+
+        rearTireFolder.close()
+
+        return this
+    }
+
+    createFrameFolder() {
         let frameFolder = this.gui.addFolder('Frame')
         let params = {
-            //'Wheelbase (mm)': paramDefaults.wheelbase,
-            'Backbone Length (mm)': paramDefaults.backboneLength,
-            'Fork Rake (deg)': paramDefaults.rake,
-            'Backbone Angle (deg)': paramDefaults.backboneAngle,
+            'Stem Rake (deg)': this.frameParameters.rake,
+            'Stem Length (mm)': this.frameParameters.stemHeight,
         }
 
         // frameFolder
@@ -111,30 +202,37 @@ class ControlPanel {
         //     .onChange((backboneAngle) => {
         //         this.frame.setBackboneAngle(backboneAngle).redrawInScene()
         //     })
-        frameFolder
-            .add(params, 'Fork Rake (deg)', 0, 45, 0.5)
+        this.stemRake = frameFolder
+            .add(params, 'Stem Rake (deg)', 0, 45, 0.5)
             .listen()
             .onChange((rake) => {
-                this.frame.setRake(rake).redrawInScene()
+                this.frame.parameters.rake = rake
+                this.frame.redrawInScene()
             })
+
+        // forkFolder
+        //     .add(params, 'Stem Length (mm)', 100, 250, 1)
+        //     .listen()
+        //     .onChange(function (stemHeight) {
+        //         fork.setStemHeight(stemHeight).redrawInScene()
+        //     })
 
         frameFolder.open()
 
         return this
     }
 
-    createForkFolder(paramDefaults) {
+    createForkFolder() {
         let forkFolder = this.gui.addFolder('Fork')
         let params = {
-            'Fork Length (mm)': paramDefaults.length,
-            'Fork Offset (mm)': paramDefaults.offset,
-            'Triple Tree Rake (deg)': paramDefaults.tripleTreeRake,
-            'Fork Diameter (mm)': paramDefaults.diameter,
-            'Fork Width (mm)': paramDefaults.width,
-            'Fork Stem Length (mm)': paramDefaults.stemHeight,
+            'Fork Length (mm)': this.frameParameters.fork.length,
+            'Fork Offset (mm)': this.frameParameters.fork.offset,
+            'Triple Tree Rake (deg)': this.frameParameters.fork.tripleTreeRake,
+            'Fork Diameter (mm)': this.frameParameters.fork.diameter,
+            'Fork Width (mm)': this.frameParameters.fork.width,
         }
 
-        forkFolder
+        this.forkLength = forkFolder
             .add(params, 'Fork Length (mm)', 400, 1000, 1)
             .listen()
             .onChange((length) => {
@@ -142,7 +240,7 @@ class ControlPanel {
                 this.frame.redrawInScene()
             })
 
-        forkFolder
+        this.forkOffset = forkFolder
             .add(params, 'Fork Offset (mm)', 0, 100, 1)
             .listen()
             .onChange((offset) => {
@@ -150,7 +248,7 @@ class ControlPanel {
                 this.frame.redrawInScene()
             })
 
-        forkFolder
+        this.trippleTreeRake = forkFolder
             .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
             .listen()
             .onChange((tripleTreeRake) => {
@@ -158,27 +256,21 @@ class ControlPanel {
                 this.frame.redrawInScene()
             })
 
-        // forkFolder
-        //     .add(params, 'Fork Diameter (mm)', 37, 41, 1)
-        //     .listen()
-        //     .onChange(function (diameter) {
-        //         fork.setRadius(diameter / 2).redrawInScene()
-        //     })
-        //
-        // forkFolder
-        //     .add(params, 'Fork Width (mm)', 200, 400, 1)
-        //     .listen()
-        //     .onChange(function (width) {
-        //         fork.setWidth(width).redrawInScene()
-        //     })
+        this.forkDiameter = forkFolder
+            .add(params, 'Fork Diameter (mm)', 27, 49, 1)
+            .listen()
+            .onChange((diameter) => {
+                this.frame.parameters.fork.diameter = diameter
+                this.frame.redrawInScene()
+            })
 
-        //
-        // forkFolder
-        //     .add(params, 'Fork Stem Length (mm)', 100, 250, 1)
-        //     .listen()
-        //     .onChange(function (stemHeight) {
-        //         fork.setStemHeight(stemHeight).redrawInScene()
-        //     })
+        this.forkWidth = forkFolder
+            .add(params, 'Fork Width (mm)', 200, 400, 1)
+            .listen()
+            .onChange((width) => {
+                this.frame.parameters.fork.width = width
+                this.frame.redrawInScene()
+            })
 
         forkFolder.open()
 

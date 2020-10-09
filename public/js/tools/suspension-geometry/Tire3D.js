@@ -46,6 +46,14 @@ class Tire3D {
         return this
     }
 
+    setParameters(parameters) {
+        this.setWidth(parameters.rearTire.width)
+            .setAspect(parameters.rearTire.aspect)
+            .setRimDiameterInInches(parameters.rearTire.rimDiameterInInches)
+
+        return this
+    }
+
     setWidth(width) {
         this.width = width
         return this
