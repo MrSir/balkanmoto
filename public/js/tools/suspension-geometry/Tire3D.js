@@ -90,6 +90,8 @@ class Tire3D {
     }
 
     buildTorus() {
+        //TODO build a different geometry, a torus has a constant radius, i need diff width and height
+
         this.torusGeometry = new THREE.TorusGeometry(
             this.torusRadius,
             this.torusTube,
