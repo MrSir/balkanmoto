@@ -16,7 +16,7 @@ class Fork3D {
         this.forkMaterial = new THREE.MeshPhongMaterial({
             color: 0x333333333,
             depthWrite: true,
-            transparent: true,
+            transparent: false,
             opacity: 0.25,
         })
 
@@ -28,7 +28,7 @@ class Fork3D {
             roughness: 0.5,
             reflectivity: 1,
             clearcoat: 0.7,
-            transparent: true,
+            transparent: false,
             opacity: 0.25,
         })
     }
@@ -144,6 +144,7 @@ class Fork3D {
             this.length - this.stemHeight / 2,
             0
         )
+
         //
         // this.pivot = new THREE.Group()
         // this.pivot.position.set(this.x, this.frontTire.y, 0)

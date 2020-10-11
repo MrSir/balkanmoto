@@ -10,7 +10,7 @@ class Frame3D {
     parameters = {}
 
     showGeometry = true
-    transparentObjects = true
+    transparentObjects = false
 
     constructor(scene, renderer, camera, floorY, parameters) {
         this.scene = scene

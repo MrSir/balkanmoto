@@ -8,14 +8,16 @@ class Tire3D {
         this.aspect = aspect
         this.setRimDiameterInInches(rimDiameterInInches)
 
-        this.torusMaterial = new THREE.MeshPhysicalMaterial({
+        this.tireMaterial = new THREE.MeshPhysicalMaterial({
             color: 0x222222222,
             roughness: 1,
             metalness: 0,
             reflectivity: 0.2,
             depthWrite: true,
-            transparent: true,
+            side: THREE.DoubleSide,
+            transparent: false,
             opacity: 0.25,
+            //wireframe: true,
         })
     }
 
@@ -32,7 +34,7 @@ class Tire3D {
     }
 
     setTransparency(toggle) {
-        this.torusMaterial.transparent = toggle
+        this.tireMaterial.transparent = toggle
         return this
     }
 
@@ -75,11 +77,10 @@ class Tire3D {
     }
 
     calculateTorusSize() {
-        let tireHeight = this.width * (this.aspect / 100)
-        this.wheelDiameter = this.rimDiameterInMillimeters + 2 * tireHeight
-
-        this.torusTube = tireHeight / 2
-        this.torusRadius = (this.wheelDiameter - tireHeight) / 2
+        this.tireHeight = this.width * (this.aspect / 100)
+        this.wheelDiameter = this.rimDiameterInMillimeters + 2 * this.tireHeight
+        this.rimRadius = this.rimDiameterInMillimeters / 2
+        this.tireRadius = this.rimRadius + this.tireHeight
 
         return this
     }
@@ -90,28 +91,47 @@ class Tire3D {
     }
 
     buildTorus() {
-        //TODO build a different geometry, a torus has a constant radius, i need diff width and height
+        let points = []
+        // bead
+        points.push(new THREE.Vector2(this.rimRadius, this.width / 2 - 20))
+        points.push(new THREE.Vector2(this.rimRadius, this.width / 2 - 10))
 
-        this.torusGeometry = new THREE.TorusGeometry(
-            this.torusRadius,
-            this.torusTube,
-            this.radialSegments,
-            this.tubularSegments
+        //thread
+        points.push(new THREE.Vector2(this.wheelRadius * 0.85, this.width / 2))
+        points.push(
+            new THREE.Vector2(this.wheelRadius * 0.95, this.width * 0.4)
         )
+        points.push(
+            new THREE.Vector2(this.wheelRadius * 0.99, this.width * 0.2)
+        )
+        points.push(new THREE.Vector2(this.wheelRadius, this.width * 0.05))
+        points.push(new THREE.Vector2(this.wheelRadius, -this.width * 0.05))
+        points.push(
+            new THREE.Vector2(this.wheelRadius * 0.99, -this.width * 0.2)
+        )
+        points.push(
+            new THREE.Vector2(this.wheelRadius * 0.95, -this.width * 0.4)
+        )
+        points.push(new THREE.Vector2(this.wheelRadius * 0.85, -this.width / 2))
 
-        this.torus = new THREE.Mesh(this.torusGeometry, this.torusMaterial)
-        this.torus.castShadow = true
-        this.torus.position.setX(this.x)
-        this.torus.position.setY(this.y)
+        // bead
+        points.push(new THREE.Vector2(this.rimRadius, -this.width / 2))
+        points.push(new THREE.Vector2(this.rimRadius, -this.width / 2 + 10))
+
+        let geometry = new THREE.LatheGeometry(points, 60, 0, Math.PI * 2)
+        this.lathe = new THREE.Mesh(geometry, this.tireMaterial)
+        this.lathe.castShadow = true
+        this.lathe.rotateX(Math.PI / 2)
+        this.lathe.position.set(this.x, this.y, 0)
 
         return this
     }
 
     removeFromObject(object) {
-        object.remove(this.torus)
+        object.remove(this.lathe)
     }
 
     addToObject(object) {
-        object.add(this.torus)
+        object.add(this.lathe)
     }
 }

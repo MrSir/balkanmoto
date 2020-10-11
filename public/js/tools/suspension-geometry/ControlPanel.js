@@ -40,7 +40,7 @@ class ControlPanel {
         let viewFolder = this.gui.addFolder('View')
         let params = {
             'Show Geometry': true,
-            'Transparent Objects': true,
+            'Transparent Objects': false,
         }
 
         viewFolder
@@ -109,7 +109,7 @@ class ControlPanel {
         }
 
         this.frontTireWidth = frontTireFolder
-            .add(params, 'Tire Width (mm)', 90, 320, 5)
+            .add(params, 'Tire Width (mm)', 70, 320, 5)
             .listen()
             .onChange((width) => {
                 this.frame.frontTire.setWidth(width)
@@ -117,7 +117,7 @@ class ControlPanel {
             })
 
         this.frontTireAspect = frontTireFolder
-            .add(params, 'Tire Aspect', 45, 95, 5)
+            .add(params, 'Tire Aspect', 25, 95, 5)
             .listen()
             .onChange((aspect) => {
                 this.frame.frontTire.setAspect(aspect)
@@ -146,7 +146,7 @@ class ControlPanel {
         }
 
         this.rearTireWidth = rearTireFolder
-            .add(params, 'Tire Width (mm)', 90, 320, 5)
+            .add(params, 'Tire Width (mm)', 70, 320, 5)
             .listen()
             .onChange((width) => {
                 this.frame.rearTire.setWidth(width)
@@ -154,7 +154,7 @@ class ControlPanel {
             })
 
         this.rearTireAspect = rearTireFolder
-            .add(params, 'Tire Aspect', 45, 95, 5)
+            .add(params, 'Tire Aspect', 25, 95, 5)
             .listen()
             .onChange((aspect) => {
                 this.frame.rearTire.setAspect(aspect)
