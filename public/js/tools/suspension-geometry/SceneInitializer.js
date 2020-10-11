@@ -79,6 +79,24 @@ class SceneInitializer {
         return this
     }
 
+    addOrigin() {
+        let axisGeometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(-100, 0, 0),
+            new THREE.Vector3(100, 0, 0),
+        ])
+        let axisMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 })
+        let xAxis = new THREE.Line(axisGeometry, axisMaterial)
+        let yAxis = new THREE.Line(axisGeometry, axisMaterial)
+        let zAxis = new THREE.Line(axisGeometry, axisMaterial)
+
+        yAxis.rotateZ(Math.PI / 2)
+        zAxis.rotateY(Math.PI / 2)
+
+        this.scene.add(xAxis, yAxis, zAxis)
+
+        return this
+    }
+
     initializeScene() {
         this.scene.background = new THREE.Color(0xa0a0a0)
         this.scene.fog = new THREE.Fog(0xa0a0a0, 0.01, 10000)
@@ -88,5 +106,6 @@ class SceneInitializer {
             .addOrbitalControls()
             .addLights()
             .addFloor()
+            .addOrigin()
     }
 }

@@ -46,7 +46,8 @@ class Frame3D {
             parameters.fork.width,
             parameters.fork.length,
             parameters.fork.offset,
-            parameters.stemHeight
+            parameters.stemLength,
+            parameters.tripleTreeRake
         )
 
         this.lines = []
@@ -279,30 +280,34 @@ class Frame3D {
         let KAB = CAB - LCA
         let AK = Math.cos(KAB) * AB
         let KB = Math.sin(KAB) * AB
-        let B = new THREE.Vector3(this.rearTire.x + AK, this.rearTire.y + KB, 0)
+        this.B = new THREE.Vector3(
+            this.rearTire.x + AK,
+            this.rearTire.y + KB,
+            0
+        )
 
-        let F = B
+        this.F = this.B
 
         if (CD > 0) {
-            F = new THREE.Vector3(
-                B.x + Math.abs(D.x - C.x),
-                B.y + Math.abs(D.y - C.y),
+            this.F = new THREE.Vector3(
+                this.B.x + Math.abs(D.x - C.x),
+                this.B.y + Math.abs(D.y - C.y),
                 0
             )
         }
 
-        // calculate stem ground point
-        // f(x) = [(C.y - B.y)/(C.x - B.x)]X + B.y
-        // this.floorY - B.y = [(C.y - B.y)/(C.x - B.x)])X
-        //
-        let X = (this.floorY - B.y) / ((C.y - B.y) / (C.x - B.x))
-        let trailX = B.x + X
+        let X = (this.floorY - this.B.y) / ((C.y - this.B.y) / (C.x - this.B.x))
+        let trailX = this.B.x + X
         let trailPoint = new THREE.Vector3(trailX, this.floorY, 0)
 
+        let LCB = LCA + ACB
+
+        this.verticalStemAngle = Math.PI / 2 - LCB
+
         if (this.showGeometry) {
-            this.drawLineWithVectors(A, B, this.greenMaterial)
+            this.drawLineWithVectors(A, this.B, this.greenMaterial)
             this.drawLineWithVectors(A, C, this.greenMaterial)
-            this.drawLineWithVectors(B, C, this.greenMaterial)
+            this.drawLineWithVectors(this.B, C, this.greenMaterial)
             this.drawLineWithVectors(C, trailPoint, this.greenMaterial)
 
             this.drawLineWithVectors(A, E, this.blueMaterial)
@@ -314,15 +319,16 @@ class Frame3D {
             this.drawLineWithVectors(E, D, this.redMaterial)
             this.drawLineWithVectors(C, D, this.redMaterial)
 
-            this.drawLineWithVectors(B, F, this.blueMaterial)
-            this.drawLineWithVectors(F, D, this.blueMaterial)
-            this.drawLineWithVectors(F, E, this.blueMaterial)
+            this.drawLineWithVectors(this.B, this.F, this.blueMaterial)
+            this.drawLineWithVectors(this.F, D, this.blueMaterial)
+            this.drawLineWithVectors(this.F, E, this.blueMaterial)
+
+            this.drawLineWithVectors(
+                this.B,
+                new THREE.Vector3(this.B.x + 200, this.B.y, this.B.z),
+                this.greenMaterial
+            )
         }
-
-        //this.drawCircle(this.rearTire, AC)
-        //this.drawCircle(this.rearTire, AE)
-
-        //console.log('wheelbase: ' + (frontTireX - this.rearTire.x))
     }
 
     removeFromScene() {
@@ -352,7 +358,7 @@ class Frame3D {
             .addToObject(this.scene)
 
         this.fork
-            .calculateFork(this.frontTire)
+            .calculateFork(this)
             .setTransparency(this.transparentObjects)
             .setParameters(this.parameters)
             .buildFork()

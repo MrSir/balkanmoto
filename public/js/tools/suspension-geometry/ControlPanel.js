@@ -65,7 +65,7 @@ class ControlPanel {
     createDefaultsFolder() {
         let defaultsFolder = this.gui.addFolder('Defaults')
         let params = {
-            Defaults: '1982 Honda V45 Saber',
+            Defaults: 'zero',
         }
 
         let defaults = new Defaults()
@@ -178,7 +178,7 @@ class ControlPanel {
         let frameFolder = this.gui.addFolder('Frame')
         let params = {
             'Stem Rake (deg)': this.frameParameters.rake,
-            'Stem Length (mm)': this.frameParameters.stemHeight,
+            'Stem Length (mm)': this.frameParameters.stemLength,
         }
 
         // frameFolder
@@ -210,12 +210,13 @@ class ControlPanel {
                 this.frame.redrawInScene()
             })
 
-        // forkFolder
-        //     .add(params, 'Stem Length (mm)', 100, 250, 1)
-        //     .listen()
-        //     .onChange(function (stemHeight) {
-        //         fork.setStemHeight(stemHeight).redrawInScene()
-        //     })
+        this.stemLength = frameFolder
+            .add(params, 'Stem Length (mm)', 100, 250, 1)
+            .listen()
+            .onChange((stemLength) => {
+                this.frame.parameters.stemLength = stemLength
+                this.frame.redrawInScene()
+            })
 
         frameFolder.open()
 

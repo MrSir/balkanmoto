@@ -27,26 +27,12 @@
         let sceneInitializer = new SceneInitializer(scene, container, floorY)
         sceneInitializer.initializeScene()
 
-        let axisGeometry = new THREE.BufferGeometry().setFromPoints([
-                                                                        new THREE.Vector3(-100, 0, 0),
-                                                                        new THREE.Vector3(100, 0, 0),
-                                                                    ])
-        let axisMaterial = new THREE.MeshBasicMaterial({color: 0x000000})
-        let xAxis = new THREE.Line(axisGeometry,axisMaterial)
-        let yAxis = new THREE.Line(axisGeometry,axisMaterial)
-        let zAxis = new THREE.Line(axisGeometry,axisMaterial)
-
-        yAxis.rotateZ(Math.PI /2)
-        zAxis.rotateY(Math.PI /2)
-
-        scene.add(xAxis,yAxis,zAxis)
-
         let defaults = new Defaults()
 
-        let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('1982 Honda V45 Saber'))
+        let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('zero'))
         frame.drawInScene()
 
-        let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('1982 Honda V45 Saber'))
+        let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('zero'))
 
         function onWindowResize() {
             sceneInitializer.camera.aspect = container.offsetWidth / container.offsetHeight

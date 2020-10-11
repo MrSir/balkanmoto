@@ -5,13 +5,22 @@ class Fork3D {
     static radiusSegments = 32
     static heightSegments = 1
 
-    constructor(floorY, diameter, width, length, offset, stemHeight) {
+    constructor(
+        floorY,
+        diameter,
+        width,
+        length,
+        offset,
+        stemLength,
+        tripleTreeRake
+    ) {
         this.floorY = floorY
         this.radius = diameter / 2
         this.width = width
         this.length = length
         this.offset = offset
-        this.stemHeight = stemHeight
+        this.stemLength = stemLength
+        this.tripleTreeRake = tripleTreeRake
 
         this.forkMaterial = new THREE.MeshPhongMaterial({
             color: 0x333333333,
@@ -70,8 +79,13 @@ class Fork3D {
         return this
     }
 
-    setStemHeight(stemHeight) {
-        this.stemHeight = stemHeight
+    setStemLength(stemLength) {
+        this.stemLength = stemLength
+        return this
+    }
+
+    setTripleTreeRake(tripleTreeRake) {
+        this.tripleTreeRake = tripleTreeRake
         return this
     }
 
@@ -80,14 +94,24 @@ class Fork3D {
             .setLength(parameters.fork.length)
             .setOffset(parameters.fork.offset)
             .setWidth(parameters.fork.width)
-            .setStemHeight(parameters.stemHeight)
+            .setStemLength(parameters.stemLength)
+            .setTripleTreeRake(parameters.fork.tripleTreeRake)
 
         return this
     }
 
-    calculateFork(frontTire) {
-        this.setX(frontTire.x)
-        this.setY(this.length / 2)
+    setVerticalStemAngle(verticalStemAngle) {
+        this.verticalStemAngle = verticalStemAngle
+        return this
+    }
+
+    calculateFork(frame) {
+        this.setX(frame.frontTire.x)
+        this.setY(frame.frontTire.y)
+        this.setVerticalStemAngle(frame.verticalStemAngle)
+
+        this.B = frame.B
+        this.F = frame.F
 
         return this
     }
@@ -106,14 +130,14 @@ class Fork3D {
             this.forkTubeMaterial
         )
         this.forkLeftCylinder.castShadow = true
-        this.forkLeftCylinder.position.set(0, this.y, -this.width / 2)
+        this.forkLeftCylinder.position.set(0, this.length / 2, -this.width / 2)
 
         this.forkRightCylinder = new THREE.Mesh(
             this.forkCylinderGeometry,
             this.forkTubeMaterial
         )
         this.forkRightCylinder.castShadow = true
-        this.forkRightCylinder.position.set(0, this.y, this.width / 2)
+        this.forkRightCylinder.position.set(0, this.length / 2, this.width / 2)
 
         this.wheelAxleGeometry = new THREE.CylinderGeometry(
             10,
@@ -128,48 +152,47 @@ class Fork3D {
         )
         this.wheelAxle.castShadow = true
         this.wheelAxle.rotateX(THREE.MathUtils.degToRad(90))
-        this.wheelAxle.position.set(0, this.y - this.length / 2, 0)
+        this.wheelAxle.position.set(0, 0, 0)
 
         this.forkStemGeometry = new THREE.CylinderGeometry(
             this.radius,
             this.radius,
-            this.stemHeight,
+            this.stemLength,
             Fork3D.radiusSegments,
             Fork3D.heightSegments
         )
         this.forkStem = new THREE.Mesh(this.forkStemGeometry, this.forkMaterial)
         this.forkStem.castShadow = true
         this.forkStem.position.set(
-            -this.offset,
-            this.length - this.stemHeight / 2,
+            0 - this.offset,
+            this.length - this.stemLength / 2,
             0
         )
 
-        //
-        // this.pivot = new THREE.Group()
-        // this.pivot.position.set(this.x, this.frontTire.y, 0)
-        // this.pivot.add(this.forkLeftCylinder)
-        // this.pivot.add(this.forkRightCylinder)
-        // this.pivot.add(this.wheelAxle)
-        // this.pivot.add(this.forkStem)
-        // this.pivot.rotateZ(THREE.MathUtils.degToRad(this.rake))
-
-        //this.scene.add(this.pivot)
+        this.pivot = new THREE.Group()
+        this.pivot.position.set(this.x, this.y, 0)
+        this.pivot.add(this.forkLeftCylinder)
+        this.pivot.add(this.forkRightCylinder)
+        this.pivot.add(this.wheelAxle)
+        this.pivot.add(this.forkStem)
+        this.pivot.rotateZ(this.verticalStemAngle)
 
         return this
     }
 
     removeFromObject(object) {
-        object.remove(this.forkLeftCylinder)
-        object.remove(this.forkRightCylinder)
-        object.remove(this.wheelAxle)
-        object.remove(this.forkStem)
+        // object.remove(this.forkLeftCylinder)
+        // object.remove(this.forkRightCylinder)
+        // object.remove(this.wheelAxle)
+        // object.remove(this.forkStem)
+        object.remove(this.pivot)
     }
 
     addToObject(object) {
-        object.add(this.forkLeftCylinder)
-        object.add(this.forkRightCylinder)
-        object.add(this.wheelAxle)
-        object.add(this.forkStem)
+        // object.add(this.forkLeftCylinder)
+        // object.add(this.forkRightCylinder)
+        // object.add(this.wheelAxle)
+        //object.add(this.forkStem)
+        object.add(this.pivot)
     }
 }
