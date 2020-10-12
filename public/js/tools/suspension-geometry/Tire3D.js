@@ -52,7 +52,6 @@ class Tire3D {
         this.setWidth(parameters.rearTire.width)
             .setAspect(parameters.rearTire.aspect)
             .setRimDiameterInInches(parameters.rearTire.rimDiameterInInches)
-
         return this
     }
 
@@ -81,7 +80,6 @@ class Tire3D {
         this.wheelDiameter = this.rimDiameterInMillimeters + 2 * this.tireHeight
         this.rimRadius = this.rimDiameterInMillimeters / 2
         this.tireRadius = this.rimRadius + this.tireHeight
-        console.log(this.wheelDiameter)
         return this
     }
 

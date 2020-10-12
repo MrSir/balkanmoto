@@ -40,6 +40,7 @@ class ControlPanel {
         let viewFolder = this.gui.addFolder('View')
         let params = {
             'Show Geometry': true,
+            'Show Labels': true,
             'Transparent Objects': false,
         }
 
@@ -48,6 +49,13 @@ class ControlPanel {
             .listen()
             .onChange((toggle) => {
                 this.frame.setShowGeometry(toggle).redrawInScene()
+            })
+
+        viewFolder
+            .add(params, 'Show Labels')
+            .listen()
+            .onChange((toggle) => {
+                this.frame.setShowLabels(toggle).redrawInScene()
             })
 
         viewFolder

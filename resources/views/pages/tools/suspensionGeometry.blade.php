@@ -29,10 +29,14 @@
 
         let defaults = new Defaults()
 
-        let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('zero'))
-        frame.drawInScene()
+        let loader = new THREE.FontLoader()
+        loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+            let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('zero'), font)
+            frame.drawInScene()
 
-        let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('zero'))
+            let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('zero'))
+        })
+
 
         function onWindowResize() {
             sceneInitializer.camera.aspect = container.offsetWidth / container.offsetHeight

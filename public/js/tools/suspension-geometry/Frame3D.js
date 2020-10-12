@@ -1,5 +1,6 @@
 class Frame3D {
     static rearTireX = -700
+    rearTire
     frontTire
 
     blueMaterial
@@ -10,15 +11,17 @@ class Frame3D {
     parameters = {}
 
     showGeometry = true
+    showLabels = true
     transparentObjects = false
 
-    constructor(scene, renderer, camera, floorY, parameters) {
+    constructor(scene, renderer, camera, floorY, parameters, font) {
         this.scene = scene
         this.renderer = renderer
         this.camera = camera
         this.floorY = floorY
 
         this.parameters = parameters
+        this.font = font
 
         this.rearTire = new Tire3D(
             floorY,
@@ -50,6 +53,8 @@ class Frame3D {
             parameters.tripleTreeRake
         )
 
+        this.labels = new Labels3D(floorY, this)
+
         this.lines = []
 
         this.blueMaterial = new THREE.LineBasicMaterial({
@@ -67,6 +72,11 @@ class Frame3D {
 
     setShowGeometry(toggle) {
         this.showGeometry = toggle
+        return this
+    }
+
+    setShowLabels(toggle) {
+        this.showLabels = toggle
         return this
     }
 
@@ -106,10 +116,7 @@ class Frame3D {
     }
 
     drawLineWithVectors(vector1, vector2, color) {
-        let geometry = new THREE.BufferGeometry().setFromPoints([
-            vector1,
-            vector2,
-        ])
+        let geometry = new THREE.BufferGeometry().setFromPoints([vector1, vector2])
         let mesh = new THREE.Line(geometry, color)
 
         this.lines.push(mesh)
@@ -144,9 +151,7 @@ class Frame3D {
     }
 
     calculate3rdSideFrom2Sides1Angle(a, b, angle) {
-        return Math.sqrt(
-            Math.pow(a, 2) + Math.pow(b, 2) - 2 * a * b * Math.cos(angle)
-        )
+        return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2) - 2 * a * b * Math.cos(angle))
     }
 
     calculateAngleFrom3Sides(a, b, c) {
@@ -173,10 +178,7 @@ class Frame3D {
     }
 
     calculateTriangleAreaFrom3Sides(a, b, c) {
-        return (
-            Math.sqrt((a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c)) /
-            4
-        )
+        return Math.sqrt((a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c)) / 4
     }
 
     calculateTriangleHeightFromArea(area, base) {
@@ -193,17 +195,11 @@ class Frame3D {
 
         let DC = Math.sin(this.rakeInRadians) * BC
         let BD = Math.cos(this.rakeInRadians) * BC
-        let ED = Math.abs(
-            this.rearTire.wheelRadius - this.frontTire.wheelRadius
-        )
+        let ED = Math.abs(this.rearTire.wheelRadius - this.frontTire.wheelRadius)
         let BE = BD - ED
 
         let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
-        let B = new THREE.Vector3(
-            this.frontTire.x - DC,
-            this.frontTire.y + BD,
-            0
-        )
+        let B = new THREE.Vector3(this.frontTire.x - DC, this.frontTire.y + BD, 0)
 
         let AB = A.distanceTo(B)
         let ABE = Math.acos(BE / AB)
@@ -215,10 +211,7 @@ class Frame3D {
     }
 
     calculateFrontTirePosition() {
-        this.rearTire
-            .setX(Frame3D.rearTireX)
-            .calculateTorusSize()
-            .calculateYBasedOnWheelDiameter()
+        this.rearTire.setX(Frame3D.rearTireX).calculateTorusSize().calculateYBasedOnWheelDiameter()
 
         this.frontTire.calculateTorusSize().calculateYBasedOnWheelDiameter()
 
@@ -245,10 +238,8 @@ class Frame3D {
         let AE = this.calculate3rdSideFrom2Sides1Angle(AC, CE, ACE)
 
         let frontTireX =
-            this.calculate3rdSideInRightAngleTriangle(
-                Math.abs(this.rearTire.y - this.frontTire.y),
-                AE
-            ) + this.rearTire.x
+            this.calculate3rdSideInRightAngleTriangle(Math.abs(this.rearTire.y - this.frontTire.y), AE) +
+            this.rearTire.x
 
         this.frontTire.setX(frontTireX).buildTorus()
 
@@ -293,11 +284,7 @@ class Frame3D {
         let F = B
 
         if (CD > 0) {
-            F = new THREE.Vector3(
-                B.x + Math.abs(D.x - C.x),
-                B.y + Math.abs(D.y - C.y),
-                0
-            )
+            F = new THREE.Vector3(B.x + Math.abs(D.x - C.x), B.y + Math.abs(D.y - C.y), 0)
         }
 
         let TrailOffsetFromB = (this.floorY - B.y) / ((C.y - B.y) / (C.x - B.x))
@@ -311,62 +298,45 @@ class Frame3D {
         this.forkTripleTreeBaseOffset = DE
         this.frameStemTopHeight = B.y
 
-        if (this.showGeometry) {
-            this.drawLineWithVectors(A, B, this.greenMaterial)
-            this.drawLineWithVectors(A, C, this.greenMaterial)
-            this.drawLineWithVectors(B, C, this.greenMaterial)
+        this.drawLineWithVectors(A, B, this.greenMaterial)
+        this.drawLineWithVectors(A, C, this.greenMaterial)
+        this.drawLineWithVectors(B, C, this.greenMaterial)
 
-            this.drawLineWithVectors(E, G, this.redMaterial)
-            this.drawLineWithVectors(C, G, this.redMaterial)
-            this.drawLineWithVectors(C, D, this.redMaterial)
+        this.drawLineWithVectors(E, G, this.redMaterial)
+        this.drawLineWithVectors(C, G, this.redMaterial)
+        this.drawLineWithVectors(C, D, this.redMaterial)
 
-            if (CD > 0) {
-                this.drawLineWithVectors(B, F, this.blueMaterial)
-                this.drawLineWithVectors(F, E, this.blueMaterial)
-            }
+        if (CD > 0) {
+            this.drawLineWithVectors(B, F, this.blueMaterial)
+            this.drawLineWithVectors(F, E, this.blueMaterial)
+        }
 
-            if (DE > 0) {
-                this.drawLineWithVectors(F, D, this.blueMaterial)
-                this.drawLineWithVectors(E, D, this.blueMaterial)
-            }
+        if (DE > 0) {
+            this.drawLineWithVectors(F, D, this.blueMaterial)
+            this.drawLineWithVectors(E, D, this.blueMaterial)
         }
 
         let trailInMillimeters = G.x - E.x
         let trailInInches = trailInMillimeters / 25.4
-        console.log(
-            'trail: ' +
-                trailInMillimeters.toFixed(2) +
-                'mm (' +
-                trailInInches.toFixed(2) +
-                '")'
-        )
     }
 
     removeFromScene() {
         this.rearTire.removeFromObject(this.scene)
         this.frontTire.removeFromObject(this.scene)
-        //this.frontTire.removeFromObject(this.forkPivot)
-        //temp
-
         this.fork.removeFromObject(this.scene)
-
-        //this.scene.remove(this.forkPivot)
 
         this.lines.forEach((line) => this.scene.remove(line))
         this.lines = []
+
+        this.labels.removeFromObject(this.scene)
     }
 
     drawInScene() {
-        this.rearTire
-            .buildTorus()
-            .setTransparency(this.transparentObjects)
-            .addToObject(this.scene)
+        this.rearTire.buildTorus().setTransparency(this.transparentObjects).addToObject(this.scene)
 
         this.calculateFrontTirePosition()
 
-        this.frontTire
-            .setTransparency(this.transparentObjects)
-            .addToObject(this.scene)
+        this.frontTire.setTransparency(this.transparentObjects).addToObject(this.scene)
 
         this.fork
             .calculateFork(this)
@@ -375,7 +345,13 @@ class Frame3D {
             .buildFork()
             .addToObject(this.scene)
 
-        this.lines.forEach((line) => this.scene.add(line))
+        if (this.showGeometry) {
+            this.lines.forEach((line) => this.scene.add(line))
+        }
+
+        if (this.showLabels) {
+            this.labels.calculateLabelValues().calculatePoints().buildLabels().addToObject(this.scene)
+        }
 
         this.renderer.render(this.scene, this.camera)
     }
