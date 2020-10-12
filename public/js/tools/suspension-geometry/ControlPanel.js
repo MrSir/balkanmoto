@@ -242,7 +242,7 @@ class ControlPanel {
             })
 
         this.forkOffset = forkFolder
-            .add(params, 'Fork Offset (mm)', 0, 100, 1)
+            .add(params, 'Fork Offset (mm)', 30, 60, 5)
             .listen()
             .onChange((offset) => {
                 this.frame.parameters.fork.offset = offset

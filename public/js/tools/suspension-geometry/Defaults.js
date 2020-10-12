@@ -22,7 +22,7 @@ class Defaults {
             stemLength: 200,
             fork: {
                 length: 830,
-                offset: 0,
+                offset: 30,
                 tripleTreeRake: 0,
                 diameter: 37,
                 width: 240,
@@ -91,7 +91,7 @@ class Defaults {
             stemLength: 200,
             fork: {
                 length: 830,
-                offset: 0,
+                offset: 30,
                 tripleTreeRake: 0,
                 diameter: 35,
                 width: 240,
@@ -114,7 +114,7 @@ class Defaults {
             stemLength: 200,
             fork: {
                 length: 830,
-                offset: 0,
+                offset: 35,
                 tripleTreeRake: 0,
                 diameter: 43,
                 width: 240,

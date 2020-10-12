@@ -160,6 +160,10 @@ class Frame3D {
         return Math.sqrt(Math.pow(hypotenuse, 2) - Math.pow(side, 2))
     }
 
+    calculateHypotenuseInRightAngleTriangle(a, b) {
+        return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+    }
+
     calculateAdjFromHypAndAngle(hypotenuse, angle) {
         return Math.cos(angle) * hypotenuse
     }
@@ -250,85 +254,92 @@ class Frame3D {
 
         let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
         let E = new THREE.Vector3(frontTireX, this.frontTire.y, 0)
-        let G = new THREE.Vector3(frontTireX, this.floorY, 0)
+
+        // Compute B
+        let AL = this.rearTire.y - E.y
+        let LEA = Math.asin(AL / AC)
+        let BE = this.calculateHypotenuseInRightAngleTriangle(BC, CE)
+        let EAB = this.calculateAngleFrom3Sides(AB, AE, BE)
+        let KAB = EAB - LEA
+        let AK = Math.cos(KAB) * AB
+        let KB = Math.sin(KAB) * AB
+        let B = new THREE.Vector3(this.rearTire.x + AK, this.rearTire.y + KB, 0)
 
         // Compute C
-        let EG = E.distanceTo(G)
-        let CG = this.calculate3rdSideInRightAngleTriangle(CE, EG)
-        let areaCEG = this.calculateTriangleAreaFrom3Sides(CE, EG, CG)
-
-        let IG = this.calculateTriangleHeightFromArea(areaCEG, EG)
-        let IC = this.calculate3rdSideInRightAngleTriangle(IG, CG)
-        let C = new THREE.Vector3(this.frontTire.x - IG, this.floorY + IC, 0)
+        let M = new THREE.Vector3(E.x, B.y, 0)
+        let BM = B.distanceTo(M)
+        let EBM = Math.acos(BM / BE)
+        let CBE = Math.acos(BC / BE)
+        let CBN = CBE + EBM
+        let BN = this.calculateAdjFromHypAndAngle(BC, CBN)
+        let CN = this.calculateOpFromHypAndAngle(BC, CBN)
+        let C = new THREE.Vector3(B.x + BN, B.y - CN, 0)
 
         let D = C
 
-        if (CE !== 0) {
+        let X = new THREE.Vector3(E.x, this.floorY, 0)
+        if (CD !== 0) {
             // Compute D
-            let CEG = this.calculateAngleFrom3Sides(EG, CE, CG)
-            let DG = this.calculate3rdSideFrom2Sides1Angle(DE, EG, CEG)
-            let areaDEG = this.calculateTriangleAreaFrom3Sides(DE, EG, DG)
-            let DM = this.calculateTriangleHeightFromArea(areaDEG, EG)
-            let EM = this.calculate3rdSideInRightAngleTriangle(DM, DE)
-            D = new THREE.Vector3(frontTireX - DM, this.frontTire.y - EM, 0)
+            let EX = E.distanceTo(X)
+            let CX = C.distanceTo(X)
+            let CEX = this.calculateAngleFrom3Sides(EX, CE, CX)
+            let DG = this.calculate3rdSideFrom2Sides1Angle(DE, EX, CEX)
+            let areaDEG = this.calculateTriangleAreaFrom3Sides(DE, EX, DG)
+            let DO = this.calculateTriangleHeightFromArea(areaDEG, EX)
+            let EO = this.calculate3rdSideInRightAngleTriangle(DO, DE)
+            D = new THREE.Vector3(E.x - DO, E.y - EO, 0)
         }
 
-        // Compute B
-        let AL = this.rearTire.y - C.y
-        let LCA = Math.asin(AL / AC)
-        let CAB = this.calculateAngleFrom3Sides(AB, AC, BC)
-        let KAB = CAB - LCA
-        let AK = Math.cos(KAB) * AB
-        let KB = Math.sin(KAB) * AB
-        this.B = new THREE.Vector3(
-            this.rearTire.x + AK,
-            this.rearTire.y + KB,
-            0
-        )
-
-        this.F = this.B
+        let F = B
 
         if (CD > 0) {
-            this.F = new THREE.Vector3(
-                this.B.x + Math.abs(D.x - C.x),
-                this.B.y + Math.abs(D.y - C.y),
+            F = new THREE.Vector3(
+                B.x + Math.abs(D.x - C.x),
+                B.y + Math.abs(D.y - C.y),
                 0
             )
         }
 
-        let X = (this.floorY - this.B.y) / ((C.y - this.B.y) / (C.x - this.B.x))
-        let trailX = this.B.x + X
-        let trailPoint = new THREE.Vector3(trailX, this.floorY, 0)
+        let TrailOffsetFromB = (this.floorY - B.y) / ((C.y - B.y) / (C.x - B.x))
+        let trailX = B.x + TrailOffsetFromB
+        let G = new THREE.Vector3(trailX, this.floorY, 0)
 
+        let LCA = Math.asin((A.y - C.y) / AC)
         let LCB = LCA + ACB
 
         this.verticalStemAngle = Math.PI / 2 - LCB
+        this.forkTripleTreeBaseOffset = DE
+        this.frameStemTopHeight = B.y
 
         if (this.showGeometry) {
-            this.drawLineWithVectors(A, this.B, this.greenMaterial)
+            this.drawLineWithVectors(A, B, this.greenMaterial)
             this.drawLineWithVectors(A, C, this.greenMaterial)
-            this.drawLineWithVectors(this.B, C, this.greenMaterial)
-            this.drawLineWithVectors(C, trailPoint, this.greenMaterial)
+            this.drawLineWithVectors(B, C, this.greenMaterial)
 
-            this.drawLineWithVectors(A, E, this.blueMaterial)
-
-            this.drawLineWithVectors(C, E, this.redMaterial)
             this.drawLineWithVectors(E, G, this.redMaterial)
             this.drawLineWithVectors(C, G, this.redMaterial)
-
-            this.drawLineWithVectors(E, D, this.redMaterial)
             this.drawLineWithVectors(C, D, this.redMaterial)
 
-            this.drawLineWithVectors(this.B, this.F, this.blueMaterial)
-            this.drawLineWithVectors(this.F, D, this.blueMaterial)
-            this.drawLineWithVectors(this.F, E, this.blueMaterial)
+            if (CD > 0) {
+                this.drawLineWithVectors(B, F, this.blueMaterial)
+                this.drawLineWithVectors(F, E, this.blueMaterial)
+            }
 
-            this.drawLineWithVectors(
-                this.B,
-                new THREE.Vector3(this.B.x + 200, this.B.y, this.B.z),
-                this.greenMaterial
-            )
+            if (DE > 0) {
+                this.drawLineWithVectors(F, D, this.blueMaterial)
+                this.drawLineWithVectors(E, D, this.blueMaterial)
+            }
         }
+
+        let trailInMillimeters = G.x - E.x
+        let trailInInches = trailInMillimeters / 25.4
+        console.log(
+            'trail: ' +
+                trailInMillimeters.toFixed(2) +
+                'mm (' +
+                trailInInches.toFixed(2) +
+                '")'
+        )
     }
 
     removeFromScene() {

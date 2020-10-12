@@ -42,6 +42,10 @@ class Fork3D {
         })
     }
 
+    get tripleTreeRakeInRadians() {
+        return THREE.MathUtils.degToRad(this.tripleTreeRake)
+    }
+
     setTransparency(toggle) {
         this.forkTubeMaterial.transparent = toggle
         this.forkMaterial.transparent = toggle
@@ -105,13 +109,22 @@ class Fork3D {
         return this
     }
 
+    setForkTripleTreeBaseOffset(forkTripleTreeBaseOffset) {
+        this.forkTripleTreeBaseOffset = forkTripleTreeBaseOffset
+        return this
+    }
+
+    setFrameStemTopHeight(frameStemTopHeight) {
+        this.frameStemTopHeight = frameStemTopHeight
+        return this
+    }
+
     calculateFork(frame) {
         this.setX(frame.frontTire.x)
-        this.setY(frame.frontTire.y)
-        this.setVerticalStemAngle(frame.verticalStemAngle)
-
-        this.B = frame.B
-        this.F = frame.F
+            .setY(frame.frontTire.y)
+            .setVerticalStemAngle(frame.verticalStemAngle)
+            .setForkTripleTreeBaseOffset(frame.forkTripleTreeBaseOffset)
+            .setFrameStemTopHeight(frame.frameStemTopHeight)
 
         return this
     }
@@ -131,6 +144,7 @@ class Fork3D {
         )
         this.forkLeftCylinder.castShadow = true
         this.forkLeftCylinder.position.set(0, this.length / 2, -this.width / 2)
+        //this.forkLeftCylinder.rotateZ(this.tripleTreeRakeInRadians)
 
         this.forkRightCylinder = new THREE.Mesh(
             this.forkCylinderGeometry,
@@ -163,19 +177,34 @@ class Fork3D {
         )
         this.forkStem = new THREE.Mesh(this.forkStemGeometry, this.forkMaterial)
         this.forkStem.castShadow = true
+
+        let stemAxleLength =
+            Math.cos(this.tripleTreeRakeInRadians) * this.length
+        let YBasedOnDimensions = stemAxleLength - this.stemLength / 2
+        let topDiff = this.frameStemTopHeight - YBasedOnDimensions
         this.forkStem.position.set(
-            0 - this.offset,
-            this.length - this.stemLength / 2,
+            0 - (this.offset + this.forkTripleTreeBaseOffset),
+            this.frameStemTopHeight - topDiff,
             0
         )
 
         this.pivot = new THREE.Group()
         this.pivot.position.set(this.x, this.y, 0)
-        this.pivot.add(this.forkLeftCylinder)
-        this.pivot.add(this.forkRightCylinder)
+        //this.pivot.add(this.forkLeftCylinder)
+        //this.pivot.add(this.forkRightCylinder)
         this.pivot.add(this.wheelAxle)
         this.pivot.add(this.forkStem)
         this.pivot.rotateZ(this.verticalStemAngle)
+
+        this.pivot2 = new THREE.Group()
+        this.pivot2.position.set(this.x, this.y, 0)
+        this.pivot2.add(this.forkLeftCylinder)
+        this.pivot2.add(this.forkRightCylinder)
+        this.pivot2.add(this.wheelAxle)
+        //this.pivot2.add(this.forkStem)
+        this.pivot2.rotateZ(
+            this.verticalStemAngle + this.tripleTreeRakeInRadians
+        )
 
         return this
     }
@@ -186,6 +215,7 @@ class Fork3D {
         // object.remove(this.wheelAxle)
         // object.remove(this.forkStem)
         object.remove(this.pivot)
+        object.remove(this.pivot2)
     }
 
     addToObject(object) {
@@ -194,5 +224,6 @@ class Fork3D {
         // object.add(this.wheelAxle)
         //object.add(this.forkStem)
         object.add(this.pivot)
+        object.add(this.pivot2)
     }
 }

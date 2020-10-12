@@ -81,7 +81,7 @@ class Tire3D {
         this.wheelDiameter = this.rimDiameterInMillimeters + 2 * this.tireHeight
         this.rimRadius = this.rimDiameterInMillimeters / 2
         this.tireRadius = this.rimRadius + this.tireHeight
-
+        console.log(this.wheelDiameter)
         return this
     }
 
@@ -118,7 +118,7 @@ class Tire3D {
         points.push(new THREE.Vector2(this.rimRadius, -this.width / 2))
         points.push(new THREE.Vector2(this.rimRadius, -this.width / 2 + 10))
 
-        let geometry = new THREE.LatheGeometry(points, 60, 0, Math.PI * 2)
+        let geometry = new THREE.LatheGeometry(points, 42, 0, Math.PI * 2)
         this.lathe = new THREE.Mesh(geometry, this.tireMaterial)
         this.lathe.castShadow = true
         this.lathe.rotateX(Math.PI / 2)
