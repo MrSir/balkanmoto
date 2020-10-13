@@ -14,17 +14,14 @@ class SceneInitializer {
             0.01,
             100000
         )
-        this.camera.position.set(0, 500, 1500)
+        this.camera.position.set(0, 500, 2500)
 
         return this
     }
 
     addRenderer() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
-        this.renderer.setSize(
-            this.container.offsetWidth,
-            this.container.offsetHeight
-        )
+        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight)
         this.renderer.shadowMap.enabled = true
         this.container.appendChild(this.renderer.domElement)
 
@@ -32,10 +29,7 @@ class SceneInitializer {
     }
 
     addOrbitalControls() {
-        this.controls = new THREE.OrbitControls(
-            this.camera,
-            this.renderer.domElement
-        )
+        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.25
         this.controls.minDistance = 1000
@@ -101,11 +95,7 @@ class SceneInitializer {
         this.scene.background = new THREE.Color(0xa0a0a0)
         this.scene.fog = new THREE.Fog(0xa0a0a0, 0.01, 10000)
 
-        this.addCamera()
-            .addRenderer()
-            .addOrbitalControls()
-            .addLights()
-            .addFloor()
-            .addOrigin()
+        this.addCamera().addRenderer().addOrbitalControls().addLights().addFloor()
+        //.addOrigin()
     }
 }

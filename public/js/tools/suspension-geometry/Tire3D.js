@@ -9,7 +9,7 @@ class Tire3D {
         this.setRimDiameterInInches(rimDiameterInInches)
 
         this.tireMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x222222222,
+            color: 0x121212121,
             roughness: 1,
             metalness: 0,
             reflectivity: 0.2,
@@ -96,20 +96,12 @@ class Tire3D {
 
         //thread
         points.push(new THREE.Vector2(this.wheelRadius * 0.85, this.width / 2))
-        points.push(
-            new THREE.Vector2(this.wheelRadius * 0.95, this.width * 0.4)
-        )
-        points.push(
-            new THREE.Vector2(this.wheelRadius * 0.99, this.width * 0.2)
-        )
+        points.push(new THREE.Vector2(this.wheelRadius * 0.95, this.width * 0.4))
+        points.push(new THREE.Vector2(this.wheelRadius * 0.99, this.width * 0.2))
         points.push(new THREE.Vector2(this.wheelRadius, this.width * 0.05))
         points.push(new THREE.Vector2(this.wheelRadius, -this.width * 0.05))
-        points.push(
-            new THREE.Vector2(this.wheelRadius * 0.99, -this.width * 0.2)
-        )
-        points.push(
-            new THREE.Vector2(this.wheelRadius * 0.95, -this.width * 0.4)
-        )
+        points.push(new THREE.Vector2(this.wheelRadius * 0.99, -this.width * 0.2))
+        points.push(new THREE.Vector2(this.wheelRadius * 0.95, -this.width * 0.4))
         points.push(new THREE.Vector2(this.wheelRadius * 0.85, -this.width / 2))
 
         // bead

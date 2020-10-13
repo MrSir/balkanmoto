@@ -18,11 +18,11 @@ class Defaults {
 
         defaults['zero'] = {
             rake: 0,
-            wheelbase: 1570,
-            stemLength: 200,
+            wheelbase: 1000,
+            stemLength: 100,
             fork: {
-                length: 830,
-                offset: 30,
+                length: 400,
+                offset: 0,
                 tripleTreeRake: 0,
                 diameter: 37,
                 width: 240,
@@ -113,11 +113,11 @@ class Defaults {
             wheelbase: 1380,
             stemLength: 200,
             fork: {
-                length: 830,
+                length: 725,
                 offset: 35,
                 tripleTreeRake: 0,
                 diameter: 43,
-                width: 240,
+                width: 205,
             },
             frontTire: {
                 width: 120,

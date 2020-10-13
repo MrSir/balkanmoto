@@ -10,7 +10,7 @@ class Frame3D {
     backboneLength = 0
     parameters = {}
 
-    showGeometry = true
+    showGeometry = false
     showLabels = true
     transparentObjects = false
 
@@ -65,6 +65,10 @@ class Frame3D {
         })
         this.greenMaterial = new THREE.LineBasicMaterial({
             color: 0x00ff00,
+        })
+
+        this.blackMaterial = new THREE.LineBasicMaterial({
+            color: 0x000000,
         })
 
         this.initialCalculate()
@@ -186,26 +190,39 @@ class Frame3D {
     }
 
     initialCalculate() {
-        let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
+        let LE = this.parameters.wheelbase
         let FE = this.parameters.fork.length
+        let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
+        let CD = this.parameters.fork.offset
+        let WBC = this.degToRad(this.parameters.rake)
         let BC = FE
+        let DE = 0
         if (DFE > 0) {
             BC = this.calculateAdjFromHypAndAngle(FE, DFE)
+            DE = this.calculateOpFromHypAndAngle(FE, DFE)
         }
 
-        let DC = Math.sin(this.rakeInRadians) * BC
-        let BD = Math.cos(this.rakeInRadians) * BC
-        let ED = Math.abs(this.rearTire.wheelRadius - this.frontTire.wheelRadius)
-        let BE = BD - ED
+        let CE = CD + DE
+        let BE = this.calculateHypotenuseInRightAngleTriangle(BC, CE)
+
+        let CBE = Math.acos(BC / BE)
+        let WBE = CBE + WBC
+        let BW = this.calculateAdjFromHypAndAngle(BE, WBE)
+        let WE = this.calculateOpFromHypAndAngle(BE, WBE)
 
         let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
-        let B = new THREE.Vector3(this.frontTire.x - DC, this.frontTire.y + BD, 0)
+        let B = new THREE.Vector3(this.frontTire.x - WE, this.frontTire.y + BW, 0)
 
         let AB = A.distanceTo(B)
-        let ABE = Math.acos(BE / AB)
+
+        let AL = this.frontTire.y - this.rearTire.y
+        let AR = LE - WE
+        let BR = BW - AL
+
+        let ABR = Math.atan(AR / BR)
 
         this.setBackboneLength(AB)
-        this.setFrameStemAngle(ABE)
+        this.setFrameStemAngle(ABR)
 
         return this
     }
@@ -251,10 +268,13 @@ class Frame3D {
         let LEA = Math.asin(AL / AC)
         let BE = this.calculateHypotenuseInRightAngleTriangle(BC, CE)
         let EAB = this.calculateAngleFrom3Sides(AB, AE, BE)
-        let KAB = EAB - LEA
-        let AK = Math.cos(KAB) * AB
-        let KB = Math.sin(KAB) * AB
-        let B = new THREE.Vector3(this.rearTire.x + AK, this.rearTire.y + KB, 0)
+        let RAB = EAB - LEA
+        let AR = Math.cos(RAB) * AB
+        let BR = Math.sin(RAB) * AB
+
+        let B = new THREE.Vector3(this.rearTire.x + AR, this.rearTire.y + BR, 0)
+
+        this.frameStemTopPoint = B
 
         // Compute C
         let M = new THREE.Vector3(E.x, B.y, 0)
@@ -298,26 +318,31 @@ class Frame3D {
         this.forkTripleTreeBaseOffset = DE
         this.frameStemTopHeight = B.y
 
-        this.drawLineWithVectors(A, B, this.greenMaterial)
-        this.drawLineWithVectors(A, C, this.greenMaterial)
-        this.drawLineWithVectors(B, C, this.greenMaterial)
+        let RX = new THREE.Vector3(this.rearTire.x, this.floorY, 0)
 
-        this.drawLineWithVectors(E, G, this.redMaterial)
-        this.drawLineWithVectors(C, G, this.redMaterial)
-        this.drawLineWithVectors(C, D, this.redMaterial)
+        this.drawLineWithVectors(A, B, this.blackMaterial)
+        this.drawLineWithVectors(A, C, this.blackMaterial)
+        this.drawLineWithVectors(B, C, this.blackMaterial)
+
+        this.drawLineWithVectors(E, G, this.blackMaterial)
+        this.drawLineWithVectors(C, G, this.blackMaterial)
+        this.drawLineWithVectors(C, D, this.blackMaterial)
+
+        this.drawLineWithVectors(A, RX, this.blackMaterial)
+        this.drawLineWithVectors(E, X, this.blackMaterial)
 
         if (CD > 0) {
-            this.drawLineWithVectors(B, F, this.blueMaterial)
-            this.drawLineWithVectors(F, E, this.blueMaterial)
+            this.drawLineWithVectors(B, F, this.blackMaterial)
+            this.drawLineWithVectors(F, E, this.blackMaterial)
         }
 
         if (DE > 0) {
-            this.drawLineWithVectors(F, D, this.blueMaterial)
-            this.drawLineWithVectors(E, D, this.blueMaterial)
+            this.drawLineWithVectors(F, D, this.blackMaterial)
+            this.drawLineWithVectors(E, D, this.blackMaterial)
         }
 
-        let trailInMillimeters = G.x - E.x
-        let trailInInches = trailInMillimeters / 25.4
+        this.trailMM = G.x - E.x
+        this.trailPoint = G
     }
 
     removeFromScene() {
