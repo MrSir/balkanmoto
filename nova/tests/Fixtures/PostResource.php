@@ -2,14 +2,15 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
 
 class PostResource extends Resource
 {
@@ -38,8 +39,29 @@ class PostResource extends Resource
     public function fields(Request $request)
     {
         return [
-            BelongsTo::make('User', 'user', UserResource::class),
+            BelongsTo::make('User', 'user', UserResource::class)->nullable()
+                ->viewable($_SERVER['nova.user.viewable-field'] ?? true),
+
+            tap(BelongsToMany::make('Authors', 'authors', UserResource::class), function ($field) {
+                if ($_SERVER['nova.addAuthorPivotFields'] ?? false) {
+                    return [
+                        Text::make('Added At')->onlyOnIndex(),
+                        Date::make('Added At')->onlyOnForms(),
+                    ];
+                }
+            }),
+
             Text::make('Title', 'title')->rules('required', 'string', 'max:255'),
+
+            Text::make('Slug', 'slug')->rules('required', 'string', 'max:255')->default(function ($request) {
+                return 'default-slug';
+            }),
+
+            Text::make('Description', 'description')->rules('string', 'max:255')
+                ->nullable()
+                ->canSee(function () {
+                    return ! empty($_SERVER['nova.post.nullableDescription']);
+                }),
             MorphMany::make('Comments', 'comments', CommentResource::class),
             MorphToMany::make('Tags', 'tags', TagResource::class)->display(function ($tag) {
                 return strtoupper($tag->name);
@@ -49,6 +71,15 @@ class PostResource extends Resource
                 ];
             }),
         ];
+    }
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (isset($_SERVER['nova.post.useEagerUser'])) {
+            return $query->with('user');
+        }
+
+        return $query;
     }
 
     /**

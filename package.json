@@ -12,11 +12,22 @@
     "devDependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
-        "popper.js": "^1.12",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^2.0",
+        "less": "^3.11.2",
+        "less-loader": "^6.1.0",
         "lodash": "^4.17.4",
-        "vue": "^2.5.7"
+        "popper.js": "^1.12",
+        "three": "^0.117.1",
+        "vue": "^2.5.7",
+        "prettier": "^2.1.2"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": false,
+        "singleQuote": true,
+        "printWidth": 120
     }
 }

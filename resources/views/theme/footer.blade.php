@@ -23,6 +23,12 @@
             @endif
         </ul>
     </div>
+    <div class="links">
+        <div class="footer-title">Tools</div>
+        <ul>
+            <li><a href="/tools/suspension-geometry">SUSPENSION GEOMETRY</a></li>
+        </ul>
+    </div>
     <div class="social">
         <div class="footer-title">Social</div>
         <div class="icons">

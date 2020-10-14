@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Laravel\Nova\Fields\File;
 use Illuminate\Routing\Controller;
+use Laravel\Nova\Fields\Downloadable;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class FieldDownloadController extends Controller
@@ -21,9 +21,10 @@ class FieldDownloadController extends Controller
         $resource->authorizeToView($request);
 
         return $resource->detailFields($request)
-                    ->whereInstanceOf(File::class)
+                    ->whereInstanceOf(Downloadable::class)
                     ->findFieldByAttribute($request->field, function () {
                         abort(404);
-                    })->toDownloadResponse($request, $resource);
+                    })
+                    ->toDownloadResponse($request, $resource);
     }
 }

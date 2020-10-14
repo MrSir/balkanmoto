@@ -5,22 +5,22 @@
  */
 import Vue from 'vue'
 import Nova from './Nova'
-import Toasted from 'vue-toasted'
-import PortalVue from 'portal-vue'
-import AsyncComputed from 'vue-async-computed'
-import './plugins/index'
-
-Vue.use(Toasted, {
-    theme: 'nova',
-    position: 'bottom-right',
-    duration: 6000,
-})
-Vue.use(PortalVue)
-Vue.use(AsyncComputed)
+import './plugins'
+import Localization from '@/mixins/Localization'
+import ThemingClasses from '@/mixins/ThemingClasses'
 
 Vue.config.productionTip = false
 
-Vue.mixin(require('./base'))
+Vue.mixin(Localization)
+
+/**
+ * If configured, register a global mixin to add theming-friendly CSS
+ * classnames to Nova's built-in Vue components. This allows the user
+ * to fully customize Nova's theme to their project's branding.
+ */
+if (window.config.themingClasses) {
+  Vue.mixin(ThemingClasses)
+}
 
 /**
  * Next, we'll setup some of Nova's Vue components that need to be global
@@ -35,8 +35,8 @@ import './components'
  * Nova routes. Once that is complete, we will create the Vue instance
  * and hand this router to the Vue instance. Then Nova is all ready!
  */
-;(function() {
-    this.CreateNova = function(config) {
-        return new Nova(config)
-    }
+;(function () {
+  this.CreateNova = function (config) {
+    return new Nova(config)
+  }
 }.call(window))

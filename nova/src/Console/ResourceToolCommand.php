@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Str;
 use Laravel\Nova\Console\Concerns\AcceptsNameAndVendor;
+use Symfony\Component\Process\Process;
 
 class ResourceToolCommand extends Command
 {
@@ -74,7 +74,12 @@ class ResourceToolCommand extends Command
         // Register the tool...
         $this->addToolRepositoryToRootComposer();
         $this->addToolPackageToRootComposer();
-        $this->addScriptsToNpmPackage();
+
+        if ($this->hasPackageFile()) {
+            $this->addScriptsToNpmPackage();
+        } else {
+            $this->warn('Please create a package.json to the root of your project.');
+        }
 
         if ($this->confirm("Would you like to install the tool's NPM dependencies?", true)) {
             $this->installNpmDependencies();
@@ -168,7 +173,7 @@ class ResourceToolCommand extends Command
      */
     protected function installNpmDependencies()
     {
-        $this->runCommand('npm set progress=false && npm install', $this->toolPath());
+        $this->executeCommand('npm set progress=false && npm install', $this->toolPath());
     }
 
     /**
@@ -178,7 +183,7 @@ class ResourceToolCommand extends Command
      */
     protected function compile()
     {
-        $this->runCommand('npm run dev', $this->toolPath());
+        $this->executeCommand('npm run dev', $this->toolPath());
     }
 
     /**
@@ -188,7 +193,7 @@ class ResourceToolCommand extends Command
      */
     protected function composerUpdate()
     {
-        $this->runCommand('composer update', getcwd());
+        $this->executeCommand('composer update', getcwd());
     }
 
     /**
@@ -198,16 +203,16 @@ class ResourceToolCommand extends Command
      * @param  string  $path
      * @return void
      */
-    protected function runCommand($command, $path)
+    protected function executeCommand($command, $path)
     {
-        $process = (new Process($command, $path))->setTimeout(null);
+        $process = (Process::fromShellCommandline($command, $path))->setTimeout(null);
 
         if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
             $process->setTty(true);
         }
 
         $process->run(function ($type, $line) {
-            $this->command->output->write($line);
+            $this->output->write($line);
         });
     }
 
@@ -302,5 +307,15 @@ class ResourceToolCommand extends Command
     protected function toolName()
     {
         return explode('/', $this->argument('name'))[1];
+    }
+
+    /**
+     * Determine whether we have a package file.
+     *
+     * @return bool
+     */
+    protected function hasPackageFile()
+    {
+        return file_exists(base_path('package.json'));
     }
 }

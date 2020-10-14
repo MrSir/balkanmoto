@@ -35,6 +35,20 @@ class TrendResult implements JsonSerializable
     public $suffix;
 
     /**
+     * Whether to run inflection on the suffix.
+     *
+     * @var bool
+     */
+    public $suffixInflection = true;
+
+    /**
+     * The metric value formatting.
+     *
+     * @var string
+     */
+    public $format;
+
+    /**
      * Create a new trend result instance.
      *
      * @param  string|null  $value
@@ -134,6 +148,31 @@ class TrendResult implements JsonSerializable
     }
 
     /**
+     * Don't apply suffix inflections.
+     *
+     * @return $this
+     */
+    public function withoutSuffixInflection()
+    {
+        $this->suffixInflection = false;
+
+        return $this;
+    }
+
+    /**
+     * Set the metric value formatting.
+     *
+     * @param  string  $format
+     * @return $this
+     */
+    public function format($format)
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    /**
      * Prepare the metric result for JSON serialization.
      *
      * @return array
@@ -145,6 +184,8 @@ class TrendResult implements JsonSerializable
             'trend' => $this->trend,
             'prefix' => $this->prefix,
             'suffix' => $this->suffix,
+            'suffixInflection' => $this->suffixInflection,
+            'format' => $this->format,
         ];
     }
 }

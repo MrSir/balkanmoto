@@ -1,0 +1,14 @@
+.content-grid {
+    text-align: justify;
+    margin: 20px;
+    font-size: 14pt;
+}
+
+.content-grid p{
+    margin: 0px 0px 10px 0px;
+    text-indent: 30px;
+}
+
+.content-grid p a{
+    color: #636b6f;
+}

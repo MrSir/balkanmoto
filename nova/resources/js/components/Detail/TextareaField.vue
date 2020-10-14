@@ -1,17 +1,17 @@
 <template>
-    <panel-item :field="field">
-        <template slot="value">
-            <excerpt :content="field.value" />
-        </template>
-    </panel-item>
+  <panel-item :field="field">
+    <template slot="value">
+      <excerpt
+        :content="field.value"
+        :plain-text="true"
+        :should-show="field.shouldShow"
+      />
+    </template>
+  </panel-item>
 </template>
 
 <script>
-import Excerpt from '../Excerpt'
-
 export default {
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
-
-    components: { Excerpt },
+  props: ['resource', 'resourceName', 'resourceId', 'field'],
 }
 </script>

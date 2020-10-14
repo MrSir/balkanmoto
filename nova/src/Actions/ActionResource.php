@@ -2,14 +2,16 @@
 
 namespace Laravel\Nova\Actions;
 
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Status;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\MorphToActionTarget;
+use Laravel\Nova\Fields\Status;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
 
 class ActionResource extends Resource
 {
@@ -63,19 +65,31 @@ class ActionResource extends Resource
     {
         return [
             ID::make('ID', 'id'),
-            Text::make('Name', 'name'),
-
-            Text::make('Initiated By', function () {
-                return $this->user->name ?? $this->user->getKey;
+            Text::make(__('Action Name'), 'name', function ($value) {
+                return __($value);
             }),
 
-            MorphToActionTarget::make('Target', 'target'),
+            Text::make(__('Action Initiated By'), function () {
+                return $this->user->name ?? $this->user->email ?? __('Nova User');
+            }),
 
-            Status::make('Status', 'status', function ($value) {
-                return ucfirst($value);
-            })->loadingWhen(['Waiting', 'Running'])->failedWhen(['Failed']),
+            MorphToActionTarget::make(__('Action Target'), 'target'),
 
-            DateTime::make('Happened At', 'created_at')->exceptOnForms(),
+            Status::make(__('Action Status'), 'status', function ($value) {
+                return __(ucfirst($value));
+            })->loadingWhen([__('Waiting'), __('Running')])->failedWhen([__('Failed')]),
+
+            $this->when(isset($this->original), function () {
+                return KeyValue::make(__('Original'), 'original');
+            }),
+
+            $this->when(isset($this->changes), function () {
+                return KeyValue::make(__('Changes'), 'changes');
+            }),
+
+            Textarea::make(__('Exception'), 'exception'),
+
+            DateTime::make(__('Action Happened At'), 'created_at')->exceptOnForms(),
         ];
     }
 
@@ -113,13 +127,23 @@ class ActionResource extends Resource
     }
 
     /**
-     * Get the displayble label of the resource.
+     * Get the displayable label of the resource.
      *
      * @return string
      */
     public static function label()
     {
         return __('Actions');
+    }
+
+    /**
+     * Get the displayable singular label of the resource.
+     *
+     * @return string
+     */
+    public static function singularLabel()
+    {
+        return __('Action');
     }
 
     /**

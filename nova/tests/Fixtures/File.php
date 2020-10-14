@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
-use Laravel\Nova\Actions\Actionable;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Nova\Actions\Actionable;
 
 class File extends Model
 {
@@ -15,4 +15,11 @@ class File extends Model
      * @var array
      */
     protected $guarded = [];
+
+    public function setFilesAttribute($value)
+    {
+        if (! is_string($value) || strpos($value, 'avatars') !== 0) {
+            throw new \RuntimeException('Invalid argument');
+        }
+    }
 }

@@ -17,7 +17,8 @@ class AttachableController extends Controller
     {
         $field = $request->newResource()
                     ->availableFields($request)
-                    ->firstWhere('attribute', $request->field);
+                    ->filterForManyToManyRelations()
+                    ->firstWhere('resourceName', $request->field);
 
         $withTrashed = $this->shouldIncludeTrashed(
             $request, $associatedResource = $field->resourceClass
@@ -33,7 +34,7 @@ class AttachableController extends Controller
                         })
                         ->map(function ($resource) use ($request, $field) {
                             return $field->formatAttachableResource($request, $resource);
-                        })->sortBy('display')->values(),
+                        })->sortBy('display', SORT_NATURAL | SORT_FLAG_CASE)->values(),
             'withTrashed' => $withTrashed,
             'softDeletes' => $associatedResource::softDeletes(),
         ];

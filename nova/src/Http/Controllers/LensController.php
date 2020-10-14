@@ -2,8 +2,9 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Routing\Controller;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\LensRequest;
 
 class LensController extends Controller
@@ -27,10 +28,12 @@ class LensController extends Controller
      */
     public function show(LensRequest $request)
     {
-        $paginator = $request->lens()->query($request, $request->newQuery());
+        $lens = $request->lens();
+
+        $paginator = $lens->query($request, $request->newQuery());
 
         if ($paginator instanceof Builder) {
-            $paginator = $paginator->simplePaginate($request->perPage ?? 25);
+            $paginator = $paginator->simplePaginate($request->perPage ?? $request->resource()::perPageOptions()[0]);
         }
 
         return response()->json([
@@ -38,7 +41,10 @@ class LensController extends Controller
             'resources' => $request->toResources($paginator->getCollection()),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),
+            'per_page' => $paginator->perPage(),
+            'per_page_options' => $request->resource()::perPageOptions(),
             'softDeletes' => $request->resourceSoftDeletes(),
+            'hasId' => $lens->availableFields($request)->whereInstanceOf(ID::class)->isNotEmpty(),
         ]);
     }
 }

@@ -2,13 +2,14 @@
 
 namespace Laravel\Nova;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Laravel\Nova\Tools\Dashboard;
-use Laravel\Nova\Events\ServingNova;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Tools\Dashboard;
 use Laravel\Nova\Tools\ResourceManager;
-use Laravel\Nova\Actions\ActionResource;
 
 class NovaServiceProvider extends ServiceProvider
 {
@@ -23,12 +24,14 @@ class NovaServiceProvider extends ServiceProvider
             $this->registerPublishing();
         }
 
+        $this->registerDashboards();
         $this->registerResources();
         $this->registerTools();
         $this->registerCarbonMacros();
+        $this->registerCollectionMacros();
         $this->registerJsonVariables();
 
-        Nova::resources([ActionResource::class]);
+        Nova::resources([config('nova.actions.resource')]);
     }
 
     /**
@@ -47,7 +50,7 @@ class NovaServiceProvider extends ServiceProvider
         ], 'nova-config');
 
         $this->publishes([
-            __DIR__.'/../public' => public_path('nova-assets'),
+            __DIR__.'/../public' => public_path('vendor/nova'),
         ], 'nova-assets');
 
         $this->publishes([
@@ -61,6 +64,18 @@ class NovaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'nova-migrations');
+    }
+
+    /**
+     * Register the dashboards used by Nova.
+     *
+     * @return void
+     */
+    protected function registerDashboards()
+    {
+        Nova::serving(function (ServingNova $event) {
+            Nova::copyDefaultDashboardCards();
+        });
     }
 
     /**
@@ -102,7 +117,8 @@ class NovaServiceProvider extends ServiceProvider
     {
         return [
             'namespace' => 'Laravel\Nova\Http\Controllers',
-            'as' => 'nova.api.',
+            'domain' => config('nova.domain', null),
+            // 'as' => 'nova.api.',
             'prefix' => 'nova-api',
             'middleware' => 'nova',
         ];
@@ -128,8 +144,8 @@ class NovaServiceProvider extends ServiceProvider
      */
     protected function registerCarbonMacros()
     {
-        Carbon::macro('firstDayOfQuarter', new Macros\FirstDayOfQuarter);
-        Carbon::macro('firstDayOfPreviousQuarter', new Macros\FirstDayOfPreviousQuarter);
+        Carbon::mixin(new Macros\FirstDayOfQuarter);
+        Carbon::mixin(new Macros\FirstDayOfPreviousQuarter);
     }
 
     /**
@@ -140,10 +156,20 @@ class NovaServiceProvider extends ServiceProvider
     protected function registerJsonVariables()
     {
         Nova::serving(function (ServingNova $event) {
+            // Load the default Nova translations.
+            Nova::translations(
+                resource_path('lang/vendor/nova/'.app()->getLocale().'.json')
+            );
+
             Nova::provideToScript([
                 'timezone' => config('app.timezone', 'UTC'),
-                'translations' => $this->getTranslations(),
+                'translations' => Nova::allTranslations(),
                 'userTimezone' => Nova::resolveUserTimezone($event->request),
+                'pagination' => config('nova.pagination', 'links'),
+                'locale' => config('app.locale', 'en'),
+                'algoliaAppId' => config('services.algolia.appId'),
+                'algoliaApiKey' => config('services.algolia.apiKey'),
+                'version' => Nova::version(),
             ]);
         });
     }
@@ -157,8 +183,11 @@ class NovaServiceProvider extends ServiceProvider
     {
         $this->commands([
             Console\ActionCommand::class,
+            Console\AssetCommand::class,
             Console\BaseResourceCommand::class,
             Console\CardCommand::class,
+            Console\CustomFilterCommand::class,
+            Console\DashboardCommand::class,
             Console\FilterCommand::class,
             Console\FieldCommand::class,
             Console\InstallCommand::class,
@@ -167,6 +196,8 @@ class NovaServiceProvider extends ServiceProvider
             Console\PublishCommand::class,
             Console\ResourceCommand::class,
             Console\ResourceToolCommand::class,
+            Console\StubPublishCommand::class,
+            Console\ThemeCommand::class,
             Console\ToolCommand::class,
             Console\TrendCommand::class,
             Console\UserCommand::class,
@@ -174,23 +205,10 @@ class NovaServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * Get the translation keys from file.
-     *
-     * @return array
-     */
-    private static function getTranslations()
+    protected function registerCollectionMacros()
     {
-        $translationFile = resource_path('lang/'.app()->getLocale().'.json');
-
-        if (! is_readable($translationFile)) {
-            $translationFile = resource_path('lang/'.app('translator')->getFallback().'.json');
-        }
-
-        if (! is_readable($translationFile)) {
-            return [];
-        }
-
-        return json_decode(file_get_contents($translationFile), true);
+        Collection::macro('isAssoc', function () {
+            return Arr::isAssoc($this->toBase()->all());
+        });
     }
 }

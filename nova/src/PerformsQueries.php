@@ -44,7 +44,7 @@ trait PerformsQueries
             return static::applySoftDeleteConstraint($query, $withTrashed);
         }
 
-        return static::usesScout() && ! is_numeric($search)
+        return static::usesScout()
                 ? static::initializeQueryUsingScout($request, $query, $search, $withTrashed)
                 : static::applySearch(static::applySoftDeleteConstraint($query, $withTrashed), $search);
     }
@@ -58,15 +58,24 @@ trait PerformsQueries
      */
     protected static function applySearch($query, $search)
     {
-        if (is_numeric($search) && in_array($query->getModel()->getKeyType(), ['int', 'integer'])) {
-            $query->whereKey($search);
-        }
-
         return $query->where(function ($query) use ($search) {
             $model = $query->getModel();
 
+            $connectionType = $query->getModel()->getConnection()->getDriverName();
+
+            $canSearchPrimaryKey = is_numeric($search) &&
+                                   in_array($query->getModel()->getKeyType(), ['int', 'integer']) &&
+                                   ($connectionType != 'pgsql' || $search <= PHP_INT_MAX) &&
+                                   in_array($query->getModel()->getKeyName(), static::$search);
+
+            if ($canSearchPrimaryKey) {
+                $query->orWhere($query->getModel()->getQualifiedKeyName(), $search);
+            }
+
+            $likeOperator = $connectionType == 'pgsql' ? 'ilike' : 'like';
+
             foreach (static::searchableColumns() as $column) {
-                $query->orWhere($model->qualifyColumn($column), 'like', '%'.$search.'%');
+                $query->orWhere($model->qualifyColumn($column), $likeOperator, '%'.$search.'%');
             }
         });
     }
@@ -86,7 +95,7 @@ trait PerformsQueries
             static::newModel()->search($search), $withTrashed
         ), function ($scoutBuilder) use ($request) {
             static::scoutQuery($request, $scoutBuilder);
-        })->take(200)->keys();
+        })->take(static::$globalSearchResults)->get()->map->getKey();
 
         return static::applySoftDeleteConstraint(
             $query->whereIn(static::newModel()->getQualifiedKeyName(), $keys->all()), $withTrashed
@@ -131,8 +140,10 @@ trait PerformsQueries
      */
     protected static function applyOrderings($query, array $orderings)
     {
+        $orderings = array_filter($orderings);
+
         if (empty($orderings)) {
-            return empty($query->orders)
+            return empty($query->getQuery()->orders)
                         ? $query->latest($query->getModel()->getQualifiedKeyName())
                         : $query;
         }

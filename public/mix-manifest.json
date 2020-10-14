@@ -1,0 +1,16 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/js/tools/three.js": "/js/tools/three.js",
+    "/css/style.css": "/css/style.css",
+    "/css/large-style.css": "/css/large-style.css",
+    "/css/pages/about-style.css": "/css/pages/about-style.css",
+    "/css/pages/home-style.css": "/css/pages/home-style.css",
+    "/css/pages/article-style.css": "/css/pages/article-style.css",
+    "/css/pages/articles-style.css": "/css/pages/articles-style.css",
+    "/css/pages/tools/engineChecklist-style.css": "/css/pages/tools/engineChecklist-style.css",
+    "/css/pages/about-large-style.css": "/css/pages/about-large-style.css",
+    "/css/pages/home-large-style.css": "/css/pages/home-large-style.css",
+    "/css/pages/article-large-style.css": "/css/pages/article-large-style.css",
+    "/css/pages/articles-large-style.css": "/css/pages/articles-large-style.css",
+    "/css/pages/tools/engineChecklist-large-style.css": "/css/pages/tools/engineChecklist-large-style.css"
+}
