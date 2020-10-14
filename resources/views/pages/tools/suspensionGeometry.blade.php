@@ -53,7 +53,7 @@
             <li>Rake: the absolute angle between the vertical and the fork stem</li>
             <li>Trail: the distance across the ground from the front axle to the intersecting point of the ground and the straight line drawn through the fork stem</li>
         </ul>
-        For more detailed on what those numbers, and the parameters mean check out the explanation article [Coming Soon ...]
+        For more details on what those numbers, and the parameters mean check out the write up article [Coming Soon ...]
 
         <h2>View Toggles</h2>
         The controls in the tool also provide some viewing toggles to help you see what matters most to you.
@@ -95,7 +95,6 @@
         let loader = new THREE.FontLoader()
         loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
             let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('Custom'), font)
-            //frame.drawInScene()
 
             let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('Custom'))
         })

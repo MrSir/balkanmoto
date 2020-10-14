@@ -158,7 +158,7 @@ class ControlPanel {
             })
 
         this.customFolder
-            .add(params, 'Fork Length (mm)', 400, 1000, 1)
+            .add(params, 'Fork Length (mm)', 600, 1000, 1)
             .listen()
             .onChange((length) => {
                 this.frameParameters.fork.length = length
@@ -344,7 +344,7 @@ class ControlPanel {
         }
 
         this.forkFolder
-            .add(params, 'Fork Length (mm)', 400, 1000, 1)
+            .add(params, 'Fork Length (mm)', 600, 1000, 1)
             .listen()
             .onChange((length) => {
                 this.frameParameters.fork.length = length
