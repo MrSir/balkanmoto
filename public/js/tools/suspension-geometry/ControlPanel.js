@@ -312,27 +312,6 @@ class ControlPanel {
             'Stem Length (mm)': this.frameParameters.stemLength,
         }
 
-        // frameFolder
-        //     .add(params, 'Wheelbase (mm)', 1300, 1800, 1)
-        //     .listen()
-        //     .onChange(function (wheelbase) {
-        //         rearTire.setX(-wheelbase / 2).redrawInScene()
-        //         frontTire.setX(wheelbase / 2).redrawInScene()
-        //         fork.redrawInScene()
-        //         labels.redrawInScene()
-        //     })
-        // frameFolder
-        //     .add(params, 'Backbone Length (mm)', 980, 2000, 1)
-        //     .listen()
-        //     .onChange((backboneLength) => {
-        //         this.frame.setBackboneLength(backboneLength).redrawInScene()
-        //     })
-        // frameFolder
-        //     .add(params, 'Backbone Angle (deg)', 0, 45, 0.5)
-        //     .listen()
-        //     .onChange((backboneAngle) => {
-        //         this.frame.setBackboneAngle(backboneAngle).redrawInScene()
-        //     })
         this.frameFolder
             .add(params, 'Stem Rake (deg)', 0, 45, 0.5)
             .listen()
