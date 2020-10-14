@@ -5,7 +5,7 @@ class Defaults {
 
     getOptions() {
         return [
-            'zero',
+            'Custom',
             '1982 Honda V45 Saber',
             '1971 Honda CB750',
             '2003 Yamaha YZF-600 R6',
@@ -16,16 +16,16 @@ class Defaults {
     get defaults() {
         let defaults = []
 
-        defaults['zero'] = {
-            rake: 0,
+        defaults['Custom'] = {
+            rake: 30,
             wheelbase: 1000,
-            stemLength: 100,
+            stemLength: 200,
             fork: {
-                length: 400,
-                offset: 0,
+                length: 1000,
+                offset: 60,
                 tripleTreeRake: 0,
                 diameter: 37,
-                width: 240,
+                width: 191,
             },
             frontTire: {
                 width: 110,

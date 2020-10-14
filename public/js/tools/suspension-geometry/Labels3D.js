@@ -112,7 +112,7 @@ class Labels3D {
     }
 
     buildAngleLabel(title, valueDeg, material) {
-        let text = title + ': ' + valueDeg.toFixed(2) + '°'
+        let text = title + ': ' + valueDeg.toFixed(1) + '°'
 
         return this.buildLabel(text, material)
     }

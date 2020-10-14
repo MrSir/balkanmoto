@@ -49,9 +49,10 @@ class Tire3D {
     }
 
     setParameters(parameters) {
-        this.setWidth(parameters.rearTire.width)
-            .setAspect(parameters.rearTire.aspect)
-            .setRimDiameterInInches(parameters.rearTire.rimDiameterInInches)
+        this.setWidth(parameters.width)
+            .setAspect(parameters.aspect)
+            .setRimDiameterInInches(parameters.rimDiameterInInches)
+
         return this
     }
 
@@ -66,6 +67,7 @@ class Tire3D {
     }
 
     setRimDiameterInInches(rimDiameterInInches) {
+        this.rimDiameterInInches = rimDiameterInInches
         this.rimDiameterInMillimeters = rimDiameterInInches * 25.4
         return this
     }
@@ -75,7 +77,7 @@ class Tire3D {
         return this
     }
 
-    calculateTorusSize() {
+    calculateWheelDimentions() {
         this.tireHeight = this.width * (this.aspect / 100)
         this.wheelDiameter = this.rimDiameterInMillimeters + 2 * this.tireHeight
         this.rimRadius = this.rimDiameterInMillimeters / 2
@@ -88,7 +90,7 @@ class Tire3D {
         return this
     }
 
-    buildTorus() {
+    buildTire() {
         let points = []
         // bead
         points.push(new THREE.Vector2(this.rimRadius, this.width / 2 - 20))

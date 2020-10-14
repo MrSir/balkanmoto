@@ -1,3 +1,5 @@
+'use strict'
+
 class Frame3D {
     static rearTireX = -700
     rearTire
@@ -29,9 +31,6 @@ class Frame3D {
             parameters.rearTire.aspect,
             parameters.rearTire.rimDiameterInInches
         )
-            .setX(Frame3D.rearTireX)
-            .calculateTorusSize()
-            .calculateYBasedOnWheelDiameter()
 
         this.frontTire = new Tire3D(
             floorY,
@@ -39,9 +38,6 @@ class Frame3D {
             parameters.frontTire.aspect,
             parameters.frontTire.rimDiameterInInches
         )
-            .setX(Frame3D.rearTireX + this.parameters.wheelbase)
-            .calculateTorusSize()
-            .calculateYBasedOnWheelDiameter()
 
         this.fork = new Fork3D(
             floorY,
@@ -106,7 +102,7 @@ class Frame3D {
     }
 
     get rakeInRadians() {
-        return THREE.MathUtils.degToRad(this.parameters.rake)
+        return this.degToRad(this.parameters.rake)
     }
 
     drawLine(x1, y1, x2, y2, color) {
@@ -147,11 +143,11 @@ class Frame3D {
     }
 
     degToRad(deg) {
-        return THREE.MathUtils.degToRad(deg)
+        return (deg * Math.PI) / 180
     }
 
     radToDeg(rad) {
-        return THREE.MathUtils.radToDeg(rad)
+        return (rad * 180) / Math.PI
     }
 
     calculate3rdSideFrom2Sides1Angle(a, b, angle) {
@@ -190,7 +186,22 @@ class Frame3D {
     }
 
     initialCalculate() {
-        let LE = this.parameters.wheelbase
+        this.rearTire
+            .setParameters(this.parameters.rearTire)
+            .setX(Frame3D.rearTireX)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
+
+        this.frontTire
+            .setParameters(this.parameters.frontTire)
+            .setX(this.rearTire.x + this.parameters.wheelbase)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
+
+        let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
+        let E = new THREE.Vector3(this.frontTire.x, this.frontTire.y, 0)
+
+        let AE = A.distanceTo(E)
         let FE = this.parameters.fork.length
         let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
         let CD = this.parameters.fork.offset
@@ -201,7 +212,6 @@ class Frame3D {
             BC = this.calculateAdjFromHypAndAngle(FE, DFE)
             DE = this.calculateOpFromHypAndAngle(FE, DFE)
         }
-
         let CE = CD + DE
         let BE = this.calculateHypotenuseInRightAngleTriangle(BC, CE)
 
@@ -210,27 +220,30 @@ class Frame3D {
         let BW = this.calculateAdjFromHypAndAngle(BE, WBE)
         let WE = this.calculateOpFromHypAndAngle(BE, WBE)
 
-        let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
-        let B = new THREE.Vector3(this.frontTire.x - WE, this.frontTire.y + BW, 0)
-
+        let B = new THREE.Vector3(E.x - WE, E.y + BW, 0)
         let AB = A.distanceTo(B)
 
-        let AL = this.frontTire.y - this.rearTire.y
-        let AR = LE - WE
-        let BR = BW - AL
-
-        let ABR = Math.atan(AR / BR)
-
         this.setBackboneLength(AB)
+
+        let ABE = this.calculateAngleFrom3Sides(BE, AB, AE)
+        let ABR = ABE - WBE
+
         this.setFrameStemAngle(ABR)
 
         return this
     }
 
     calculateFrontTirePosition() {
-        this.rearTire.setX(Frame3D.rearTireX).calculateTorusSize().calculateYBasedOnWheelDiameter()
+        this.rearTire
+            .setParameters(this.parameters.rearTire)
+            .setX(Frame3D.rearTireX)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
 
-        this.frontTire.calculateTorusSize().calculateYBasedOnWheelDiameter()
+        this.frontTire
+            .setParameters(this.parameters.frontTire)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
 
         let AB = this.backboneLength
         let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
@@ -253,15 +266,12 @@ class Frame3D {
         let ACE = ACB + BCE
 
         let AE = this.calculate3rdSideFrom2Sides1Angle(AC, CE, ACE)
+        let LE = this.calculate3rdSideInRightAngleTriangle(Math.abs(this.rearTire.y - this.frontTire.y), AE)
 
-        let frontTireX =
-            this.calculate3rdSideInRightAngleTriangle(Math.abs(this.rearTire.y - this.frontTire.y), AE) +
-            this.rearTire.x
-
-        this.frontTire.setX(frontTireX).buildTorus()
+        this.frontTire.setX(LE + this.rearTire.x).buildTire()
 
         let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
-        let E = new THREE.Vector3(frontTireX, this.frontTire.y, 0)
+        let E = new THREE.Vector3(LE + this.rearTire.x, this.frontTire.y, 0)
 
         // Compute B
         let AL = this.rearTire.y - E.y
@@ -357,11 +367,11 @@ class Frame3D {
     }
 
     drawInScene() {
-        this.rearTire.buildTorus().setTransparency(this.transparentObjects).addToObject(this.scene)
+        this.rearTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.scene)
 
         this.calculateFrontTirePosition()
 
-        this.frontTire.setTransparency(this.transparentObjects).addToObject(this.scene)
+        this.frontTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.scene)
 
         this.fork
             .calculateFork(this)

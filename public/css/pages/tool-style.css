@@ -26,3 +26,13 @@
 .content-grid #canvas .dg.main {
     overflow-y: visible;
 }
+
+.dg .cr.function {
+    border-left: 3px solid #2FA1D6 !important;
+    background-color: #2FA1D6;
+    text-align: center;
+}
+
+.dg .cr.function .property-name{
+    width: 100%;
+}

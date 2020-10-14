@@ -14,6 +14,9 @@
 @endsection
 
 @section('content')
+    <div id="info">
+        This tool is build to 
+    </div>
     <div id="canvas">
         <div id="control-panel"></div>
     </div>
@@ -31,10 +34,10 @@
 
         let loader = new THREE.FontLoader()
         loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
-            let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('zero'), font)
-            frame.drawInScene()
+            let frame = new Frame3D(scene, sceneInitializer.renderer, sceneInitializer.camera, floorY, defaults.findDefaults('Custom'), font)
+            //frame.drawInScene()
 
-            let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('zero'))
+            let controlPanel = new ControlPanel(document.getElementById('control-panel'), frame, defaults.findDefaults('Custom'))
         })
 
 
