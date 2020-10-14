@@ -11,6 +11,7 @@
     <script src="/js/tools/suspension-geometry/Frame3D.js" type="application/javascript"></script>
     <script src="/js/tools/suspension-geometry/SceneInitializer.js" type="application/javascript"></script>
     <script src="/js/tools/suspension-geometry/Defaults.js" type="application/javascript"></script>
+    <meta name="keywords" content="fork suspension,motorcycle suspension calculator,suspension calculator,trail calculator">
 @endsection
 
 @section('content')
