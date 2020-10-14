@@ -1,1 +1,386 @@
-!function(e){var r={};function t(a){if(r[a])return r[a].exports;var i=r[a]={i:a,l:!1,exports:{}};return e[a].call(i.exports,i,i.exports,t),i.l=!0,i.exports}t.m=e,t.c=r,t.d=function(e,r,a){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:a})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},t.p="/",t(t.s=46)}({46:function(e,r,t){e.exports=t(47)},47:function(e,r){var t=function(){function e(e,r){for(var t=0;t<r.length;t++){var a=r[t];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(r,t,a){return t&&e(r.prototype,t),a&&e(r,a),r}}();!function(){function e(r,t,a){!function(e,r){if(!(e instanceof r))throw new TypeError("Cannot call a class as a function")}(this,e),this.previousDefault="Custom",this.defaultName="Custom",this.initialized=!1,this.gui=new THREE.GUI({width:350,closeOnTop:!0,scrollable:!1}),r.appendChild(this.gui.domElement),this.frame=t,this.frameParameters=a,this.createViewFolder().createDefaultsFolder().createCustomFolder()}t(e,[{key:"cleanUpGui",value:function(){this.initialized||"Custom"!==this.previousDefault?(this.gui.removeFolder(this.frontTireFolder),this.gui.removeFolder(this.rearTireFolder),this.gui.removeFolder(this.frameFolder),this.gui.removeFolder(this.forkFolder)):(this.gui.removeFolder(this.customFolder),this.gui.remove(this.initializeButton))}},{key:"resetGuiTo",value:function(e){this.frameParameters=e,this.cleanUpGui(),"Custom"!==this.defaultName?(this.initialized=!0,this.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder()):(this.initialized=!1,this.createCustomFolder())}},{key:"createViewFolder",value:function(){var e=this,r=this.gui.addFolder("View"),t={"Show Geometry":!1,"Show Labels":!0,"Transparent Objects":!1};return r.add(t,"Show Geometry").listen().onChange(function(r){e.frame.setShowGeometry(r),e.initialized&&e.frame.redrawInScene()}),r.add(t,"Show Labels").listen().onChange(function(r){e.frame.setShowLabels(r),e.initialized&&e.frame.redrawInScene()}),r.add(t,"Transparent Objects").listen().onChange(function(r){e.frame.setTransparentObjects(r),e.initialized&&e.frame.redrawInScene()}),r.open(),this}},{key:"createDefaultsFolder",value:function(){var e=this,r=this.gui.addFolder("Defaults"),t=new Defaults;return this.customParameters=t.findDefaults("Custom"),r.add({Defaults:"Custom"},"Defaults").options(t.getOptions()).listen().onChange(function(r){e.previousDefault=e.defaultName,e.defaultName=r,e.frameParameters=t.findDefaults(r),e.resetGuiTo(e.frameParameters),"Custom"!==r?e.frame.setParameters(e.frameParameters).initialCalculate().redrawInScene():e.frame.removeFromScene()}),r.open(),this}},{key:"createCustomFolder",value:function(){var e=this;this.customFolder=this.gui.addFolder("Custom Frame");var r={"Stem Rake (deg)":30,"Wheelbase (mm)":1e3,"Fork Length (mm)":1e3,"Fork Offset (mm)":60,"Triple Tree Rake (deg)":0,"Front Tire Width (mm)":130,"Front Tire Aspect":90,"Front Rim Size (in)":17,"Rear Tire Width (mm)":110,"Rear Tire Aspect":90,"Rear Rim Size (in)":18};this.customFolder.add(r,"Stem Rake (deg)",0,45,.5).listen().onChange(function(r){e.frameParameters.rake=r}),this.customFolder.add(r,"Wheelbase (mm)",1e3,1800,5).listen().onChange(function(r){e.frameParameters.wheelbase=r}),this.customFolder.add(r,"Fork Length (mm)",600,1e3,1).listen().onChange(function(r){e.frameParameters.fork.length=r}),this.customFolder.add(r,"Fork Offset (mm)",0,80,5).listen().onChange(function(r){e.frameParameters.fork.offset=r}),this.customFolder.add(r,"Triple Tree Rake (deg)",0,10,1).listen().onChange(function(r){e.frameParameters.fork.tripleTreeRake=r}),this.customFolder.add(r,"Front Tire Width (mm)",70,320,5).onChange(function(r){e.frameParameters.frontTire.width=r}),this.customFolder.add(r,"Front Tire Aspect",25,95,5).listen().onChange(function(r){e.frameParameters.frontTire.aspect=r}),this.customFolder.add(r,"Front Rim Size (in)",13,22,1).listen().onChange(function(r){e.frameParameters.frontTire.rimDiameterInInches=r}),this.customFolder.add(r,"Rear Tire Width (mm)",70,320,5).onChange(function(r){e.frameParameters.rearTire.width=r}),this.customFolder.add(r,"Rear Tire Aspect",25,95,5).listen().onChange(function(r){e.frameParameters.rearTire.aspect=r}),this.customFolder.add(r,"Rear Rim Size (in)",13,22,1).listen().onChange(function(r){e.frameParameters.rearTire.rimDiameterInInches=r}),this.customFolder.open();var t={initialize:function(){e.gui.removeFolder(e.customFolder),e.gui.remove(e.initializeButton),e.frame.setParameters(e.frameParameters).initialCalculate().redrawInScene(),e.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder(),e.initialized=!0}};return this.initializeButton=this.gui.add(t,"initialize").name("INITIALIZE FRAME"),this}},{key:"createFrontTireFolder",value:function(){var e=this;this.frontTireFolder=this.gui.addFolder("Front Tire");var r={"Tire Width (mm)":this.frameParameters.frontTire.width,"Tire Aspect":this.frameParameters.frontTire.aspect,"Rim Size (in)":this.frameParameters.frontTire.rimDiameterInInches};return this.frontTireFolder.add(r,"Tire Width (mm)",70,320,5).onChange(function(r){e.frameParameters.frontTire.width=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.frontTireFolder.add(r,"Tire Aspect",25,95,5).listen().onChange(function(r){e.frameParameters.frontTire.aspect=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.frontTireFolder.add(r,"Rim Size (in)",13,22,1).listen().onChange(function(r){e.frameParameters.frontTire.rimDiameterInInches=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.frontTireFolder.close(),this}},{key:"createRearTireFolder",value:function(){var e=this;this.rearTireFolder=this.gui.addFolder("Rear Tire");var r={"Tire Width (mm)":this.frameParameters.rearTire.width,"Tire Aspect":this.frameParameters.rearTire.aspect,"Rim Size (in)":this.frameParameters.rearTire.rimDiameterInInches};return this.rearTireFolder.add(r,"Tire Width (mm)",70,320,5).listen().onChange(function(r){e.frameParameters.rearTire.width=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.rearTireFolder.add(r,"Tire Aspect",25,95,5).listen().onChange(function(r){e.frameParameters.rearTire.aspect=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.rearTireFolder.add(r,"Rim Size (in)",13,22,1).listen().onChange(function(r){e.frameParameters.rearTire.rimDiameterInInches=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.rearTireFolder.close(),this}},{key:"createFrameFolder",value:function(){var e=this;this.frameFolder=this.gui.addFolder("Frame");var r={"Stem Rake (deg)":this.frameParameters.rake,"Stem Length (mm)":this.frameParameters.stemLength};return this.frameFolder.add(r,"Stem Rake (deg)",0,45,.5).listen().onChange(function(r){e.frameParameters.rake=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.frameFolder.add(r,"Stem Length (mm)",100,250,1).listen().onChange(function(r){e.frameParameters.stemLength=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.frameFolder.open(),this}},{key:"createForkFolder",value:function(){var e=this;this.forkFolder=this.gui.addFolder("Fork");var r={"Fork Length (mm)":this.frameParameters.fork.length,"Fork Offset (mm)":this.frameParameters.fork.offset,"Triple Tree Rake (deg)":this.frameParameters.fork.tripleTreeRake,"Fork Diameter (mm)":this.frameParameters.fork.diameter,"Fork Width (mm)":this.frameParameters.fork.width};return this.forkFolder.add(r,"Fork Length (mm)",600,1e3,1).listen().onChange(function(r){e.frameParameters.fork.length=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.forkFolder.add(r,"Fork Offset (mm)",0,80,5).listen().onChange(function(r){e.frameParameters.fork.offset=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.forkFolder.add(r,"Triple Tree Rake (deg)",0,10,1).listen().onChange(function(r){e.frameParameters.fork.tripleTreeRake=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.forkFolder.add(r,"Fork Diameter (mm)",27,49,1).listen().onChange(function(r){e.frameParameters.fork.diameter=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.forkFolder.add(r,"Fork Width (mm)",100,400,1).listen().onChange(function(r){e.frameParameters.fork.width=r,e.frame.setParameters(e.frameParameters).redrawInScene()}),this.forkFolder.open(),this}}])}()}});
+class ControlPanel {
+    constructor(element, frame, frameParameters) {
+        this.previousDefault = 'Custom'
+        this.defaultName = 'Custom'
+        this.initialized = false
+
+        this.gui = new THREE.GUI({
+            width: 350,
+            closeOnTop: true,
+            scrollable: false,
+        })
+        element.appendChild(this.gui.domElement)
+
+        this.frame = frame
+        this.frameParameters = frameParameters
+
+        this.createViewFolder().createDefaultsFolder().createCustomFolder()
+    }
+
+    cleanUpGui() {
+        if (this.initialized || this.previousDefault !== 'Custom') {
+            this.gui.removeFolder(this.frontTireFolder)
+            this.gui.removeFolder(this.rearTireFolder)
+            this.gui.removeFolder(this.frameFolder)
+            this.gui.removeFolder(this.forkFolder)
+        } else {
+            this.gui.removeFolder(this.customFolder)
+            this.gui.remove(this.initializeButton)
+        }
+    }
+
+    resetGuiTo(newParams) {
+        this.frameParameters = newParams
+
+        this.cleanUpGui()
+
+        if (this.defaultName !== 'Custom') {
+            this.initialized = true
+            this.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder()
+        } else {
+            this.initialized = false
+            this.createCustomFolder()
+        }
+    }
+
+    createViewFolder() {
+        let viewFolder = this.gui.addFolder('View')
+        let params = {
+            'Show Geometry': false,
+            'Show Labels': true,
+            'Transparent Objects': false,
+        }
+
+        viewFolder
+            .add(params, 'Show Geometry')
+            .listen()
+            .onChange((toggle) => {
+                this.frame.setShowGeometry(toggle)
+
+                if (this.initialized) {
+                    this.frame.redrawInScene()
+                }
+            })
+
+        viewFolder
+            .add(params, 'Show Labels')
+            .listen()
+            .onChange((toggle) => {
+                this.frame.setShowLabels(toggle)
+
+                if (this.initialized) {
+                    this.frame.redrawInScene()
+                }
+            })
+
+        viewFolder
+            .add(params, 'Transparent Objects')
+            .listen()
+            .onChange((toggle) => {
+                this.frame.setTransparentObjects(toggle)
+
+                if (this.initialized) {
+                    this.frame.redrawInScene()
+                }
+            })
+
+        viewFolder.open()
+
+        return this
+    }
+
+    createDefaultsFolder() {
+        let defaultsFolder = this.gui.addFolder('Defaults')
+        let params = {
+            Defaults: 'Custom',
+        }
+
+        let defaults = new Defaults()
+
+        this.customParameters = defaults.findDefaults('Custom')
+
+        defaultsFolder
+            .add(params, 'Defaults')
+            .options(defaults.getOptions())
+            .listen()
+            .onChange((name) => {
+                this.previousDefault = this.defaultName
+                this.defaultName = name
+
+                this.frameParameters = defaults.findDefaults(name)
+
+                this.resetGuiTo(this.frameParameters)
+
+                if (name !== 'Custom') {
+                    this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
+                } else {
+                    this.frame.removeFromScene()
+                }
+            })
+
+        defaultsFolder.open()
+
+        return this
+    }
+
+    createCustomFolder() {
+        this.customFolder = this.gui.addFolder('Custom Frame')
+        let params = {
+            'Stem Rake (deg)': 30,
+            'Wheelbase (mm)': 1000,
+            'Fork Length (mm)': 1000,
+            'Fork Offset (mm)': 60,
+            'Triple Tree Rake (deg)': 0,
+            'Front Tire Width (mm)': 130,
+            'Front Tire Aspect': 90,
+            'Front Rim Size (in)': 17,
+            'Rear Tire Width (mm)': 110,
+            'Rear Tire Aspect': 90,
+            'Rear Rim Size (in)': 18,
+        }
+
+        this.customFolder
+            .add(params, 'Stem Rake (deg)', 0, 45, 0.5)
+            .listen()
+            .onChange((rake) => {
+                this.frameParameters.rake = rake
+            })
+
+        this.customFolder
+            .add(params, 'Wheelbase (mm)', 1000, 1800, 5)
+            .listen()
+            .onChange((wheelbase) => {
+                this.frameParameters.wheelbase = wheelbase
+            })
+
+        this.customFolder
+            .add(params, 'Fork Length (mm)', 600, 1000, 1)
+            .listen()
+            .onChange((length) => {
+                this.frameParameters.fork.length = length
+            })
+
+        this.customFolder
+            .add(params, 'Fork Offset (mm)', 0, 80, 5)
+            .listen()
+            .onChange((offset) => {
+                this.frameParameters.fork.offset = offset
+            })
+
+        this.customFolder
+            .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
+            .listen()
+            .onChange((tripleTreeRake) => {
+                this.frameParameters.fork.tripleTreeRake = tripleTreeRake
+            })
+
+        this.customFolder.add(params, 'Front Tire Width (mm)', 70, 320, 5).onChange((width) => {
+            this.frameParameters.frontTire.width = width
+        })
+
+        this.customFolder
+            .add(params, 'Front Tire Aspect', 25, 95, 5)
+            .listen()
+            .onChange((aspect) => {
+                this.frameParameters.frontTire.aspect = aspect
+            })
+
+        this.customFolder
+            .add(params, 'Front Rim Size (in)', 13, 22, 1)
+            .listen()
+            .onChange((rimDiameterInInches) => {
+                this.frameParameters.frontTire.rimDiameterInInches = rimDiameterInInches
+            })
+
+        this.customFolder.add(params, 'Rear Tire Width (mm)', 70, 320, 5).onChange((width) => {
+            this.frameParameters.rearTire.width = width
+        })
+
+        this.customFolder
+            .add(params, 'Rear Tire Aspect', 25, 95, 5)
+            .listen()
+            .onChange((aspect) => {
+                this.frameParameters.rearTire.aspect = aspect
+            })
+
+        this.customFolder
+            .add(params, 'Rear Rim Size (in)', 13, 22, 1)
+            .listen()
+            .onChange((rimDiameterInInches) => {
+                this.frameParameters.rearTire.rimDiameterInInches = rimDiameterInInches
+            })
+
+        this.customFolder.open()
+
+        let initializeObject = {
+            initialize: () => {
+                this.gui.removeFolder(this.customFolder)
+                this.gui.remove(this.initializeButton)
+
+                this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
+
+                this.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder()
+
+                this.initialized = true
+            },
+        }
+
+        this.initializeButton = this.gui.add(initializeObject, 'initialize').name('INITIALIZE FRAME')
+
+        return this
+    }
+
+    createFrontTireFolder() {
+        this.frontTireFolder = this.gui.addFolder('Front Tire')
+        let params = {
+            'Tire Width (mm)': this.frameParameters.frontTire.width,
+            'Tire Aspect': this.frameParameters.frontTire.aspect,
+            'Rim Size (in)': this.frameParameters.frontTire.rimDiameterInInches,
+        }
+
+        this.frontTireFolder.add(params, 'Tire Width (mm)', 70, 320, 5).onChange((width) => {
+            this.frameParameters.frontTire.width = width
+            this.frame.setParameters(this.frameParameters).redrawInScene()
+        })
+
+        this.frontTireFolder
+            .add(params, 'Tire Aspect', 25, 95, 5)
+            .listen()
+            .onChange((aspect) => {
+                this.frameParameters.frontTire.aspect = aspect
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.frontTireFolder
+            .add(params, 'Rim Size (in)', 13, 22, 1)
+            .listen()
+            .onChange((rimDiameterInInches) => {
+                this.frameParameters.frontTire.rimDiameterInInches = rimDiameterInInches
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.frontTireFolder.close()
+
+        return this
+    }
+
+    createRearTireFolder() {
+        this.rearTireFolder = this.gui.addFolder('Rear Tire')
+        let params = {
+            'Tire Width (mm)': this.frameParameters.rearTire.width,
+            'Tire Aspect': this.frameParameters.rearTire.aspect,
+            'Rim Size (in)': this.frameParameters.rearTire.rimDiameterInInches,
+        }
+
+        this.rearTireFolder
+            .add(params, 'Tire Width (mm)', 70, 320, 5)
+            .listen()
+            .onChange((width) => {
+                this.frameParameters.rearTire.width = width
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.rearTireFolder
+            .add(params, 'Tire Aspect', 25, 95, 5)
+            .listen()
+            .onChange((aspect) => {
+                this.frameParameters.rearTire.aspect = aspect
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.rearTireFolder
+            .add(params, 'Rim Size (in)', 13, 22, 1)
+            .listen()
+            .onChange((rimDiameterInInches) => {
+                this.frameParameters.rearTire.rimDiameterInInches = rimDiameterInInches
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.rearTireFolder.close()
+
+        return this
+    }
+
+    createFrameFolder() {
+        this.frameFolder = this.gui.addFolder('Frame')
+        let params = {
+            'Stem Rake (deg)': this.frameParameters.rake,
+            'Stem Length (mm)': this.frameParameters.stemLength,
+        }
+
+        this.frameFolder
+            .add(params, 'Stem Rake (deg)', 0, 45, 0.5)
+            .listen()
+            .onChange((rake) => {
+                this.frameParameters.rake = rake
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.frameFolder
+            .add(params, 'Stem Length (mm)', 100, 250, 1)
+            .listen()
+            .onChange((stemLength) => {
+                this.frameParameters.stemLength = stemLength
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.frameFolder.open()
+
+        return this
+    }
+
+    createForkFolder() {
+        this.forkFolder = this.gui.addFolder('Fork')
+        let params = {
+            'Fork Length (mm)': this.frameParameters.fork.length,
+            'Fork Offset (mm)': this.frameParameters.fork.offset,
+            'Triple Tree Rake (deg)': this.frameParameters.fork.tripleTreeRake,
+            'Fork Diameter (mm)': this.frameParameters.fork.diameter,
+            'Fork Width (mm)': this.frameParameters.fork.width,
+        }
+
+        this.forkFolder
+            .add(params, 'Fork Length (mm)', 600, 1000, 1)
+            .listen()
+            .onChange((length) => {
+                this.frameParameters.fork.length = length
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.forkFolder
+            .add(params, 'Fork Offset (mm)', 0, 80, 5)
+            .listen()
+            .onChange((offset) => {
+                this.frameParameters.fork.offset = offset
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.forkFolder
+            .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
+            .listen()
+            .onChange((tripleTreeRake) => {
+                this.frameParameters.fork.tripleTreeRake = tripleTreeRake
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.forkFolder
+            .add(params, 'Fork Diameter (mm)', 27, 49, 1)
+            .listen()
+            .onChange((diameter) => {
+                this.frameParameters.fork.diameter = diameter
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.forkFolder
+            .add(params, 'Fork Width (mm)', 100, 400, 1)
+            .listen()
+            .onChange((width) => {
+                this.frameParameters.fork.width = width
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.forkFolder.open()
+
+        return this
+    }
+}

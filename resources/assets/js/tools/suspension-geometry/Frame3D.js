@@ -1,12 +1,10 @@
 class Frame3D {
-    constructor(scene, renderer, camera, floorY, parameters, font) {
-        this.rearTireX = -700
+    static rearTireX = -700
 
+    constructor(scene, renderer, camera, floorY, parameters, font) {
         this.showGeometry = false
         this.showLabels = true
         this.transparentObjects = false
-
-        this.backboneLength = 0
 
         this.scene = scene
         this.renderer = renderer

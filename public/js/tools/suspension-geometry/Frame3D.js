@@ -1,1 +1,388 @@
-!function(e){var t={};function r(a){if(t[a])return t[a].exports;var i=t[a]={i:a,l:!1,exports:{}};return e[a].call(i.exports,i,i.exports,r),i.l=!0,i.exports}r.m=e,r.c=t,r.d=function(e,t,a){r.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:a})},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="/",r(r.s=52)}({52:function(e,t,r){e.exports=r(53)},53:function(e,t){var r=function(){function e(e,t){for(var r=0;r<t.length;r++){var a=t[r];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,r,a){return r&&e(t.prototype,r),a&&e(t,a),t}}();!function(){function e(t,r,a,i,s,n){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e),this.rearTireX=-700,this.showGeometry=!1,this.showLabels=!0,this.transparentObjects=!1,this.backboneLength=0,this.scene=t,this.renderer=r,this.camera=a,this.floorY=i,this.parameters=s,this.font=n,this.rearTire=new Tire3D(i,s.rearTire.width,s.rearTire.aspect,s.rearTire.rimDiameterInInches),this.frontTire=new Tire3D(i,s.frontTire.width,s.frontTire.aspect,s.frontTire.rimDiameterInInches),this.fork=new Fork3D(i,s.fork.diameter,s.fork.width,s.fork.length,s.fork.offset,s.stemLength,s.tripleTreeRake),this.labels=new Labels3D(i,this),this.lines=[],this.blueMaterial=new THREE.LineBasicMaterial({color:255}),this.redMaterial=new THREE.LineBasicMaterial({color:16711680}),this.greenMaterial=new THREE.LineBasicMaterial({color:65280}),this.blackMaterial=new THREE.LineBasicMaterial({color:0}),this.initialCalculate()}r(e,[{key:"setShowGeometry",value:function(e){return this.showGeometry=e,this}},{key:"setShowLabels",value:function(e){return this.showLabels=e,this}},{key:"setTransparentObjects",value:function(e){return this.transparentObjects=e,this}},{key:"setParameters",value:function(e){return this.parameters=e,this}},{key:"setBackboneLength",value:function(e){return this.backboneLength=e,this}},{key:"setFrameStemAngle",value:function(e){return this.frameStemAngle=e,this}},{key:"drawLine",value:function(e,t,r,a,i){var s=(new THREE.BufferGeometry).setFromPoints([new THREE.Vector3(e,t,0),new THREE.Vector3(r,a,0)]),n=new THREE.Line(s,i);this.lines.push(n)}},{key:"drawLineWithVectors",value:function(e,t,r){var a=(new THREE.BufferGeometry).setFromPoints([e,t]),i=new THREE.Line(a,r);this.lines.push(i)}},{key:"drawCircle",value:function(e,t){for(var r=[],a=0;a<=360;a++)r.push(new THREE.Vector3(e.x+Math.sin(a*(Math.PI/180))*t,e.y+Math.cos(a*(Math.PI/180))*t,e.z+0));var i=(new THREE.BufferGeometry).setFromPoints(r),s=new THREE.Line(i,this.blueMaterial);this.lines.push(s)}},{key:"degToRad",value:function(e){return e*Math.PI/180}},{key:"radToDeg",value:function(e){return 180*e/Math.PI}},{key:"calculate3rdSideFrom2Sides1Angle",value:function(e,t,r){return Math.sqrt(Math.pow(e,2)+Math.pow(t,2)-2*e*t*Math.cos(r))}},{key:"calculateAngleFrom3Sides",value:function(e,t,r){var a=Math.pow(e,2)+Math.pow(t,2)-Math.pow(r,2),i=2*t*e;return Math.abs(Math.acos(a/i))}},{key:"calculate3rdSideInRightAngleTriangle",value:function(e,t){return Math.sqrt(Math.pow(t,2)-Math.pow(e,2))}},{key:"calculateHypotenuseInRightAngleTriangle",value:function(e,t){return Math.sqrt(Math.pow(e,2)+Math.pow(t,2))}},{key:"calculateAdjFromHypAndAngle",value:function(e,t){return Math.cos(t)*e}},{key:"calculateOpFromHypAndAngle",value:function(e,t){return Math.sin(t)*e}},{key:"calculateTriangleAreaFrom3Sides",value:function(e,t,r){return Math.sqrt((e+t+r)*(-e+t+r)*(e-t+r)*(e+t-r))/4}},{key:"calculateTriangleHeightFromArea",value:function(e,t){return 2*e/t}},{key:"initialCalculate",value:function(){this.rearTire.setParameters(this.parameters.rearTire).setX(e.rearTireX).calculateWheelDimentions().calculateYBasedOnWheelDiameter(),this.frontTire.setParameters(this.parameters.frontTire).setX(this.rearTire.x+this.parameters.wheelbase).calculateWheelDimentions().calculateYBasedOnWheelDiameter();var t=new THREE.Vector3(this.rearTire.x,this.rearTire.y,0),r=new THREE.Vector3(this.frontTire.x,this.frontTire.y,0),a=t.distanceTo(r),i=this.parameters.fork.length,s=this.degToRad(this.parameters.fork.tripleTreeRake),n=this.parameters.fork.offset,h=this.degToRad(this.parameters.rake),o=i,l=0;s>0&&(o=this.calculateAdjFromHypAndAngle(i,s),l=this.calculateOpFromHypAndAngle(i,s));var c=n+l,u=this.calculateHypotenuseInRightAngleTriangle(o,c),d=Math.acos(o/u)+h,T=this.calculateAdjFromHypAndAngle(u,d),f=this.calculateOpFromHypAndAngle(u,d),m=new THREE.Vector3(r.x-f,r.y+T,0),p=t.distanceTo(m);this.setBackboneLength(p);var y=this.calculateAngleFrom3Sides(u,p,a)-d;return this.setFrameStemAngle(y),this}},{key:"calculateFrontTirePosition",value:function(){this.rearTire.setParameters(this.parameters.rearTire).setX(e.rearTireX).calculateWheelDimentions().calculateYBasedOnWheelDiameter(),this.frontTire.setParameters(this.parameters.frontTire).calculateWheelDimentions().calculateYBasedOnWheelDiameter();var t=this.backboneLength,r=this.degToRad(this.parameters.fork.tripleTreeRake),a=this.parameters.fork.length,i=a,s=0;r>0&&(i=this.calculateAdjFromHypAndAngle(a,r),s=this.calculateOpFromHypAndAngle(a,r));var n=this.frameStemAngle+this.rakeInRadians,h=this.parameters.fork.offset,o=h+s,l=this.calculate3rdSideFrom2Sides1Angle(t,i,n),c=this.calculateAngleFrom3Sides(l,i,t),u=c+this.degToRad(90),d=this.calculate3rdSideFrom2Sides1Angle(l,o,u),T=this.calculate3rdSideInRightAngleTriangle(Math.abs(this.rearTire.y-this.frontTire.y),d);this.frontTire.setX(T+this.rearTire.x).buildTire();var f=new THREE.Vector3(this.rearTire.x,this.rearTire.y,0),m=new THREE.Vector3(T+this.rearTire.x,this.frontTire.y,0),p=this.rearTire.y-m.y,y=Math.asin(p/l),w=this.calculateHypotenuseInRightAngleTriangle(i,o),g=this.calculateAngleFrom3Sides(t,d,w)-y,k=Math.cos(g)*t,b=Math.sin(g)*t,M=new THREE.Vector3(this.rearTire.x+k,this.rearTire.y+b,0);this.frameStemTopPoint=M;var v=new THREE.Vector3(m.x,M.y,0),E=M.distanceTo(v),A=Math.acos(E/w),R=Math.acos(i/w)+A,H=this.calculateAdjFromHypAndAngle(i,R),F=this.calculateOpFromHypAndAngle(i,R),L=new THREE.Vector3(M.x+H,M.y-F,0),S=L,V=new THREE.Vector3(m.x,this.floorY,0);if(0!==h){var x=m.distanceTo(V),O=L.distanceTo(V),j=this.calculateAngleFrom3Sides(x,o,O),P=this.calculate3rdSideFrom2Sides1Angle(s,x,j),W=this.calculateTriangleAreaFrom3Sides(s,x,P),I=this.calculateTriangleHeightFromArea(W,x),D=this.calculate3rdSideInRightAngleTriangle(I,s);S=new THREE.Vector3(m.x-I,m.y-D,0)}var B=M;h>0&&(B=new THREE.Vector3(M.x+Math.abs(S.x-L.x),M.y+Math.abs(S.y-L.y),0));var Y=(this.floorY-M.y)/((L.y-M.y)/(L.x-M.x)),G=M.x+Y,X=new THREE.Vector3(G,this.floorY,0),q=Math.asin((f.y-L.y)/l)+c;this.verticalStemAngle=Math.PI/2-q,this.forkTripleTreeBaseOffset=s,this.frameStemTopHeight=M.y;var C=new THREE.Vector3(this.rearTire.x,this.floorY,0);this.drawLineWithVectors(f,M,this.blackMaterial),this.drawLineWithVectors(f,L,this.blackMaterial),this.drawLineWithVectors(M,L,this.blackMaterial),this.drawLineWithVectors(m,X,this.blackMaterial),this.drawLineWithVectors(L,X,this.blackMaterial),this.drawLineWithVectors(L,S,this.blackMaterial),this.drawLineWithVectors(f,C,this.blackMaterial),this.drawLineWithVectors(m,V,this.blackMaterial),h>0&&(this.drawLineWithVectors(M,B,this.blackMaterial),this.drawLineWithVectors(B,m,this.blackMaterial)),s>0&&(this.drawLineWithVectors(B,S,this.blackMaterial),this.drawLineWithVectors(m,S,this.blackMaterial)),this.trailMM=X.x-m.x,this.trailPoint=X}},{key:"removeFromScene",value:function(){var e=this;this.rearTire.removeFromObject(this.scene),this.frontTire.removeFromObject(this.scene),this.fork.removeFromObject(this.scene),this.lines.forEach(function(t){return e.scene.remove(t)}),this.lines=[],this.labels.removeFromObject(this.scene)}},{key:"drawInScene",value:function(){var e=this;this.rearTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.scene),this.calculateFrontTirePosition(),this.frontTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.scene),this.fork.calculateFork(this).setTransparency(this.transparentObjects).setParameters(this.parameters).buildFork().addToObject(this.scene),this.showGeometry&&this.lines.forEach(function(t){return e.scene.add(t)}),this.showLabels&&this.labels.calculateLabelValues().calculatePoints().buildLabels().addToObject(this.scene),this.renderer.render(this.scene,this.camera)}},{key:"redrawInScene",value:function(){this.removeFromScene(),this.drawInScene()}},{key:"rakeInRadians",get:function(){return this.degToRad(this.parameters.rake)}}])}()}});
+class Frame3D {
+    static rearTireX = -700
+
+    constructor(scene, renderer, camera, floorY, parameters, font) {
+        this.showGeometry = false
+        this.showLabels = true
+        this.transparentObjects = false
+
+        this.scene = scene
+        this.renderer = renderer
+        this.camera = camera
+        this.floorY = floorY
+
+        this.parameters = parameters
+        this.font = font
+
+        this.rearTire = new Tire3D(
+            floorY,
+            parameters.rearTire.width,
+            parameters.rearTire.aspect,
+            parameters.rearTire.rimDiameterInInches
+        )
+
+        this.frontTire = new Tire3D(
+            floorY,
+            parameters.frontTire.width,
+            parameters.frontTire.aspect,
+            parameters.frontTire.rimDiameterInInches
+        )
+
+        this.fork = new Fork3D(
+            floorY,
+            parameters.fork.diameter,
+            parameters.fork.width,
+            parameters.fork.length,
+            parameters.fork.offset,
+            parameters.stemLength,
+            parameters.tripleTreeRake
+        )
+
+        this.labels = new Labels3D(floorY, this)
+
+        this.lines = []
+
+        this.blueMaterial = new THREE.LineBasicMaterial({
+            color: 0x0000ff,
+        })
+        this.redMaterial = new THREE.LineBasicMaterial({
+            color: 0xff0000,
+        })
+        this.greenMaterial = new THREE.LineBasicMaterial({
+            color: 0x00ff00,
+        })
+
+        this.blackMaterial = new THREE.LineBasicMaterial({
+            color: 0x000000,
+        })
+
+        this.initialCalculate()
+    }
+
+    setShowGeometry(toggle) {
+        this.showGeometry = toggle
+        return this
+    }
+
+    setShowLabels(toggle) {
+        this.showLabels = toggle
+        return this
+    }
+
+    setTransparentObjects(toggle) {
+        this.transparentObjects = toggle
+        return this
+    }
+
+    setParameters(parameters) {
+        this.parameters = parameters
+
+        return this
+    }
+
+    setBackboneLength(backboneLength) {
+        this.backboneLength = backboneLength
+        return this
+    }
+
+    setFrameStemAngle(frameStemAngle) {
+        this.frameStemAngle = frameStemAngle
+        return this
+    }
+
+    get rakeInRadians() {
+        return this.degToRad(this.parameters.rake)
+    }
+
+    drawLine(x1, y1, x2, y2, color) {
+        let geometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(x1, y1, 0),
+            new THREE.Vector3(x2, y2, 0),
+        ])
+        let mesh = new THREE.Line(geometry, color)
+
+        this.lines.push(mesh)
+    }
+
+    drawLineWithVectors(vector1, vector2, color) {
+        let geometry = new THREE.BufferGeometry().setFromPoints([vector1, vector2])
+        let mesh = new THREE.Line(geometry, color)
+
+        this.lines.push(mesh)
+    }
+
+    drawCircle(center, radius) {
+        let points = []
+
+        // 360 full circle will be drawn clockwise
+        for (let i = 0; i <= 360; i++) {
+            points.push(
+                new THREE.Vector3(
+                    center.x + Math.sin(i * (Math.PI / 180)) * radius,
+                    center.y + Math.cos(i * (Math.PI / 180)) * radius,
+                    center.z + 0
+                )
+            )
+        }
+
+        let geometry = new THREE.BufferGeometry().setFromPoints(points)
+        let mesh = new THREE.Line(geometry, this.blueMaterial)
+
+        this.lines.push(mesh)
+    }
+
+    degToRad(deg) {
+        return (deg * Math.PI) / 180
+    }
+
+    radToDeg(rad) {
+        return (rad * 180) / Math.PI
+    }
+
+    calculate3rdSideFrom2Sides1Angle(a, b, angle) {
+        return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2) - 2 * a * b * Math.cos(angle))
+    }
+
+    calculateAngleFrom3Sides(a, b, c) {
+        let nominatorACB = Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)
+        let denominatorACB = 2 * b * a
+
+        return Math.abs(Math.acos(nominatorACB / denominatorACB))
+    }
+
+    calculate3rdSideInRightAngleTriangle(side, hypotenuse) {
+        return Math.sqrt(Math.pow(hypotenuse, 2) - Math.pow(side, 2))
+    }
+
+    calculateHypotenuseInRightAngleTriangle(a, b) {
+        return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+    }
+
+    calculateAdjFromHypAndAngle(hypotenuse, angle) {
+        return Math.cos(angle) * hypotenuse
+    }
+
+    calculateOpFromHypAndAngle(hypotenuse, angle) {
+        return Math.sin(angle) * hypotenuse
+    }
+
+    calculateTriangleAreaFrom3Sides(a, b, c) {
+        return Math.sqrt((a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c)) / 4
+    }
+
+    calculateTriangleHeightFromArea(area, base) {
+        return (2 * area) / base
+    }
+
+    initialCalculate() {
+        this.rearTire
+            .setParameters(this.parameters.rearTire)
+            .setX(Frame3D.rearTireX)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
+
+        this.frontTire
+            .setParameters(this.parameters.frontTire)
+            .setX(this.rearTire.x + this.parameters.wheelbase)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
+
+        let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
+        let E = new THREE.Vector3(this.frontTire.x, this.frontTire.y, 0)
+
+        let AE = A.distanceTo(E)
+        let FE = this.parameters.fork.length
+        let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
+        let CD = this.parameters.fork.offset
+        let WBC = this.degToRad(this.parameters.rake)
+        let BC = FE
+        let DE = 0
+        if (DFE > 0) {
+            BC = this.calculateAdjFromHypAndAngle(FE, DFE)
+            DE = this.calculateOpFromHypAndAngle(FE, DFE)
+        }
+        let CE = CD + DE
+        let BE = this.calculateHypotenuseInRightAngleTriangle(BC, CE)
+
+        let CBE = Math.acos(BC / BE)
+        let WBE = CBE + WBC
+        let BW = this.calculateAdjFromHypAndAngle(BE, WBE)
+        let WE = this.calculateOpFromHypAndAngle(BE, WBE)
+
+        let B = new THREE.Vector3(E.x - WE, E.y + BW, 0)
+        let AB = A.distanceTo(B)
+
+        this.setBackboneLength(AB)
+
+        let ABE = this.calculateAngleFrom3Sides(BE, AB, AE)
+        let ABR = ABE - WBE
+
+        this.setFrameStemAngle(ABR)
+
+        return this
+    }
+
+    calculateFrontTirePosition() {
+        this.rearTire
+            .setParameters(this.parameters.rearTire)
+            .setX(Frame3D.rearTireX)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
+
+        this.frontTire
+            .setParameters(this.parameters.frontTire)
+            .calculateWheelDimentions()
+            .calculateYBasedOnWheelDiameter()
+
+        let AB = this.backboneLength
+        let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
+        let FE = this.parameters.fork.length
+        let BC = FE
+        let DE = 0
+
+        if (DFE > 0) {
+            BC = this.calculateAdjFromHypAndAngle(FE, DFE)
+            DE = this.calculateOpFromHypAndAngle(FE, DFE)
+        }
+
+        let ABC = this.frameStemAngle + this.rakeInRadians
+        let CD = this.parameters.fork.offset
+        let CE = CD + DE
+
+        let AC = this.calculate3rdSideFrom2Sides1Angle(AB, BC, ABC)
+        let ACB = this.calculateAngleFrom3Sides(AC, BC, AB)
+        let BCE = this.degToRad(90)
+        let ACE = ACB + BCE
+
+        let AE = this.calculate3rdSideFrom2Sides1Angle(AC, CE, ACE)
+        let LE = this.calculate3rdSideInRightAngleTriangle(Math.abs(this.rearTire.y - this.frontTire.y), AE)
+
+        this.frontTire.setX(LE + this.rearTire.x).buildTire()
+
+        let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
+        let E = new THREE.Vector3(LE + this.rearTire.x, this.frontTire.y, 0)
+
+        // Compute B
+        let AL = this.rearTire.y - E.y
+        let LEA = Math.asin(AL / AC)
+        let BE = this.calculateHypotenuseInRightAngleTriangle(BC, CE)
+        let EAB = this.calculateAngleFrom3Sides(AB, AE, BE)
+        let RAB = EAB - LEA
+        let AR = Math.cos(RAB) * AB
+        let BR = Math.sin(RAB) * AB
+
+        let B = new THREE.Vector3(this.rearTire.x + AR, this.rearTire.y + BR, 0)
+
+        this.frameStemTopPoint = B
+
+        // Compute C
+        let M = new THREE.Vector3(E.x, B.y, 0)
+        let BM = B.distanceTo(M)
+        let EBM = Math.acos(BM / BE)
+        let CBE = Math.acos(BC / BE)
+        let CBN = CBE + EBM
+        let BN = this.calculateAdjFromHypAndAngle(BC, CBN)
+        let CN = this.calculateOpFromHypAndAngle(BC, CBN)
+        let C = new THREE.Vector3(B.x + BN, B.y - CN, 0)
+
+        let D = C
+
+        let X = new THREE.Vector3(E.x, this.floorY, 0)
+        if (CD !== 0) {
+            // Compute D
+            let EX = E.distanceTo(X)
+            let CX = C.distanceTo(X)
+            let CEX = this.calculateAngleFrom3Sides(EX, CE, CX)
+            let DG = this.calculate3rdSideFrom2Sides1Angle(DE, EX, CEX)
+            let areaDEG = this.calculateTriangleAreaFrom3Sides(DE, EX, DG)
+            let DO = this.calculateTriangleHeightFromArea(areaDEG, EX)
+            let EO = this.calculate3rdSideInRightAngleTriangle(DO, DE)
+            D = new THREE.Vector3(E.x - DO, E.y - EO, 0)
+        }
+
+        let F = B
+
+        if (CD > 0) {
+            F = new THREE.Vector3(B.x + Math.abs(D.x - C.x), B.y + Math.abs(D.y - C.y), 0)
+        }
+
+        let TrailOffsetFromB = (this.floorY - B.y) / ((C.y - B.y) / (C.x - B.x))
+        let trailX = B.x + TrailOffsetFromB
+        let G = new THREE.Vector3(trailX, this.floorY, 0)
+
+        let LCA = Math.asin((A.y - C.y) / AC)
+        let LCB = LCA + ACB
+
+        this.verticalStemAngle = Math.PI / 2 - LCB
+        this.forkTripleTreeBaseOffset = DE
+        this.frameStemTopHeight = B.y
+
+        let RX = new THREE.Vector3(this.rearTire.x, this.floorY, 0)
+
+        this.drawLineWithVectors(A, B, this.blackMaterial)
+        this.drawLineWithVectors(A, C, this.blackMaterial)
+        this.drawLineWithVectors(B, C, this.blackMaterial)
+
+        this.drawLineWithVectors(E, G, this.blackMaterial)
+        this.drawLineWithVectors(C, G, this.blackMaterial)
+        this.drawLineWithVectors(C, D, this.blackMaterial)
+
+        this.drawLineWithVectors(A, RX, this.blackMaterial)
+        this.drawLineWithVectors(E, X, this.blackMaterial)
+
+        if (CD > 0) {
+            this.drawLineWithVectors(B, F, this.blackMaterial)
+            this.drawLineWithVectors(F, E, this.blackMaterial)
+        }
+
+        if (DE > 0) {
+            this.drawLineWithVectors(F, D, this.blackMaterial)
+            this.drawLineWithVectors(E, D, this.blackMaterial)
+        }
+
+        this.trailMM = G.x - E.x
+        this.trailPoint = G
+    }
+
+    removeFromScene() {
+        this.rearTire.removeFromObject(this.scene)
+        this.frontTire.removeFromObject(this.scene)
+        this.fork.removeFromObject(this.scene)
+
+        this.lines.forEach((line) => this.scene.remove(line))
+        this.lines = []
+
+        this.labels.removeFromObject(this.scene)
+    }
+
+    drawInScene() {
+        this.rearTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.scene)
+
+        this.calculateFrontTirePosition()
+
+        this.frontTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.scene)
+
+        this.fork
+            .calculateFork(this)
+            .setTransparency(this.transparentObjects)
+            .setParameters(this.parameters)
+            .buildFork()
+            .addToObject(this.scene)
+
+        if (this.showGeometry) {
+            this.lines.forEach((line) => this.scene.add(line))
+        }
+
+        if (this.showLabels) {
+            this.labels.calculateLabelValues().calculatePoints().buildLabels().addToObject(this.scene)
+        }
+
+        this.renderer.render(this.scene, this.camera)
+    }
+
+    redrawInScene() {
+        this.removeFromScene()
+
+        this.drawInScene()
+    }
+}

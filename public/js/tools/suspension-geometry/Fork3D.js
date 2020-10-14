@@ -1,1 +1,209 @@
-!function(e){var t={};function i(r){if(t[r])return t[r].exports;var s=t[r]={i:r,l:!1,exports:{}};return e[r].call(s.exports,s,s.exports,i),s.l=!0,s.exports}i.m=e,i.c=t,i.d=function(e,t,r){i.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:r})},i.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return i.d(t,"a",t),t},i.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},i.p="/",i(i.s=50)}({50:function(e,t,i){e.exports=i(51)},51:function(e,t){var i=function(){function e(e,t){for(var i=0;i<t.length;i++){var r=t[i];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,i,r){return i&&e(t.prototype,i),r&&e(t,r),t}}();!function(){function e(t,i,r,s,n,h,o){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e),this.x=0,this.y=0,this.radius=37,this.radiusSegments=32,this.heightSegments=1,this.floorY=t,this.radius=i/2,this.width=r,this.length=s,this.offset=n,this.stemLength=h,this.tripleTreeRake=o,this.forkMaterial=new THREE.MeshPhongMaterial({color:13743895347,depthWrite:!0,transparent:!1,opacity:.25}),this.forkTubeMaterial=new THREE.MeshPhysicalMaterial({color:16766720,emissive:0,metalness:.7,flatShading:!1,roughness:.5,reflectivity:1,clearcoat:.7,transparent:!1,opacity:.25})}i(e,[{key:"setTransparency",value:function(e){return this.forkTubeMaterial.transparent=e,this.forkMaterial.transparent=e,this}},{key:"setX",value:function(e){return this.x=e,this}},{key:"setY",value:function(e){return this.y=e,this}},{key:"setRadius",value:function(e){return this.radius=e,this}},{key:"setWidth",value:function(e){return this.width=e,this}},{key:"setLength",value:function(e){return this.length=e,this}},{key:"setOffset",value:function(e){return this.offset=e,this}},{key:"setStemLength",value:function(e){return this.stemLength=e,this}},{key:"setTripleTreeRake",value:function(e){return this.tripleTreeRake=e,this}},{key:"setParameters",value:function(e){return this.setRadius(e.fork.diameter/2).setLength(e.fork.length).setOffset(e.fork.offset).setWidth(e.fork.width).setStemLength(e.stemLength).setTripleTreeRake(e.fork.tripleTreeRake),this}},{key:"setVerticalStemAngle",value:function(e){return this.verticalStemAngle=e,this}},{key:"setForkTripleTreeBaseOffset",value:function(e){return this.forkTripleTreeBaseOffset=e,this}},{key:"setFrameStemTopHeight",value:function(e){return this.frameStemTopHeight=e,this}},{key:"calculateFork",value:function(e){return this.setX(e.frontTire.x).setY(e.frontTire.y).setVerticalStemAngle(e.verticalStemAngle).setForkTripleTreeBaseOffset(e.forkTripleTreeBaseOffset).setFrameStemTopHeight(e.frameStemTopHeight),this}},{key:"buildFork",value:function(){this.forkCylinderGeometry=new THREE.CylinderGeometry(this.radius,this.radius,this.length,e.radiusSegments,e.heightSegments),this.forkLeftCylinder=new THREE.Mesh(this.forkCylinderGeometry,this.forkTubeMaterial),this.forkLeftCylinder.castShadow=!0,this.forkLeftCylinder.position.set(0,this.length/2,-this.width/2),this.forkRightCylinder=new THREE.Mesh(this.forkCylinderGeometry,this.forkTubeMaterial),this.forkRightCylinder.castShadow=!0,this.forkRightCylinder.position.set(0,this.length/2,this.width/2),this.wheelAxleGeometry=new THREE.CylinderGeometry(10,10,this.width,e.radiusSegments,e.heightSegments),this.wheelAxle=new THREE.Mesh(this.wheelAxleGeometry,this.forkMaterial),this.wheelAxle.castShadow=!0,this.wheelAxle.rotateX(THREE.MathUtils.degToRad(90)),this.wheelAxle.position.set(0,0,0),this.forkStemGeometry=new THREE.CylinderGeometry(this.radius,this.radius,this.stemLength,e.radiusSegments,e.heightSegments),this.forkStem=new THREE.Mesh(this.forkStemGeometry,this.forkMaterial),this.forkStem.castShadow=!0;var t=Math.cos(this.tripleTreeRakeInRadians)*this.length-this.stemLength/2,i=this.frameStemTopHeight-t;return this.forkStem.position.set(0-(this.offset+this.forkTripleTreeBaseOffset),this.frameStemTopHeight-i,0),this.pivot=new THREE.Group,this.pivot.position.set(this.x,this.y,0),this.pivot.add(this.wheelAxle),this.pivot.add(this.forkStem),this.pivot.rotateZ(this.verticalStemAngle),this.pivot2=new THREE.Group,this.pivot2.position.set(this.x,this.y,0),this.pivot2.add(this.forkLeftCylinder),this.pivot2.add(this.forkRightCylinder),this.pivot2.add(this.wheelAxle),this.pivot2.rotateZ(this.verticalStemAngle+this.tripleTreeRakeInRadians),this}},{key:"removeFromObject",value:function(e){e.remove(this.pivot),e.remove(this.pivot2)}},{key:"addToObject",value:function(e){e.add(this.pivot),e.add(this.pivot2)}},{key:"tripleTreeRakeInRadians",get:function(){return THREE.MathUtils.degToRad(this.tripleTreeRake)}}])}()}});
+class Fork3D {
+    constructor(floorY, diameter, width, length, offset, stemLength, tripleTreeRake) {
+        this.x = 0
+        this.y = 0
+        this.radius = 37
+        this.radiusSegments = 32
+        this.heightSegments = 1
+
+        this.floorY = floorY
+        this.radius = diameter / 2
+        this.width = width
+        this.length = length
+        this.offset = offset
+        this.stemLength = stemLength
+        this.tripleTreeRake = tripleTreeRake
+
+        this.forkMaterial = new THREE.MeshPhongMaterial({
+            color: 0x333333333,
+            depthWrite: true,
+            transparent: false,
+            opacity: 0.25,
+        })
+
+        this.forkTubeMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xffd700,
+            emissive: 0x000000,
+            metalness: 0.7,
+            flatShading: false,
+            roughness: 0.5,
+            reflectivity: 1,
+            clearcoat: 0.7,
+            transparent: false,
+            opacity: 0.25,
+        })
+    }
+
+    get tripleTreeRakeInRadians() {
+        return THREE.MathUtils.degToRad(this.tripleTreeRake)
+    }
+
+    setTransparency(toggle) {
+        this.forkTubeMaterial.transparent = toggle
+        this.forkMaterial.transparent = toggle
+
+        return this
+    }
+
+    setX(x) {
+        this.x = x
+        return this
+    }
+
+    setY(y) {
+        this.y = y
+        return this
+    }
+
+    setRadius(radius) {
+        this.radius = radius
+        return this
+    }
+
+    setWidth(width) {
+        this.width = width
+        return this
+    }
+
+    setLength(length) {
+        this.length = length
+        return this
+    }
+
+    setOffset(offset) {
+        this.offset = offset
+        return this
+    }
+
+    setStemLength(stemLength) {
+        this.stemLength = stemLength
+        return this
+    }
+
+    setTripleTreeRake(tripleTreeRake) {
+        this.tripleTreeRake = tripleTreeRake
+        return this
+    }
+
+    setParameters(parameters) {
+        this.setRadius(parameters.fork.diameter / 2)
+            .setLength(parameters.fork.length)
+            .setOffset(parameters.fork.offset)
+            .setWidth(parameters.fork.width)
+            .setStemLength(parameters.stemLength)
+            .setTripleTreeRake(parameters.fork.tripleTreeRake)
+
+        return this
+    }
+
+    setVerticalStemAngle(verticalStemAngle) {
+        this.verticalStemAngle = verticalStemAngle
+        return this
+    }
+
+    setForkTripleTreeBaseOffset(forkTripleTreeBaseOffset) {
+        this.forkTripleTreeBaseOffset = forkTripleTreeBaseOffset
+        return this
+    }
+
+    setFrameStemTopHeight(frameStemTopHeight) {
+        this.frameStemTopHeight = frameStemTopHeight
+        return this
+    }
+
+    calculateFork(frame) {
+        this.setX(frame.frontTire.x)
+            .setY(frame.frontTire.y)
+            .setVerticalStemAngle(frame.verticalStemAngle)
+            .setForkTripleTreeBaseOffset(frame.forkTripleTreeBaseOffset)
+            .setFrameStemTopHeight(frame.frameStemTopHeight)
+
+        return this
+    }
+
+    buildFork() {
+        this.forkCylinderGeometry = new THREE.CylinderGeometry(
+            this.radius,
+            this.radius,
+            this.length,
+            Fork3D.radiusSegments,
+            Fork3D.heightSegments
+        )
+
+        this.forkLeftCylinder = new THREE.Mesh(this.forkCylinderGeometry, this.forkTubeMaterial)
+        this.forkLeftCylinder.castShadow = true
+        this.forkLeftCylinder.position.set(0, this.length / 2, -this.width / 2)
+        //this.forkLeftCylinder.rotateZ(this.tripleTreeRakeInRadians)
+
+        this.forkRightCylinder = new THREE.Mesh(this.forkCylinderGeometry, this.forkTubeMaterial)
+        this.forkRightCylinder.castShadow = true
+        this.forkRightCylinder.position.set(0, this.length / 2, this.width / 2)
+
+        this.wheelAxleGeometry = new THREE.CylinderGeometry(
+            10,
+            10,
+            this.width,
+            Fork3D.radiusSegments,
+            Fork3D.heightSegments
+        )
+        this.wheelAxle = new THREE.Mesh(this.wheelAxleGeometry, this.forkMaterial)
+        this.wheelAxle.castShadow = true
+        this.wheelAxle.rotateX(THREE.MathUtils.degToRad(90))
+        this.wheelAxle.position.set(0, 0, 0)
+
+        this.forkStemGeometry = new THREE.CylinderGeometry(
+            this.radius,
+            this.radius,
+            this.stemLength,
+            Fork3D.radiusSegments,
+            Fork3D.heightSegments
+        )
+        this.forkStem = new THREE.Mesh(this.forkStemGeometry, this.forkMaterial)
+        this.forkStem.castShadow = true
+
+        let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * this.length
+        let YBasedOnDimensions = stemAxleLength - this.stemLength / 2
+        let topDiff = this.frameStemTopHeight - YBasedOnDimensions
+        this.forkStem.position.set(
+            0 - (this.offset + this.forkTripleTreeBaseOffset),
+            this.frameStemTopHeight - topDiff,
+            0
+        )
+
+        this.pivot = new THREE.Group()
+        this.pivot.position.set(this.x, this.y, 0)
+        //this.pivot.add(this.forkLeftCylinder)
+        //this.pivot.add(this.forkRightCylinder)
+        this.pivot.add(this.wheelAxle)
+        this.pivot.add(this.forkStem)
+        this.pivot.rotateZ(this.verticalStemAngle)
+
+        this.pivot2 = new THREE.Group()
+        this.pivot2.position.set(this.x, this.y, 0)
+        this.pivot2.add(this.forkLeftCylinder)
+        this.pivot2.add(this.forkRightCylinder)
+        this.pivot2.add(this.wheelAxle)
+        //this.pivot2.add(this.forkStem)
+        this.pivot2.rotateZ(this.verticalStemAngle + this.tripleTreeRakeInRadians)
+
+        return this
+    }
+
+    removeFromObject(object) {
+        // object.remove(this.forkLeftCylinder)
+        // object.remove(this.forkRightCylinder)
+        // object.remove(this.wheelAxle)
+        // object.remove(this.forkStem)
+        object.remove(this.pivot)
+        object.remove(this.pivot2)
+    }
+
+    addToObject(object) {
+        // object.add(this.forkLeftCylinder)
+        // object.add(this.forkRightCylinder)
+        // object.add(this.wheelAxle)
+        //object.add(this.forkStem)
+        object.add(this.pivot)
+        object.add(this.pivot2)
+    }
+}
