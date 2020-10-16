@@ -230,6 +230,7 @@ class Fork3D {
 
         let geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings)
         geometry.computeBoundingBox()
+        geometry.normalizeNormals()
         let mesh = new THREE.Mesh(geometry, this.tripleTreeMaterial)
         mesh.rotateX(THREE.MathUtils.degToRad(90))
 
@@ -238,10 +239,75 @@ class Fork3D {
         let yokeDepth = geometry.boundingBox.max.z - geometry.boundingBox.min.z
 
         let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * this.length
-        let YBasedOnDimensions = stemAxleLength - 4
+        let YBasedOnDimensions = stemAxleLength
         let topDiff = this.frameStemTopHeight - YBasedOnDimensions
 
         mesh.position.set(0 - (this.offset + this.forkTripleTreeBaseOffset), this.frameStemTopHeight - topDiff, 0)
+
+        return mesh
+    }
+
+    buildBottomYoke() {
+        let shape = new THREE.Shape()
+        shape.setFromPoints([
+            new THREE.Vector2(-5 - Fork3D.stemRadius, 0),
+
+            new THREE.Vector2(-2 - Fork3D.stemRadius, Fork3D.stemRadius),
+            new THREE.Vector2(5 - Fork3D.stemRadius, Fork3D.stemRadius + 10),
+            new THREE.Vector2(0, Fork3D.stemRadius + 15),
+            new THREE.Vector2(-5 + this.offset - this.radius, this.width / 2),
+            new THREE.Vector2(this.offset - 15, this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset, this.width / 2 + this.radius + 5),
+            new THREE.Vector2(this.offset + 15, this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset + this.radius + 5, this.width / 2),
+            new THREE.Vector2(this.offset + this.radius, this.width / 2 - this.radius),
+
+            new THREE.Vector2(this.offset + this.radius, 0),
+
+            new THREE.Vector2(this.offset + this.radius, -this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset + this.radius + 5, -this.width / 2),
+            new THREE.Vector2(this.offset + 15, -this.width / 2 - this.radius),
+            new THREE.Vector2(this.offset, -this.width / 2 - this.radius - 5),
+            new THREE.Vector2(this.offset - 15, -this.width / 2 - this.radius),
+            new THREE.Vector2(-5 + this.offset - this.radius, -this.width / 2),
+            new THREE.Vector2(0, -Fork3D.stemRadius - 15),
+            new THREE.Vector2(5 - Fork3D.stemRadius, -Fork3D.stemRadius - 10),
+            new THREE.Vector2(-2 - Fork3D.stemRadius, -Fork3D.stemRadius),
+            // new THREE.Vector2(100, 0),
+            // new THREE.Vector2(100, this.width / 2),
+            // new THREE.Vector2(0, 100),
+            // new THREE.Vector2(-15, 100),
+        ])
+
+        let extrudeSettings = {
+            steps: 1,
+            depth: 20, //to eventually use top yoke thickness
+            bevelEnabled: true,
+            bevelThickness: 2,
+            bevelSize: 1,
+            bevelOffset: 2,
+            bevelSegments: 1,
+        }
+
+        let geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings)
+        geometry.computeBoundingBox()
+        geometry.normalizeNormals()
+        let mesh = new THREE.Mesh(geometry, this.tripleTreeMaterial)
+        mesh.rotateX(THREE.MathUtils.degToRad(90))
+
+        let yokeWidth = geometry.boundingBox.max.x - geometry.boundingBox.min.x
+        let yokeHeight = geometry.boundingBox.max.y - geometry.boundingBox.min.y
+        let yokeDepth = geometry.boundingBox.max.z - geometry.boundingBox.min.z
+
+        let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * this.length
+        let YBasedOnDimensions = stemAxleLength
+        let topDiff = this.frameStemTopHeight - YBasedOnDimensions
+
+        mesh.position.set(
+            0 - (this.offset + this.forkTripleTreeBaseOffset),
+            this.frameStemTopHeight - topDiff - this.stemLength,
+            0
+        )
 
         return mesh
     }
@@ -252,12 +318,14 @@ class Fork3D {
         let wheelAxle = this.buildWheelAxle()
         let forkStem = this.buildForkStem()
         let topYoke = this.buildTopYoke()
+        let bottomYoke = this.buildBottomYoke()
 
         this.pivot = new THREE.Group()
         this.pivot.position.set(this.x, this.y, 0)
         this.pivot.add(wheelAxle)
         this.pivot.add(forkStem)
         this.pivot.add(topYoke)
+        this.pivot.add(bottomYoke)
         this.pivot.rotateZ(this.verticalStemAngle)
 
         this.pivot2 = new THREE.Group()
