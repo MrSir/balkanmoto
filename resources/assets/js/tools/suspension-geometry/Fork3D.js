@@ -1,11 +1,13 @@
 class Fork3D {
+    static radiusSegments = 32
+    static heightSegments = 1
+    static stemRadius = 12
+
     constructor(floorY, diameter, width, length, offset, stemLength, tripleTreeRake) {
         this.x = 0
         this.y = 0
-        this.radius = 37
-        this.radiusSegments = 32
-        this.heightSegments = 1
 
+        this.radius = 37
         this.floorY = floorY
         this.radius = diameter / 2
         this.width = width
@@ -19,6 +21,19 @@ class Fork3D {
             depthWrite: true,
             transparent: false,
             opacity: 0.25,
+            polygonOffset: true,
+            polygonOffsetFactor: 0.1,
+        })
+
+        this.tripleTreeMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xc4c4c4,
+            roughness: 0.5,
+            metalness: 0.2,
+            depthWrite: true,
+            transparent: false,
+            opacity: 0.25,
+            polygonOffset: true,
+            polygonOffsetFactor: 0,
         })
 
         this.forkTubeMaterial = new THREE.MeshPhysicalMaterial({
@@ -31,6 +46,8 @@ class Fork3D {
             clearcoat: 0.7,
             transparent: false,
             opacity: 0.25,
+            polygonOffset: true,
+            polygonOffsetFactor: -0.1,
         })
     }
 
@@ -40,6 +57,7 @@ class Fork3D {
 
     setTransparency(toggle) {
         this.forkTubeMaterial.transparent = toggle
+        this.tripleTreeMaterial.transparent = toggle
         this.forkMaterial.transparent = toggle
 
         return this
@@ -121,8 +139,8 @@ class Fork3D {
         return this
     }
 
-    buildFork() {
-        this.forkCylinderGeometry = new THREE.CylinderGeometry(
+    buildForkTube(zCoordinate) {
+        let geometry = new THREE.CylinderGeometry(
             this.radius,
             this.radius,
             this.length,
@@ -130,79 +148,203 @@ class Fork3D {
             Fork3D.heightSegments
         )
 
-        this.forkLeftCylinder = new THREE.Mesh(this.forkCylinderGeometry, this.forkTubeMaterial)
-        this.forkLeftCylinder.castShadow = true
-        this.forkLeftCylinder.position.set(0, this.length / 2, -this.width / 2)
-        //this.forkLeftCylinder.rotateZ(this.tripleTreeRakeInRadians)
+        let mesh = new THREE.Mesh(geometry, this.forkTubeMaterial)
+        mesh.castShadow = true
+        mesh.position.set(0, this.length / 2, zCoordinate)
 
-        this.forkRightCylinder = new THREE.Mesh(this.forkCylinderGeometry, this.forkTubeMaterial)
-        this.forkRightCylinder.castShadow = true
-        this.forkRightCylinder.position.set(0, this.length / 2, this.width / 2)
+        return mesh
+    }
 
-        this.wheelAxleGeometry = new THREE.CylinderGeometry(
-            10,
-            10,
-            this.width,
-            Fork3D.radiusSegments,
-            Fork3D.heightSegments
-        )
-        this.wheelAxle = new THREE.Mesh(this.wheelAxleGeometry, this.forkMaterial)
-        this.wheelAxle.castShadow = true
-        this.wheelAxle.rotateX(THREE.MathUtils.degToRad(90))
-        this.wheelAxle.position.set(0, 0, 0)
+    buildWheelAxle() {
+        let geometry = new THREE.CylinderGeometry(10, 10, this.width, Fork3D.radiusSegments, Fork3D.heightSegments)
 
-        this.forkStemGeometry = new THREE.CylinderGeometry(
-            this.radius,
-            this.radius,
+        let mesh = new THREE.Mesh(geometry, this.forkMaterial)
+        mesh.castShadow = true
+        mesh.rotateX(THREE.MathUtils.degToRad(90))
+        mesh.position.set(0, 0, 0)
+
+        return mesh
+    }
+
+    buildForkStem() {
+        let geometry = new THREE.CylinderGeometry(
+            Fork3D.stemRadius,
+            Fork3D.stemRadius,
             this.stemLength,
             Fork3D.radiusSegments,
             Fork3D.heightSegments
         )
-        this.forkStem = new THREE.Mesh(this.forkStemGeometry, this.forkMaterial)
-        this.forkStem.castShadow = true
+        let mesh = new THREE.Mesh(geometry, this.forkMaterial)
+        mesh.castShadow = true
 
         let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * this.length
         let YBasedOnDimensions = stemAxleLength - this.stemLength / 2
         let topDiff = this.frameStemTopHeight - YBasedOnDimensions
-        this.forkStem.position.set(
+
+        mesh.position.set(0 - (this.offset + this.forkTripleTreeBaseOffset), this.frameStemTopHeight - topDiff, 0)
+
+        return mesh
+    }
+
+    buildTopYoke() {
+        let shape = new THREE.Shape()
+        shape.setFromPoints([
+            new THREE.Vector2(-5 - Fork3D.stemRadius, 0),
+
+            new THREE.Vector2(-2 - Fork3D.stemRadius, Fork3D.stemRadius),
+            new THREE.Vector2(5 - Fork3D.stemRadius, Fork3D.stemRadius + 10),
+            new THREE.Vector2(0, Fork3D.stemRadius + 15),
+            new THREE.Vector2(-5 + this.offset - this.radius, this.width / 2),
+            new THREE.Vector2(this.offset - 15, this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset, this.width / 2 + this.radius + 5),
+            new THREE.Vector2(this.offset + 15, this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset + this.radius + 5, this.width / 2),
+            new THREE.Vector2(this.offset + this.radius, this.width / 2 - this.radius),
+
+            new THREE.Vector2(this.offset + this.radius, 0),
+
+            new THREE.Vector2(this.offset + this.radius, -this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset + this.radius + 5, -this.width / 2),
+            new THREE.Vector2(this.offset + 15, -this.width / 2 - this.radius),
+            new THREE.Vector2(this.offset, -this.width / 2 - this.radius - 5),
+            new THREE.Vector2(this.offset - 15, -this.width / 2 - this.radius),
+            new THREE.Vector2(-5 + this.offset - this.radius, -this.width / 2),
+            new THREE.Vector2(0, -Fork3D.stemRadius - 15),
+            new THREE.Vector2(5 - Fork3D.stemRadius, -Fork3D.stemRadius - 10),
+            new THREE.Vector2(-2 - Fork3D.stemRadius, -Fork3D.stemRadius),
+            // new THREE.Vector2(100, 0),
+            // new THREE.Vector2(100, this.width / 2),
+            // new THREE.Vector2(0, 100),
+            // new THREE.Vector2(-15, 100),
+        ])
+
+        let extrudeSettings = {
+            steps: 1,
+            depth: 20, //to eventually use top yoke thickness
+            bevelEnabled: true,
+            bevelThickness: 2,
+            bevelSize: 1,
+            bevelOffset: 2,
+            bevelSegments: 1,
+        }
+
+        let geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings)
+        geometry.computeBoundingBox()
+        geometry.normalizeNormals()
+        let mesh = new THREE.Mesh(geometry, this.tripleTreeMaterial)
+        mesh.castShadow = true
+        mesh.rotateX(THREE.MathUtils.degToRad(90))
+
+        let yokeWidth = geometry.boundingBox.max.x - geometry.boundingBox.min.x
+        let yokeHeight = geometry.boundingBox.max.y - geometry.boundingBox.min.y
+        let yokeDepth = geometry.boundingBox.max.z - geometry.boundingBox.min.z
+
+        let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * this.length
+        let YBasedOnDimensions = stemAxleLength
+        let topDiff = this.frameStemTopHeight - YBasedOnDimensions
+
+        mesh.position.set(0 - (this.offset + this.forkTripleTreeBaseOffset), this.frameStemTopHeight - topDiff, 0)
+
+        return mesh
+    }
+
+    buildBottomYoke() {
+        let shape = new THREE.Shape()
+        shape.setFromPoints([
+            new THREE.Vector2(-5 - Fork3D.stemRadius, 0),
+
+            new THREE.Vector2(-2 - Fork3D.stemRadius, Fork3D.stemRadius),
+            new THREE.Vector2(5 - Fork3D.stemRadius, Fork3D.stemRadius + 10),
+            new THREE.Vector2(0, Fork3D.stemRadius + 15),
+            new THREE.Vector2(-5 + this.offset - this.radius, this.width / 2),
+            new THREE.Vector2(this.offset - 15, this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset, this.width / 2 + this.radius + 5),
+            new THREE.Vector2(this.offset + 15, this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset + this.radius + 5, this.width / 2),
+            new THREE.Vector2(this.offset + this.radius, this.width / 2 - this.radius),
+
+            new THREE.Vector2(this.offset + this.radius, 0),
+
+            new THREE.Vector2(this.offset + this.radius, -this.width / 2 + this.radius),
+            new THREE.Vector2(this.offset + this.radius + 5, -this.width / 2),
+            new THREE.Vector2(this.offset + 15, -this.width / 2 - this.radius),
+            new THREE.Vector2(this.offset, -this.width / 2 - this.radius - 5),
+            new THREE.Vector2(this.offset - 15, -this.width / 2 - this.radius),
+            new THREE.Vector2(-5 + this.offset - this.radius, -this.width / 2),
+            new THREE.Vector2(0, -Fork3D.stemRadius - 15),
+            new THREE.Vector2(5 - Fork3D.stemRadius, -Fork3D.stemRadius - 10),
+            new THREE.Vector2(-2 - Fork3D.stemRadius, -Fork3D.stemRadius),
+            // new THREE.Vector2(100, 0),
+            // new THREE.Vector2(100, this.width / 2),
+            // new THREE.Vector2(0, 100),
+            // new THREE.Vector2(-15, 100),
+        ])
+
+        let extrudeSettings = {
+            steps: 1,
+            depth: 20, //to eventually use top yoke thickness
+            bevelEnabled: true,
+            bevelThickness: 2,
+            bevelSize: 1,
+            bevelOffset: 2,
+            bevelSegments: 1,
+        }
+
+        let geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings)
+        geometry.computeBoundingBox()
+        geometry.normalizeNormals()
+        let mesh = new THREE.Mesh(geometry, this.tripleTreeMaterial)
+        mesh.castShadow = true
+        mesh.rotateX(THREE.MathUtils.degToRad(90))
+
+        let yokeWidth = geometry.boundingBox.max.x - geometry.boundingBox.min.x
+        let yokeHeight = geometry.boundingBox.max.y - geometry.boundingBox.min.y
+        let yokeDepth = geometry.boundingBox.max.z - geometry.boundingBox.min.z
+
+        let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * this.length
+        let YBasedOnDimensions = stemAxleLength
+        let topDiff = this.frameStemTopHeight - YBasedOnDimensions
+
+        mesh.position.set(
             0 - (this.offset + this.forkTripleTreeBaseOffset),
-            this.frameStemTopHeight - topDiff,
+            this.frameStemTopHeight - topDiff - this.stemLength,
             0
         )
 
+        return mesh
+    }
+
+    buildFork() {
+        let forkLeftCylinder = this.buildForkTube(-this.width / 2)
+        let forkRightCylinder = this.buildForkTube(this.width / 2)
+        let wheelAxle = this.buildWheelAxle()
+        let forkStem = this.buildForkStem()
+        let topYoke = this.buildTopYoke()
+        let bottomYoke = this.buildBottomYoke()
+
         this.pivot = new THREE.Group()
         this.pivot.position.set(this.x, this.y, 0)
-        //this.pivot.add(this.forkLeftCylinder)
-        //this.pivot.add(this.forkRightCylinder)
-        this.pivot.add(this.wheelAxle)
-        this.pivot.add(this.forkStem)
+        this.pivot.add(wheelAxle)
+        this.pivot.add(forkStem)
+        this.pivot.add(topYoke)
+        this.pivot.add(bottomYoke)
         this.pivot.rotateZ(this.verticalStemAngle)
 
         this.pivot2 = new THREE.Group()
         this.pivot2.position.set(this.x, this.y, 0)
-        this.pivot2.add(this.forkLeftCylinder)
-        this.pivot2.add(this.forkRightCylinder)
-        this.pivot2.add(this.wheelAxle)
-        //this.pivot2.add(this.forkStem)
+        this.pivot2.add(forkLeftCylinder)
+        this.pivot2.add(forkRightCylinder)
         this.pivot2.rotateZ(this.verticalStemAngle + this.tripleTreeRakeInRadians)
 
         return this
     }
 
     removeFromObject(object) {
-        // object.remove(this.forkLeftCylinder)
-        // object.remove(this.forkRightCylinder)
-        // object.remove(this.wheelAxle)
-        // object.remove(this.forkStem)
         object.remove(this.pivot)
         object.remove(this.pivot2)
     }
 
     addToObject(object) {
-        // object.add(this.forkLeftCylinder)
-        // object.add(this.forkRightCylinder)
-        // object.add(this.wheelAxle)
-        //object.add(this.forkStem)
         object.add(this.pivot)
         object.add(this.pivot2)
     }

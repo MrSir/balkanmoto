@@ -11,7 +11,7 @@ class SceneInitializer {
             75,
             this.container.offsetWidth / this.container.offsetHeight,
             0.01,
-            100000
+            10000
         )
         this.camera.position.set(0, 500, 2500)
 
@@ -19,7 +19,7 @@ class SceneInitializer {
     }
 
     addRenderer() {
-        this.renderer = new THREE.WebGLRenderer({ antialias: true })
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
         this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight)
         this.renderer.shadowMap.enabled = true
         this.container.appendChild(this.renderer.domElement)
@@ -58,7 +58,7 @@ class SceneInitializer {
 
     addFloor() {
         let floor = new THREE.Mesh(
-            new THREE.PlaneBufferGeometry(100000, 100000),
+            new THREE.PlaneBufferGeometry(20000, 20000),
             new THREE.MeshPhongMaterial({
                 color: 0xaaaaaaaaa,
                 depthWrite: false,
@@ -92,7 +92,7 @@ class SceneInitializer {
 
     initializeScene() {
         this.scene.background = new THREE.Color(0xa0a0a0)
-        this.scene.fog = new THREE.Fog(0xa0a0a0, 0.01, 10000)
+        this.scene.fog = new THREE.Fog(0xa0a0a0, 2500, 8000)
 
         this.addCamera().addRenderer().addOrbitalControls().addLights().addFloor()
         //.addOrigin()

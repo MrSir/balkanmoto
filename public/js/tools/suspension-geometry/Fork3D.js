@@ -22,7 +22,7 @@ class Fork3D {
             transparent: false,
             opacity: 0.25,
             polygonOffset: true,
-            polygonOffsetFactor: -0.1,
+            polygonOffsetFactor: 0.1,
         })
 
         this.tripleTreeMaterial = new THREE.MeshPhysicalMaterial({
@@ -33,7 +33,7 @@ class Fork3D {
             transparent: false,
             opacity: 0.25,
             polygonOffset: true,
-            polygonOffsetFactor: -0.1,
+            polygonOffsetFactor: 0,
         })
 
         this.forkTubeMaterial = new THREE.MeshPhysicalMaterial({
@@ -232,6 +232,7 @@ class Fork3D {
         geometry.computeBoundingBox()
         geometry.normalizeNormals()
         let mesh = new THREE.Mesh(geometry, this.tripleTreeMaterial)
+        mesh.castShadow = true
         mesh.rotateX(THREE.MathUtils.degToRad(90))
 
         let yokeWidth = geometry.boundingBox.max.x - geometry.boundingBox.min.x
@@ -293,6 +294,7 @@ class Fork3D {
         geometry.computeBoundingBox()
         geometry.normalizeNormals()
         let mesh = new THREE.Mesh(geometry, this.tripleTreeMaterial)
+        mesh.castShadow = true
         mesh.rotateX(THREE.MathUtils.degToRad(90))
 
         let yokeWidth = geometry.boundingBox.max.x - geometry.boundingBox.min.x
