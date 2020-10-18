@@ -5,7 +5,7 @@ class ControlPanel {
         this.initialized = false
 
         this.gui = new THREE.GUI({
-            width: 350,
+            width: 400,
             closeOnTop: true,
             scrollable: false,
         })
@@ -22,6 +22,7 @@ class ControlPanel {
             this.gui.removeFolder(this.frontTireFolder)
             this.gui.removeFolder(this.rearTireFolder)
             this.gui.removeFolder(this.frameFolder)
+            this.gui.removeFolder(this.tripleTreeFolder)
             this.gui.removeFolder(this.forkFolder)
         } else {
             this.gui.removeFolder(this.customFolder)
@@ -36,7 +37,11 @@ class ControlPanel {
 
         if (this.defaultName !== 'Custom') {
             this.initialized = true
-            this.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder()
+            this.createFrontTireFolder()
+                .createRearTireFolder()
+                .createFrameFolder()
+                .createTripleTreeFolder()
+                .createForkFolder()
         } else {
             this.initialized = false
             this.createCustomFolder()
@@ -129,7 +134,7 @@ class ControlPanel {
             'Stem Rake (deg)': 30,
             'Wheelbase (mm)': 1000,
             'Fork Length (mm)': 1000,
-            'Fork Offset (mm)': 60,
+            'Fork Offset (mm)': 0,
             'Triple Tree Rake (deg)': 0,
             'Front Tire Width (mm)': 130,
             'Front Tire Aspect': 90,
@@ -171,7 +176,7 @@ class ControlPanel {
             .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
             .listen()
             .onChange((tripleTreeRake) => {
-                this.frameParameters.fork.tripleTreeRake = tripleTreeRake
+                this.frameParameters.tripleTree.rake = tripleTreeRake
             })
 
         this.customFolder.add(params, 'Front Tire Width (mm)', 70, 320, 5).onChange((width) => {
@@ -219,7 +224,11 @@ class ControlPanel {
 
                 this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
 
-                this.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder()
+                this.createFrontTireFolder()
+                    .createRearTireFolder()
+                    .createFrameFolder()
+                    .createTripleTreeFolder()
+                    .createForkFolder()
 
                 this.initialized = true
             },
@@ -329,12 +338,57 @@ class ControlPanel {
         return this
     }
 
+    createTripleTreeFolder() {
+        this.tripleTreeFolder = this.gui.addFolder('Triple Tree')
+        let params = {
+            'Offset (mm)': this.frameParameters.tripleTree.offset,
+            'Rake (deg)': this.frameParameters.tripleTree.rake,
+            'Top Yoke Thickness (mm)': this.frameParameters.tripleTree.topYokeThickness,
+            'Bottom Yoke Thickness (mm)': this.frameParameters.tripleTree.bottomYokeThickness,
+        }
+
+        this.tripleTreeFolder
+            .add(params, 'Offset (mm)', 0, 80, 1)
+            .listen()
+            .onChange((offset) => {
+                this.frameParameters.tripleTree.offset = offset
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.tripleTreeFolder
+            .add(params, 'Rake (deg)', 0, 10, 1)
+            .listen()
+            .onChange((rake) => {
+                this.frameParameters.tripleTree.rake = rake
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.tripleTreeFolder
+            .add(params, 'Top Yoke Thickness (mm)', 20, 40, 1)
+            .listen()
+            .onChange((thickness) => {
+                this.frameParameters.tripleTree.topYokeThickness = thickness
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.tripleTreeFolder
+            .add(params, 'Bottom Yoke Thickness (mm)', 20, 40, 1)
+            .listen()
+            .onChange((thickness) => {
+                this.frameParameters.tripleTree.bottomYokeThickness = thickness
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            })
+
+        this.tripleTreeFolder.open()
+
+        return this
+    }
+
     createForkFolder() {
         this.forkFolder = this.gui.addFolder('Fork')
         let params = {
+            'Offset (mm)': this.frameParameters.fork.offset,
             'Fork Length (mm)': this.frameParameters.fork.length,
-            'Fork Offset (mm)': this.frameParameters.fork.offset,
-            'Triple Tree Rake (deg)': this.frameParameters.fork.tripleTreeRake,
             'Fork Diameter (mm)': this.frameParameters.fork.diameter,
             'Fork Width (mm)': this.frameParameters.fork.width,
         }
@@ -348,18 +402,10 @@ class ControlPanel {
             })
 
         this.forkFolder
-            .add(params, 'Fork Offset (mm)', 0, 80, 5)
+            .add(params, 'Offset (mm)', 0, 80, 1)
             .listen()
             .onChange((offset) => {
                 this.frameParameters.fork.offset = offset
-                this.frame.setParameters(this.frameParameters).redrawInScene()
-            })
-
-        this.forkFolder
-            .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
-            .listen()
-            .onChange((tripleTreeRake) => {
-                this.frameParameters.fork.tripleTreeRake = tripleTreeRake
                 this.frame.setParameters(this.frameParameters).redrawInScene()
             })
 

@@ -76,7 +76,7 @@ class Tire3D {
         return this
     }
 
-    calculateWheelDimentions() {
+    calculateWheelDimensions() {
         this.tireHeight = this.width * (this.aspect / 100)
         this.wheelDiameter = this.rimDiameterInMillimeters + 2 * this.tireHeight
         this.rimRadius = this.rimDiameterInMillimeters / 2

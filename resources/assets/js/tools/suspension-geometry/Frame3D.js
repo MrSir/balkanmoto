@@ -28,15 +28,7 @@ class Frame3D {
             parameters.frontTire.rimDiameterInInches
         )
 
-        this.fork = new Fork3D(
-            floorY,
-            parameters.fork.diameter,
-            parameters.fork.width,
-            parameters.fork.length,
-            parameters.fork.offset,
-            parameters.stemLength,
-            parameters.tripleTreeRake
-        )
+        this.fork = new Fork3D(floorY, parameters)
 
         this.labels = new Labels3D(floorY, this)
 
@@ -178,22 +170,22 @@ class Frame3D {
         this.rearTire
             .setParameters(this.parameters.rearTire)
             .setX(Frame3D.rearTireX)
-            .calculateWheelDimentions()
+            .calculateWheelDimensions()
             .calculateYBasedOnWheelDiameter()
 
         this.frontTire
             .setParameters(this.parameters.frontTire)
             .setX(this.rearTire.x + this.parameters.wheelbase)
-            .calculateWheelDimentions()
+            .calculateWheelDimensions()
             .calculateYBasedOnWheelDiameter()
 
         let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
         let E = new THREE.Vector3(this.frontTire.x, this.frontTire.y, 0)
 
         let AE = A.distanceTo(E)
-        let FE = this.parameters.fork.length
-        let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
-        let CD = this.parameters.fork.offset
+        let FE = this.parameters.fork.length - this.parameters.fork.offset
+        let DFE = this.degToRad(this.parameters.tripleTree.rake)
+        let CD = this.parameters.tripleTree.offset
         let WBC = this.degToRad(this.parameters.rake)
         let BC = FE
         let DE = 0
@@ -226,17 +218,17 @@ class Frame3D {
         this.rearTire
             .setParameters(this.parameters.rearTire)
             .setX(Frame3D.rearTireX)
-            .calculateWheelDimentions()
+            .calculateWheelDimensions()
             .calculateYBasedOnWheelDiameter()
 
         this.frontTire
             .setParameters(this.parameters.frontTire)
-            .calculateWheelDimentions()
+            .calculateWheelDimensions()
             .calculateYBasedOnWheelDiameter()
 
         let AB = this.backboneLength
-        let DFE = this.degToRad(this.parameters.fork.tripleTreeRake)
-        let FE = this.parameters.fork.length
+        let DFE = this.degToRad(this.parameters.tripleTree.rake)
+        let FE = this.parameters.fork.length - this.parameters.fork.offset
         let BC = FE
         let DE = 0
 
@@ -246,7 +238,7 @@ class Frame3D {
         }
 
         let ABC = this.frameStemAngle + this.rakeInRadians
-        let CD = this.parameters.fork.offset
+        let CD = this.parameters.tripleTree.offset
         let CE = CD + DE
 
         let AC = this.calculate3rdSideFrom2Sides1Angle(AB, BC, ABC)

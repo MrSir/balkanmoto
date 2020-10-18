@@ -8,9 +8,9 @@ class SceneInitializer {
 
     addCamera() {
         this.camera = new THREE.PerspectiveCamera(
-            75,
+            50,
             this.container.offsetWidth / this.container.offsetHeight,
-            0.01,
+            100,
             10000
         )
         this.camera.position.set(0, 500, 2500)
@@ -19,7 +19,7 @@ class SceneInitializer {
     }
 
     addRenderer() {
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', shadows: true })
         this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight)
         this.renderer.shadowMap.enabled = true
         this.container.appendChild(this.renderer.domElement)
