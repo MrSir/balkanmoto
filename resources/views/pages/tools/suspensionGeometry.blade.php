@@ -78,6 +78,7 @@
         of your motorcycle. Improper configurations will result in serious injury or death.
     </div>
     <br/>
+    <div id="small-screen-warning">Your screen is too small to view the canvas.</div>
     <div id="canvas">
         <div id="control-panel"></div>
     </div>

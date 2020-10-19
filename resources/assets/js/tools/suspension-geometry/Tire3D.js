@@ -15,7 +15,7 @@ class Tire3D {
             depthWrite: true,
             side: THREE.DoubleSide,
             transparent: false,
-            opacity: 0.25,
+            opacity: 0.5,
             //wireframe: true,
         })
     }

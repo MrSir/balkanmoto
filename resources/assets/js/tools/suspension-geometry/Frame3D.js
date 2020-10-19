@@ -298,6 +298,8 @@ class Frame3D {
             F = new THREE.Vector3(B.x + Math.abs(D.x - C.x), B.y + Math.abs(D.y - C.y), 0)
         }
 
+        this.tripleTreeCenterOfForkTubesPoint = F
+
         let TrailOffsetFromB = (this.floorY - B.y) / ((C.y - B.y) / (C.x - B.x))
         let trailX = B.x + TrailOffsetFromB
         let G = new THREE.Vector3(trailX, this.floorY, 0)
