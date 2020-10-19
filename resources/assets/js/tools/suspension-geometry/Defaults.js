@@ -106,7 +106,7 @@ class Defaults {
             },
             fork: {
                 length: 725,
-                offset: 0,
+                offset: 10,
                 diameter: 43,
                 width: 205,
             },
