@@ -1,11 +1,10 @@
 class ControlPanel {
     constructor(element, frame, frameParameters) {
-        this.previousDefault = 'Custom'
-        this.defaultName = 'Custom'
+        this.previousInitialized = false
         this.initialized = false
 
         this.gui = new THREE.GUI({
-            width: 350,
+            width: 400,
             closeOnTop: true,
             scrollable: false,
         })
@@ -14,17 +13,24 @@ class ControlPanel {
         this.frame = frame
         this.frameParameters = frameParameters
 
-        this.createViewFolder().createDefaultsFolder().createCustomFolder()
+        this.createViewFolder()
+            .createDefaultsFolder()
+            .createFrontTireFolder()
+            .createRearTireFolder()
+            .createFrameFolder()
+            .createTripleTreeFolder()
+            .createForkFolder()
+            .createInitializeButton()
     }
 
     cleanUpGui() {
-        if (this.initialized || this.previousDefault !== 'Custom') {
-            this.gui.removeFolder(this.frontTireFolder)
-            this.gui.removeFolder(this.rearTireFolder)
-            this.gui.removeFolder(this.frameFolder)
-            this.gui.removeFolder(this.forkFolder)
-        } else {
-            this.gui.removeFolder(this.customFolder)
+        this.gui.removeFolder(this.frontTireFolder)
+        this.gui.removeFolder(this.rearTireFolder)
+        this.gui.removeFolder(this.frameFolder)
+        this.gui.removeFolder(this.tripleTreeFolder)
+        this.gui.removeFolder(this.forkFolder)
+
+        if (this.initialized && !this.previousInitialized) {
             this.gui.remove(this.initializeButton)
         }
     }
@@ -34,12 +40,14 @@ class ControlPanel {
 
         this.cleanUpGui()
 
-        if (this.defaultName !== 'Custom') {
-            this.initialized = true
-            this.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder()
-        } else {
-            this.initialized = false
-            this.createCustomFolder()
+        this.createFrontTireFolder()
+            .createRearTireFolder()
+            .createFrameFolder()
+            .createTripleTreeFolder()
+            .createForkFolder()
+
+        if (!this.initialized) {
+            this.createInitializeButton()
         }
     }
 
@@ -104,8 +112,8 @@ class ControlPanel {
             .options(defaults.getOptions())
             .listen()
             .onChange((name) => {
-                this.previousDefault = this.defaultName
-                this.defaultName = name
+                this.previousInitialized = this.initialized
+                this.initialized = name !== 'Custom'
 
                 this.frameParameters = defaults.findDefaults(name)
 
@@ -123,105 +131,14 @@ class ControlPanel {
         return this
     }
 
-    createCustomFolder() {
-        this.customFolder = this.gui.addFolder('Custom Frame')
-        let params = {
-            'Stem Rake (deg)': 30,
-            'Wheelbase (mm)': 1000,
-            'Fork Length (mm)': 1000,
-            'Fork Offset (mm)': 60,
-            'Triple Tree Rake (deg)': 0,
-            'Front Tire Width (mm)': 130,
-            'Front Tire Aspect': 90,
-            'Front Rim Size (in)': 17,
-            'Rear Tire Width (mm)': 110,
-            'Rear Tire Aspect': 90,
-            'Rear Rim Size (in)': 18,
-        }
-
-        this.customFolder
-            .add(params, 'Stem Rake (deg)', 0, 45, 0.5)
-            .listen()
-            .onChange((rake) => {
-                this.frameParameters.rake = rake
-            })
-
-        this.customFolder
-            .add(params, 'Wheelbase (mm)', 1000, 1800, 5)
-            .listen()
-            .onChange((wheelbase) => {
-                this.frameParameters.wheelbase = wheelbase
-            })
-
-        this.customFolder
-            .add(params, 'Fork Length (mm)', 600, 1000, 1)
-            .listen()
-            .onChange((length) => {
-                this.frameParameters.fork.length = length
-            })
-
-        this.customFolder
-            .add(params, 'Fork Offset (mm)', 0, 80, 5)
-            .listen()
-            .onChange((offset) => {
-                this.frameParameters.fork.offset = offset
-            })
-
-        this.customFolder
-            .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
-            .listen()
-            .onChange((tripleTreeRake) => {
-                this.frameParameters.fork.tripleTreeRake = tripleTreeRake
-            })
-
-        this.customFolder.add(params, 'Front Tire Width (mm)', 70, 320, 5).onChange((width) => {
-            this.frameParameters.frontTire.width = width
-        })
-
-        this.customFolder
-            .add(params, 'Front Tire Aspect', 25, 95, 5)
-            .listen()
-            .onChange((aspect) => {
-                this.frameParameters.frontTire.aspect = aspect
-            })
-
-        this.customFolder
-            .add(params, 'Front Rim Size (in)', 13, 22, 1)
-            .listen()
-            .onChange((rimDiameterInInches) => {
-                this.frameParameters.frontTire.rimDiameterInInches = rimDiameterInInches
-            })
-
-        this.customFolder.add(params, 'Rear Tire Width (mm)', 70, 320, 5).onChange((width) => {
-            this.frameParameters.rearTire.width = width
-        })
-
-        this.customFolder
-            .add(params, 'Rear Tire Aspect', 25, 95, 5)
-            .listen()
-            .onChange((aspect) => {
-                this.frameParameters.rearTire.aspect = aspect
-            })
-
-        this.customFolder
-            .add(params, 'Rear Rim Size (in)', 13, 22, 1)
-            .listen()
-            .onChange((rimDiameterInInches) => {
-                this.frameParameters.rearTire.rimDiameterInInches = rimDiameterInInches
-            })
-
-        this.customFolder.open()
-
+    createInitializeButton() {
         let initializeObject = {
             initialize: () => {
-                this.gui.removeFolder(this.customFolder)
-                this.gui.remove(this.initializeButton)
-
-                this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
-
-                this.createFrontTireFolder().createRearTireFolder().createFrameFolder().createForkFolder()
-
+                this.previousInitialized = this.initialized
                 this.initialized = true
+
+                this.resetGuiTo(this.frameParameters)
+                this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
             },
         }
 
@@ -240,7 +157,9 @@ class ControlPanel {
 
         this.frontTireFolder.add(params, 'Tire Width (mm)', 70, 320, 5).onChange((width) => {
             this.frameParameters.frontTire.width = width
-            this.frame.setParameters(this.frameParameters).redrawInScene()
+            if (this.initialized) {
+                this.frame.setParameters(this.frameParameters).redrawInScene()
+            }
         })
 
         this.frontTireFolder
@@ -248,7 +167,9 @@ class ControlPanel {
             .listen()
             .onChange((aspect) => {
                 this.frameParameters.frontTire.aspect = aspect
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.frontTireFolder
@@ -256,10 +177,14 @@ class ControlPanel {
             .listen()
             .onChange((rimDiameterInInches) => {
                 this.frameParameters.frontTire.rimDiameterInInches = rimDiameterInInches
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
-        this.frontTireFolder.close()
+        if (!this.initialized) {
+            this.frontTireFolder.open()
+        }
 
         return this
     }
@@ -277,7 +202,9 @@ class ControlPanel {
             .listen()
             .onChange((width) => {
                 this.frameParameters.rearTire.width = width
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.rearTireFolder
@@ -285,7 +212,9 @@ class ControlPanel {
             .listen()
             .onChange((aspect) => {
                 this.frameParameters.rearTire.aspect = aspect
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.rearTireFolder
@@ -293,10 +222,14 @@ class ControlPanel {
             .listen()
             .onChange((rimDiameterInInches) => {
                 this.frameParameters.rearTire.rimDiameterInInches = rimDiameterInInches
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
-        this.rearTireFolder.close()
+        if (!this.initialized) {
+            this.rearTireFolder.open()
+        }
 
         return this
     }
@@ -306,6 +239,7 @@ class ControlPanel {
         let params = {
             'Stem Rake (deg)': this.frameParameters.rake,
             'Stem Length (mm)': this.frameParameters.stemLength,
+            'Wheelbase (mm)': this.frameParameters.wheelbase,
         }
 
         this.frameFolder
@@ -313,7 +247,9 @@ class ControlPanel {
             .listen()
             .onChange((rake) => {
                 this.frameParameters.rake = rake
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.frameFolder
@@ -321,10 +257,75 @@ class ControlPanel {
             .listen()
             .onChange((stemLength) => {
                 this.frameParameters.stemLength = stemLength
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
+        if (!this.initialized) {
+            this.frameFolder
+                .add(params, 'Wheelbase (mm)', 1000, 2000, 1)
+                .listen()
+                .onChange((wheelbase) => {
+                    this.frameParameters.wheelbase = wheelbase
+                })
+        }
+
         this.frameFolder.open()
+
+        return this
+    }
+
+    createTripleTreeFolder() {
+        this.tripleTreeFolder = this.gui.addFolder('Triple Tree')
+        let params = {
+            'Offset (mm)': this.frameParameters.tripleTree.offset,
+            'Rake (deg)': this.frameParameters.tripleTree.rake,
+            'Top Yoke Thickness (mm)': this.frameParameters.tripleTree.topYokeThickness,
+            'Bottom Yoke Thickness (mm)': this.frameParameters.tripleTree.bottomYokeThickness,
+        }
+
+        this.tripleTreeFolder
+            .add(params, 'Offset (mm)', 0, 80, 1)
+            .listen()
+            .onChange((offset) => {
+                this.frameParameters.tripleTree.offset = offset
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
+            })
+
+        this.tripleTreeFolder
+            .add(params, 'Rake (deg)', 0, 10, 1)
+            .listen()
+            .onChange((rake) => {
+                this.frameParameters.tripleTree.rake = rake
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
+            })
+
+        this.tripleTreeFolder
+            .add(params, 'Top Yoke Thickness (mm)', 20, 40, 1)
+            .listen()
+            .onChange((thickness) => {
+                this.frameParameters.tripleTree.topYokeThickness = thickness
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
+            })
+
+        this.tripleTreeFolder
+            .add(params, 'Bottom Yoke Thickness (mm)', 20, 40, 1)
+            .listen()
+            .onChange((thickness) => {
+                this.frameParameters.tripleTree.bottomYokeThickness = thickness
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
+            })
+
+        this.tripleTreeFolder.open()
 
         return this
     }
@@ -332,51 +333,50 @@ class ControlPanel {
     createForkFolder() {
         this.forkFolder = this.gui.addFolder('Fork')
         let params = {
-            'Fork Length (mm)': this.frameParameters.fork.length,
-            'Fork Offset (mm)': this.frameParameters.fork.offset,
-            'Triple Tree Rake (deg)': this.frameParameters.fork.tripleTreeRake,
-            'Fork Diameter (mm)': this.frameParameters.fork.diameter,
-            'Fork Width (mm)': this.frameParameters.fork.width,
+            'Offset (mm)': this.frameParameters.fork.offset,
+            'Length (mm)': this.frameParameters.fork.length,
+            'Diameter (mm)': this.frameParameters.fork.diameter,
+            'Width (mm)': this.frameParameters.fork.width,
         }
 
         this.forkFolder
-            .add(params, 'Fork Length (mm)', 600, 1000, 1)
+            .add(params, 'Length (mm)', 600, 1000, 1)
             .listen()
             .onChange((length) => {
                 this.frameParameters.fork.length = length
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.forkFolder
-            .add(params, 'Fork Offset (mm)', 0, 80, 5)
+            .add(params, 'Offset (mm)', 0, 150, 1)
             .listen()
             .onChange((offset) => {
                 this.frameParameters.fork.offset = offset
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.forkFolder
-            .add(params, 'Triple Tree Rake (deg)', 0, 10, 1)
-            .listen()
-            .onChange((tripleTreeRake) => {
-                this.frameParameters.fork.tripleTreeRake = tripleTreeRake
-                this.frame.setParameters(this.frameParameters).redrawInScene()
-            })
-
-        this.forkFolder
-            .add(params, 'Fork Diameter (mm)', 27, 49, 1)
+            .add(params, 'Diameter (mm)', 27, 49, 1)
             .listen()
             .onChange((diameter) => {
                 this.frameParameters.fork.diameter = diameter
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.forkFolder
-            .add(params, 'Fork Width (mm)', 100, 400, 1)
+            .add(params, 'Width (mm)', 100, 400, 1)
             .listen()
             .onChange((width) => {
                 this.frameParameters.fork.width = width
-                this.frame.setParameters(this.frameParameters).redrawInScene()
+                if (this.initialized) {
+                    this.frame.setParameters(this.frameParameters).redrawInScene()
+                }
             })
 
         this.forkFolder.open()

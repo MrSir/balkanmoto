@@ -1,8 +1,13 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
     .content-grid {
         text-align: justify;
-        margin: 20px auto;
+        margin: 20px 0px;
         font-size: 16pt;
+        max-width: 100%;
+    }
+
+    .content-grid #info {
+        margin: 0px auto;
         max-width: 1200px;
     }
 
@@ -11,13 +16,18 @@
         text-indent: 30px;
     }
 
-    #canvas {
+    .content-grid #canvas {
         display: block;
-        width: 1200px;
-        height: 800px;
+        width: 95vw;
+        height: 95vh;
+        margin: 0px auto;
     }
 
     .slider:before {
+        display: none;
+    }
+
+    #small-screen-warning {
         display: none;
     }
 }

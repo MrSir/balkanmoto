@@ -13,10 +13,13 @@
     color: #636b6f;
 }
 
-#canvas {
+.content-grid #canvas {
+    display: none;
+}
+
+#small-screen-warning {
     display: block;
-    width: 800px;
-    height: 600px;
+    color: red;
 }
 
 .content-grid #canvas #control-panel {
@@ -35,4 +38,8 @@
 
 .dg .cr.function .property-name{
     width: 100%;
+}
+
+.slider:before {
+    display: none;
 }

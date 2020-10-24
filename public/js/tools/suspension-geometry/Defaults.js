@@ -4,13 +4,7 @@ class Defaults {
     }
 
     getOptions() {
-        return [
-            'Custom',
-            '1982 Honda V45 Saber',
-            '1971 Honda CB750',
-            '2003 Yamaha YZF-600 R6',
-            '2013 Suzuki C90T B.O.S.S.',
-        ]
+        return ['Custom', '1982 Honda V45 Saber', '2013 Suzuki C90T B.O.S.S.', '2003 Yamaha YZF-600 R6']
     }
 
     get defaults() {
@@ -20,10 +14,15 @@ class Defaults {
             rake: 30,
             wheelbase: 1000,
             stemLength: 200,
+            tripleTree: {
+                offset: 60,
+                rake: 0,
+                topYokeThickness: 20,
+                bottomYokeThickness: 30,
+            },
             fork: {
                 length: 1000,
-                offset: 60,
-                tripleTreeRake: 0,
+                offset: 0,
                 diameter: 37,
                 width: 191,
             },
@@ -43,10 +42,15 @@ class Defaults {
             rake: 29.5,
             wheelbase: 1570,
             stemLength: 225,
-            fork: {
-                length: 850,
+            tripleTree: {
                 offset: 60,
-                tripleTreeRake: 0,
+                rake: 0,
+                topYokeThickness: 20,
+                bottomYokeThickness: 30,
+            },
+            fork: {
+                length: 890,
+                offset: 40,
                 diameter: 37,
                 width: 191,
             },
@@ -66,10 +70,15 @@ class Defaults {
             rake: 32,
             wheelbase: 1675,
             stemLength: 210,
+            tripleTree: {
+                offset: 60,
+                rake: 0,
+                topYokeThickness: 35,
+                bottomYokeThickness: 35,
+            },
             fork: {
                 length: 775,
-                offset: 60,
-                tripleTreeRake: 0,
+                offset: 0,
                 diameter: 43,
                 width: 265,
             },
@@ -85,37 +94,19 @@ class Defaults {
             },
         }
 
-        defaults['1971 Honda CB750'] = {
-            rake: 27,
-            wheelbase: 1453,
-            stemLength: 200,
-            fork: {
-                length: 830,
-                offset: 30,
-                tripleTreeRake: 0,
-                diameter: 35,
-                width: 240,
-            },
-            frontTire: {
-                width: 100,
-                aspect: 90,
-                rimDiameterInInches: 19,
-            },
-            rearTire: {
-                width: 110,
-                aspect: 90,
-                rimDiameterInInches: 18,
-            },
-        }
-
         defaults['2003 Yamaha YZF-600 R6'] = {
             rake: 24,
             wheelbase: 1380,
             stemLength: 200,
+            tripleTree: {
+                offset: 35,
+                rake: 0,
+                topYokeThickness: 20,
+                bottomYokeThickness: 30,
+            },
             fork: {
                 length: 725,
-                offset: 35,
-                tripleTreeRake: 0,
+                offset: 10,
                 diameter: 43,
                 width: 205,
             },

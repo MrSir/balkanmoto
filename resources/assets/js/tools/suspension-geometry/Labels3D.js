@@ -9,20 +9,29 @@ class Labels3D {
 
         this.textParameters = {
             font: this.frame.font,
-            size: 50,
+            size: 30,
             height: 1,
             curveSegments: 2,
             bevelEnabled: false,
         }
 
-        this.blueMaterial = new THREE.LineBasicMaterial({
-            color: 0x0000ff,
-        })
         this.redMaterial = new THREE.LineBasicMaterial({
             color: 0xff0000,
         })
         this.greenMaterial = new THREE.LineBasicMaterial({
             color: 0x00ff00,
+        })
+        this.blueMaterial = new THREE.LineBasicMaterial({
+            color: 0x0000ff,
+        })
+        this.yellowMaterial = new THREE.LineBasicMaterial({
+            color: 0xffff00,
+        })
+        this.aquaMaterial = new THREE.LineBasicMaterial({
+            color: 0x00ffff,
+        })
+        this.fusiaMaterial = new THREE.LineBasicMaterial({
+            color: 0xff00ff,
         })
     }
 
@@ -79,6 +88,22 @@ class Labels3D {
             this.frame.trailPoint,
         ]
 
+        let forkLengthXLabelOffset =
+            Math.cos(this.frame.fork.verticalStemAngle + this.frame.fork.tripleTreeRakeInRadians) * 100
+        let forkLengthYLabelOffset =
+            Math.sin(this.frame.fork.verticalStemAngle + this.frame.fork.tripleTreeRakeInRadians) * 100
+
+        this.forkLengthPoints = [
+            this.frame.tripleTreeCenterOfForkTubesPoint,
+            new THREE.Vector3(
+                this.frame.tripleTreeCenterOfForkTubesPoint.x + forkLengthXLabelOffset,
+                this.frame.tripleTreeCenterOfForkTubesPoint.y + forkLengthYLabelOffset,
+                0
+            ),
+            new THREE.Vector3(this.frontTire.x + forkLengthXLabelOffset, this.frontTire.y + forkLengthYLabelOffset, 0),
+            new THREE.Vector3(this.frontTire.x, this.frontTire.y, 0),
+        ]
+
         return this
     }
 
@@ -116,8 +141,7 @@ class Labels3D {
         return this.buildLabel(text, material)
     }
 
-    buildLabels() {
-        // wheelbase
+    buildWheelbaseLabel() {
         this.buildLine(this.wheelbasePoints, this.blueMaterial)
         let wheelbaseText = this.buildDistanceLabel('WHEELBASE', this.wheelbaseMM, this.blueMaterial)
         wheelbaseText.position.set(
@@ -127,7 +151,10 @@ class Labels3D {
         )
         wheelbaseText.rotateX(-Math.PI / 2)
 
-        // trail
+        return this
+    }
+
+    buildTrailLabel() {
         this.buildLine(this.trailPoints, this.redMaterial)
         let trailText = this.buildDistanceLabel('TRAIL', this.trailMM, this.redMaterial)
         trailText.rotateX(-Math.PI / 2)
@@ -138,11 +165,44 @@ class Labels3D {
             260
         )
 
-        // rake
+        return this
+    }
+
+    buildRakeLabel() {
         this.buildLine(this.rakePoints, this.greenMaterial)
         let rakeText = this.buildAngleLabel('RAKE', this.convertRADtoDEG(this.rakeRAD), this.greenMaterial)
         rakeText.rotateZ(-Math.PI / 2)
         rakeText.position.set(this.frame.frameStemTopPoint.x + rakeText.geometry.textHeight / 2, 0, 0)
+
+        return this
+    }
+
+    buildForkLengthLabel() {
+        this.buildLine(this.forkLengthPoints, this.yellowMaterial)
+        let forkLengthText = this.buildDistanceLabel(
+            'FORK LENGTH',
+            this.frame.fork.length - this.frame.fork.offset,
+            this.yellowMaterial
+        )
+        forkLengthText.rotateZ(
+            -Math.PI / 2 + this.frame.fork.verticalStemAngle + this.frame.fork.tripleTreeRakeInRadians
+        )
+        let forkLengthXLabelOffset =
+            Math.cos(this.frame.fork.verticalStemAngle + this.frame.fork.tripleTreeRakeInRadians) * 110
+        let forkLengthYLabelOffset =
+            Math.sin(this.frame.fork.verticalStemAngle + this.frame.fork.tripleTreeRakeInRadians) * 110
+
+        forkLengthText.position.set(
+            this.frame.tripleTreeCenterOfForkTubesPoint.x + forkLengthXLabelOffset,
+            this.frame.tripleTreeCenterOfForkTubesPoint.y + forkLengthYLabelOffset,
+            0
+        )
+
+        return true
+    }
+
+    buildLabels() {
+        this.buildWheelbaseLabel().buildTrailLabel().buildRakeLabel().buildForkLengthLabel()
 
         return this
     }
