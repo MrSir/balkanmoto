@@ -39,3 +39,7 @@
 .dg .cr.function .property-name{
     width: 100%;
 }
+
+.slider:before {
+    display: none;
+}

@@ -19,28 +19,58 @@
         <h1>Suspension Geometry</h1>
         <h2>Parameters</h2>
         <ul>
-            <li>Stem Rake (deg): this is the angle between the frame and the fork stem, measured in degrees.</li>
-            <li>Wheelbase (mm): the distance across the ground from the rear axle to the front axle, measured in millimeters. This is only available when initializing a Custom frame</li>
-            <li>Fork Length (mm): this is the length of the fork tubes from the center of the mounting point to the top of the top yoke, measured in millimeters</li>
-            <li>Fork Offset (mm): this is the perpendicular distance between the center of the fork stem and the center of the fork tubes, measured in millimeters</li>
-            <li>Triple Tree Rake (deg): this is the angle the triple trees add to the overall geometry, measured in degrees</li>
-            <li>Front Tire Width (mm): this is simply how wide the tire is, measured in millimeters</li>
-            <li>Front Tire Aspect: this is the aspect ratio used to compute the height of the tire</li>
-            <li>Front Rim Size (in): this is the rim diameter, measured in inches</li>
-            <li>Rear Tire Width (mm): this is simply how wide the tire is, measured in millimeters</li>
-            <li>Rear Tire Aspect: this is the aspect ratio used to compute the height of the tire</li>
-            <li>Rear Rim Size (in): this is the rim diameter, measured in inches</li>
+            <li>Frame
+                <ul>
+                    <li>Stem Rake (deg): this is the angle between the frame and the fork stem, measured in degrees.</li>
+                    <li>Wheelbase (mm): the distance across the ground from the rear axle to the front axle, measured in millimeters. This is only available when initializing a Custom frame</li>
+                </ul>
+            </li>
+            <li>Triple Tree
+                <ul>
+                    <li>Offset (mm): this is the perpendicular distance between the center of the fork stem and the center of the fork tubes, measured in millimeters</li>
+                    <li>Rake (deg): this is the angle the triple trees add to the overall geometry, measured in degrees</li>
+                </ul>
+            </li>
+            <li>Fork
+                <ul>
+                    <li>Length (mm): this is the total length of the forks from tip to tip, measured in millimeters</li>
+                    <li>Offset (mm): this is the distance measured from the top of the top yoke to the top of the fork, measured in millimeters</li>
+                </ul>
+            </li>
+            <li>Tires
+                <ul>
+                    <li>Tire Width (mm): this is simply how wide the tire is, measured in millimeters</li>
+                    <li>Tire Aspect: this is the aspect ratio used to compute the height of the tire</li>
+                    <li>Rim Size (in): this is the rim diameter, measured in inches</li>
+                </ul>
+            </li>
         </ul>
         <h3>Visual Aid Parameters</h3>
         While these parameters do not affect the geometry in any way they do help with the visualization of the final result.
         <ul>
-            <li>Stem Length (mm): this is simply the length of the fork stem measured in millimeters</li>
-            <li>Fork Diameter (mm): this is simply the thickness (diameter) of the forks measured in millimeters</li>
-            <li>Fork Width (mm): this is the space between the two fork tubes, measured in millimeters from the center to center</li>
+            <li>Frame
+                <ul>
+                    <li>Stem Length (mm): this is simply the length of the fork stem measured in millimeters</li>
+                </ul>
+            </li>
+            <li>Triple Tree
+                <ul>
+                    <li>Top Yoke Thickness (mm): this is the height of the top yoke, measured in millimeters</li>
+                    <li>Bottom Yoke Thickness (mm): this is the height of the bottom yoke, measured in millimeters</li>
+                </ul>
+            </li>
+            <li>Fork
+                <ul>
+                    <li>Fork Diameter (mm): this is simply the thickness (diameter) of the forks measured in millimeters</li>
+                    <li>Fork Width (mm): this is the space between the two fork tubes, measured in millimeters from the center to center</li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
         </ul>
         <h3>Parameters NOT considered</h3>
         <ul>
-            <li>Rear Suspension geometry is completely omitted in this first version. (This might not matter if you are computing things for a hard tail)</li>
+            <li>Rear Suspension geometry is completely omitted in this version. (This might not matter if you are computing things for a hard tail)</li>
             <li>There is no gravitational simulations, so suspension sag, and changes in geometry due to rider weight are not considered</li>
             <li>While the geometry simulation doesn't consider the cases of offset front axle mounting point from below the fork tubes, it can still be simulated if you were to do the math to compute the triple tree rake</li>
         </ul>
@@ -53,6 +83,7 @@
             <li>Wheelbase: the distance across the ground from the rear axle to the front axle</li>
             <li>Rake: the absolute angle between the vertical and the fork stem</li>
             <li>Trail: the distance across the ground from the front axle to the intersecting point of the ground and the straight line drawn through the fork stem</li>
+            <li>Fork Length: the distance from the top of the top yoke to the center of the front axle along the fork tubes</li>
         </ul>
         For more details on what those numbers, and the parameters mean check out the write up article [Coming Soon ...]
 
