@@ -51,20 +51,13 @@ Route::resource(
 );
 
 Route::get(
-    '/contact',
+    '/links',
     [
-        'as' => 'contact',
-        'uses' => 'Controller@contact',
+        'as' => 'links',
+        'uses' => 'Controller@links',
     ]
 );
 
-Route::get(
-    '/privacy',
-    [
-        'as' => 'privacy',
-        'uses' => 'Controller@privacy',
-    ]
-);
 
 Route::get(
     '/logout',
