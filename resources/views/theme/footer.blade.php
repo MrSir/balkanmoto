@@ -1,21 +1,10 @@
 <div class="footer-grid">
-    {{--<div class="tweeter">--}}
-        {{--<div class="footer-title">Tweets</div>--}}
-        {{--<div class="tweets">--}}
-            {{--<div class="tweet">--}}
-                {{--<img src="" width="50px" height="50px">--}}
-                {{--<div class="name">BalkanMoto</div>--}}
-                {{--<div class="handle"><a href="#">@BalkanMoto2018</a></div>--}}
-                {{--<div class="message">Check out the latest Honda Phantom Build <a href="#">bit.log/1235had</a></div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
     <div class="links">
         <div class="footer-title">Links</div>
         <ul>
             <li><a href="/about">ABOUT</a></li>
             <li><a href="/articles">ARTICLES</a></li>
-            <li><a href="/contact">CONTACT</a></li>
+            <li><a href="/links">LINKS</a></li>
             @if(Auth::check())
                 <li><a href="/nova">NOVA</a></li>
             @else

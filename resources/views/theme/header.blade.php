@@ -1,7 +1,7 @@
 <div class="header-grid">
-    <div class="tutorials"></div>
-    <div class="tutorials-overlay overlay" onclick="window.open('/articles?tag=tutorials','_self');">
-        <div class="tutorials-overlay-text overlay-text">TIPS AND TRICKS FOR YOUR BUILDS ...</div>
+    <div class="leather"></div>
+    <div class="leather-overlay overlay" onclick="window.open('/articles?tag=leather%20craft','_self');">
+        <div class="leather-overlay-text overlay-text">Leather Craft ...</div>
     </div>
     <div class="builds"></div>
     <div class="builds-overlay overlay" onclick="window.open('/articles?tag=builds','_self');">

@@ -73,17 +73,17 @@ a{
     display: grid;
     height: 100%;
     grid-template-areas:
-            'tutorials'
+            'leather'
             'builds'
             'cruises';
     grid-template-columns: 1fr;
 }
 
-.container-grid .header-grid .tutorials {
-    grid-area: tutorials;
+.container-grid .header-grid .leather {
+    grid-area: leather;
     height: 0px;
     padding-bottom: 66.66%;
-    background: url('/img/header/tutorials_1080x720.jpg') center;
+    background: url('/img/header/leather_1080x720.jpg') center;
     background-size: cover;
 }
 
@@ -100,15 +100,15 @@ a{
     align-self: center;
 }
 
-.container-grid .header-grid .tutorials-overlay {
-    grid-area: tutorials;
+.container-grid .header-grid .leather-overlay {
+    grid-area: leather;
 }
 
-.container-grid .header-grid .tutorials:hover + .tutorials-overlay{
+.container-grid .header-grid .leather:hover + .leather-overlay{
     display: grid;
 }
 
-.container-grid .header-grid .tutorials-overlay:hover {
+.container-grid .header-grid .leather-overlay:hover {
     display: grid;
 }
 

@@ -25,4 +25,9 @@
         everyday life. Images of popular builds from around the world that I draw inspiration from. As well as sneak
         peaks and more promotional material for my own builds.
     </p>
+    <p>
+        Late in 2020 I also got started on Leather Craft. Leather is such a versatile material to work with, and i've
+        learned a ton playing around with it on personal project. So I figured it's time to showcase some of that work
+        as well.
+    </p>
 @endsection

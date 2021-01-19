@@ -27,6 +27,7 @@ mix.styles('resources/assets/css/style.css', 'public/css/style.css')
     .styles('resources/assets/css/pages/home-style.css', 'public/css/pages/home-style.css')
     .styles('resources/assets/css/pages/article-style.css', 'public/css/pages/article-style.css')
     .styles('resources/assets/css/pages/articles-style.css', 'public/css/pages/articles-style.css')
+    .styles('resources/assets/css/pages/links-style.css', 'public/css/pages/links-style.css')
     .styles('resources/assets/css/pages/tool-style.css', 'public/css/pages/tool-style.css')
     .styles(
         'resources/assets/css/pages/tools/engineChecklist-style.css',
@@ -36,6 +37,7 @@ mix.styles('resources/assets/css/style.css', 'public/css/style.css')
     .styles('resources/assets/css/pages/home-large-style.css', 'public/css/pages/home-large-style.css')
     .styles('resources/assets/css/pages/article-large-style.css', 'public/css/pages/article-large-style.css')
     .styles('resources/assets/css/pages/articles-large-style.css', 'public/css/pages/articles-large-style.css')
+    .styles('resources/assets/css/pages/links-large-style.css', 'public/css/pages/links-large-style.css')
     .styles('resources/assets/css/pages/tool-large-style.css', 'public/css/pages/tool-large-style.css')
     .styles(
         'resources/assets/css/pages/tools/engineChecklist-large-style.css',

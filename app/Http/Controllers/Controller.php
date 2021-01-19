@@ -77,22 +77,12 @@ class Controller extends BaseController
         );
     }
 
-    public function contact()
+    public function links()
     {
         return view(
-            'pages.contact',
+            'pages.links',
             [
-                'headerText' => 'CONTACT US',
-            ]
-        );
-    }
-
-    public function privacy()
-    {
-        return view(
-            'pages.privacy',
-            [
-                'headerText' => 'Privacy',
+                'headerText' => 'Links',
             ]
         );
     }
