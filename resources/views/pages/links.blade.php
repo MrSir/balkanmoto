@@ -17,6 +17,14 @@
         </div>
         <div class="link">
             <div class="box">
+                <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEUEdHLwqMAm31ode1fvfIal"
+                   target="_blank">
+                    Series: Balkan Moto Leather Craft
+                </a>
+            </div>
+        </div>
+        <div class="link">
+            <div class="box">
                 <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEWRmc_wHvq9fMHSfcXa5QiO"
                    target="_blank">
                     Series: How to build a Cafe Racer
