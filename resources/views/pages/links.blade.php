@@ -9,6 +9,14 @@
     <div class="content-center">
         <div class="link">
             <div class="box">
+                <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEXe8HSv3ejL-yqJRIVJ8rHQ"
+                   target="_blank">
+                    Series: The Cafe Race Season Two (2021)
+                </a>
+            </div>
+        </div>
+        <div class="link">
+            <div class="box">
                 <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEU7KSyNKcsSCwaU-hIOQi77"
                    target="_blank">
                     Series: How to fix a Cafe Racer
@@ -43,7 +51,7 @@
             <div class="box">
                 <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEV0nVgAsqgf77IX50h048d_"
                    target="_blank">
-                    Series: The Cafe Race
+                    Series: The Cafe Race Season One (2020)
                 </a>
             </div>
         </div>
