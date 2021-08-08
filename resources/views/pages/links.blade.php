@@ -17,6 +17,14 @@
         </div>
         <div class="link">
             <div class="box">
+                <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEVgecItzDRyei3TzrpbvRIR"
+                   target="_blank">
+                    Series: Balkan Moto Garage
+                </a>
+            </div>
+        </div>
+        <div class="link">
+            <div class="box">
                 <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEU7KSyNKcsSCwaU-hIOQi77"
                    target="_blank">
                     Series: How to fix a Cafe Racer
