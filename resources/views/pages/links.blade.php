@@ -9,6 +9,14 @@
     <div class="content-center">
         <div class="link">
             <div class="box">
+                <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEU-3mP-xKq_cn66aQr-gd4i"
+                   target="_blank">
+                    Series: The Jocker
+                </a>
+            </div>
+        </div>
+        <div class="link">
+            <div class="box">
                 <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEUa_8GHV-5bgc0IVmPIID7S"
                    target="_blank">
                     Series: How a V45 Engine Works
