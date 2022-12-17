@@ -5,6 +5,7 @@
     <link href="/css/pages/tool-large-style.css" rel="stylesheet">
     <script src="/js/tools/three.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/ControlPanel.js" type="application/javascript"></script>
+    <script src="/js/tools/carburetor-tuning/Chart.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/SceneInitializer.js" type="application/javascript"></script>
     <meta name="keywords" content="carburetor tunning,carburetor,jets,rejetting,needle shims">
 @endsection
@@ -29,13 +30,13 @@
         let sceneInitializer = new SceneInitializer(scene, container, floorY)
         sceneInitializer.initializeScene()
 
-        let defaults = new Defaults()
-
         let loader = new THREE.FontLoader()
         loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
-            let controlPanel = new ControlPanel(document.getElementById('control-panel'))
+            let chart = new Chart(scene, container, 2000, 1500, floorY, font)
+            chart.drawChart()
         })
 
+        let controlPanel = new ControlPanel(document.getElementById('control-panel'))
 
         function onWindowResize() {
             sceneInitializer.camera.aspect = container.offsetWidth / container.offsetHeight
@@ -47,8 +48,6 @@
 
         let animate = function () {
             requestAnimationFrame(animate)
-
-            sceneInitializer.controls.update()
 
             sceneInitializer.renderer.render(scene, sceneInitializer.camera)
         }
