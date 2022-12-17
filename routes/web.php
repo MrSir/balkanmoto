@@ -39,6 +39,7 @@ Route::resource(
 );
 
 Route::get('/tools/suspension-geometry', 'Tools\SuspensionGeometryController');
+Route::get('/tools/carburetor-tuning', 'Tools\CarburetorTuningController');
 
 Route::resource(
     '/images',

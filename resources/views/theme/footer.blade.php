@@ -16,6 +16,7 @@
         <div class="footer-title">Tools</div>
         <ul>
             <li><a href="/tools/suspension-geometry">SUSPENSION GEOMETRY</a></li>
+			<li><a href="/tools/carburetor-tuning">CARBURETOR TUNING</a></li>
         </ul>
     </div>
     <div class="social">
