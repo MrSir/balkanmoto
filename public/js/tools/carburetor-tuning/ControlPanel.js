@@ -1,7 +1,9 @@
 class ControlPanel {
-    constructor(element) {
+    constructor(element, chart) {
         this.previousInitialized = false
         this.initialized = false
+
+        this.chart = chart
 
         this.gui = new THREE.GUI({
             width: 400,
@@ -11,13 +13,7 @@ class ControlPanel {
         element.appendChild(this.gui.domElement)
 
         this.createViewFolder()
-            // .createDefaultsFolder()
-            // .createFrontTireFolder()
-            // .createRearTireFolder()
-            // .createFrameFolder()
-            // .createTripleTreeFolder()
-            // .createForkFolder()
-            // .createInitializeButton()
+            .createIdleCircuitFolder()
     }
 
     cleanUpGui() {
@@ -26,67 +22,19 @@ class ControlPanel {
         // this.gui.removeFolder(this.frameFolder)
         // this.gui.removeFolder(this.tripleTreeFolder)
         // this.gui.removeFolder(this.forkFolder)
-
-        if (this.initialized && !this.previousInitialized) {
-            this.gui.remove(this.initializeButton)
-        }
-    }
-
-    resetGuiTo(newParams) {
-        this.frameParameters = newParams
-
-        this.cleanUpGui()
-
-        // this.createFrontTireFolder()
-        //     .createRearTireFolder()
-        //     .createFrameFolder()
-        //     .createTripleTreeFolder()
-        //     .createForkFolder()
-
-        if (!this.initialized) {
-            this.createInitializeButton()
-        }
     }
 
     createViewFolder() {
         let viewFolder = this.gui.addFolder('View')
         let params = {
-            'Show Geometry': false,
-            'Show Labels': true,
-            'Transparent Objects': false,
+            'Show Throttle Position': true,
         }
 
         viewFolder
-            .add(params, 'Show Geometry')
+            .add(params, 'Show Throttle Position')
             .listen()
             .onChange((toggle) => {
-                this.frame.setShowGeometry(toggle)
-
-                if (this.initialized) {
-                    this.frame.redrawInScene()
-                }
-            })
-
-        viewFolder
-            .add(params, 'Show Labels')
-            .listen()
-            .onChange((toggle) => {
-                this.frame.setShowLabels(toggle)
-
-                if (this.initialized) {
-                    this.frame.redrawInScene()
-                }
-            })
-
-        viewFolder
-            .add(params, 'Transparent Objects')
-            .listen()
-            .onChange((toggle) => {
-                this.frame.setTransparentObjects(toggle)
-
-                if (this.initialized) {
-                    this.frame.redrawInScene()
-                }
+                this.chart.throttlePosition.toggleVisible(toggle)
             })
 
         viewFolder.open()
@@ -94,18 +42,29 @@ class ControlPanel {
         return this
     }
 
-    createInitializeButton() {
-        let initializeObject = {
-            initialize: () => {
-                this.previousInitialized = this.initialized
-                this.initialized = true
-
-                this.resetGuiTo(this.frameParameters)
-                this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
-            },
+    createIdleCircuitFolder() {
+        this.idleCircuitFolder = this.gui.addFolder('Idle Circuit')
+        let params = {
+            'Idle Speed (RPM)': this.chart.throttlePosition.position * 4,
+            'Pilot Fuel Jet Size': 17.5,
+            'Pilot Air/Fuel Mix Screw Turns': 2.50
         }
 
-        this.initializeButton = this.gui.add(initializeObject, 'initialize').name('INITIALIZE FRAME')
+        this.idleCircuitFolder.add(params, 'Idle Speed (RPM)', 600, 1600, 10).onChange((position) => {
+            this.chart.throttlePosition.position = position / 4
+            this.chart.throttlePosition.redrawInScene()
+        })
+
+        this.idleCircuitFolder.add(params, 'Pilot Fuel Jet Size', 12, 22, 0.5).onChange((position) => {
+            //TBD
+        })
+
+        this.idleCircuitFolder.add(params, 'Pilot Air/Fuel Mix Screw Turns', 0, 5, 0.25).onChange((position) => {
+            //TBD
+        })
+
+
+        this.idleCircuitFolder.open()
 
         return this
     }

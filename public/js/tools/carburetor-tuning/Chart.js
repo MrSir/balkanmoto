@@ -1,54 +1,19 @@
-class Chart {
-    constructor(scene, container, width, height, floorY, font) {
-        this.scene = scene
-        this.container = container
+class Chart extends ChartElement{
+    constructor(scene, renderer, camera, font, width, height, floorY) {
+        super(scene, renderer, camera, font)
 
         this.width = width
         this.height = height
         this.floorY = floorY
 
-        this.font = font
-
-        this.blackMaterial = new THREE.LineBasicMaterial({color: 0x000000})
-
-        this.textParameters = {
-            font: this.font,
-            size: 30,
-            height: 1,
-            curveSegments: 2,
-            bevelEnabled: false,
-        }
-
-    }
-
-    buildLabel(text, x, y, z, material) {
-        let textGeo = new THREE.TextGeometry(text, this.textParameters)
-        textGeo.computeBoundingBox()
-        textGeo.computeVertexNormals()
-
-        textGeo.textWidth = textGeo.boundingBox.max.x - textGeo.boundingBox.min.x
-        textGeo.textHeight = textGeo.boundingBox.max.y - textGeo.boundingBox.min.y
-
-        let textMesh = new THREE.Mesh(textGeo, material)
-        textMesh.position.set(x, y, z)
-
-        return textMesh
-    }
-
-    buildPoint(x, y, z) {
-        return new THREE.Vector3(x, y, z)
-    }
-
-    buildLine(points, material) {
-        return new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material)
+        this.throttlePosition = new ThrottlePosition(scene, renderer, camera, font, this.height, floorY)
     }
 
     drawYAxis() {
-        let yAxisX = -(this.width/3)
         let yAxis = this.buildLine(
             [
-                this.buildPoint(yAxisX, 0, this.floorY),
-                this.buildPoint(yAxisX, this.height, this.floorY),
+                this.buildPoint(0, 0, this.floorY),
+                this.buildPoint(0, this.height, this.floorY),
             ],
             this.blackMaterial
         )
@@ -63,14 +28,14 @@ class Chart {
             yAxisElements.push(
                 this.buildLine(
                     [
-                        this.buildPoint(yAxisX - (yAxisLineWidth/2), i*yAxisLineSpace, this.floorY),
-                        this.buildPoint(yAxisX + (yAxisLineWidth/2), i*yAxisLineSpace, this.floorY)
+                        this.buildPoint(-yAxisLineWidth/2, i*yAxisLineSpace, this.floorY),
+                        this.buildPoint(yAxisLineWidth/2, i*yAxisLineSpace, this.floorY)
                     ],
                     this.blackMaterial
                 )
             )
             yAxisElements.push(
-                this.buildLabel(yAxisLabels[i], yAxisX - 200,i*yAxisLineSpace, this.floorY, this.blackMaterial)
+                this.buildLabel(yAxisLabels[i], - 200,i*yAxisLineSpace, this.floorY, this.blackMaterial)
             )
         }
         yAxisElements.forEach((element) => this.scene.add(element))
@@ -78,11 +43,10 @@ class Chart {
 
     drawXAxis() {
         let xAxisY = 0
-        let xAxisStartX = -(this.width/3)
         let xAxis = this.buildLine(
             [
-                this.buildPoint(xAxisStartX, xAxisY, this.floorY),
-                this.buildPoint(xAxisStartX + this.width, xAxisY, this.floorY),
+                this.buildPoint(0, xAxisY, this.floorY),
+                this.buildPoint(0 + this.width, xAxisY, this.floorY),
             ],
             this.blackMaterial
         )
@@ -97,21 +61,21 @@ class Chart {
             xAxisElements.push(
                 this.buildLine(
                     [
-                        this.buildPoint(xAxisStartX + (i*xAxisLineSpace), xAxisY-xAxisLineHeight, this.floorY),
-                        this.buildPoint(xAxisStartX + (i*xAxisLineSpace), xAxisY+xAxisLineHeight, this.floorY)
+                        this.buildPoint(i*xAxisLineSpace, xAxisY-xAxisLineHeight, this.floorY),
+                        this.buildPoint(i*xAxisLineSpace, xAxisY+xAxisLineHeight, this.floorY)
                     ],
                     this.blackMaterial
                 )
             )
             xAxisElements.push(
-                this.buildLabel(xAxisLabels[i], xAxisStartX + (i*xAxisLineSpace),xAxisY - 100, this.floorY, this.blackMaterial)
+                this.buildLabel(xAxisLabels[i], i*xAxisLineSpace,xAxisY - 100, this.floorY, this.blackMaterial)
             )
         }
         xAxisElements.forEach((element) => this.scene.add(element))
 
         let title = this.buildLabel(
             'Throttle Position',
-            xAxisStartX + (2*xAxisLineSpace) - 120,
+            (2*xAxisLineSpace) - 120,
             xAxisY - 200,
             this.floorY,
             this.blackMaterial
@@ -122,5 +86,7 @@ class Chart {
     drawChart() {
         this.drawYAxis()
         this.drawXAxis()
+
+        this.throttlePosition.toggleVisible(true)
     }
 }
