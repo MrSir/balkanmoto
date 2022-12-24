@@ -92,12 +92,19 @@ class Chart extends ChartElement{
 
     drawChart() {
         this.throttlePosition.toggleVisible(true)
+        this.idleCircuit.toggleVisible(true)
+        this.mainFuelJet.toggleVisible(true)
+        this.needleClipPosition.toggleVisible(true)
+        this.needleDiameter.toggleVisible(true)
+        this.needleTaper.toggleVisible(true)
+        this.fuelMap.toggleVisible(true)
+
+        // hide the rest after fuel map is built
         this.idleCircuit.toggleVisible(false)
         this.mainFuelJet.toggleVisible(false)
         this.needleClipPosition.toggleVisible(false)
         this.needleDiameter.toggleVisible(false)
         this.needleTaper.toggleVisible(false)
-        this.fuelMap.toggleVisible(true)
 
         this.drawYAxis()
         this.drawXAxis()
