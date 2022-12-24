@@ -10,7 +10,7 @@ class MainFuelJet extends ChartElement {
     }
 
     f(x) {
-        let y = (((this.height/55)*x/this.width) ** 2.0) * (this.fuelJetSize/112.5)
+        let y = (((this.height/55)*x/this.width) ** 2.0) * (2*(this.fuelJetSize/112.5))
 
         if (y > this.height) {
             return this.height
@@ -29,7 +29,7 @@ class MainFuelJet extends ChartElement {
 
     buildMeshes() {
         this.meshes.push(
-            this.buildLine(this.buildPoints(), this.blueMaterial),
+            this.buildLine(this.buildPoints(), this.aquaMaterial),
         )
 
         this.meshesInitialized = true

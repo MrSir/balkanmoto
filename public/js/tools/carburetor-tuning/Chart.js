@@ -89,6 +89,17 @@ class Chart extends ChartElement{
         this.scene.add(title)
     }
 
+    drawOptimalLine() {
+        this.scene.add(
+            this.buildLine(
+                [
+                    this.buildPoint(0, this.height/2, this.z),
+                    this.buildPoint(this.width, this.height/2, this.z)
+                ],
+                this.blackMaterial
+            )
+        )
+    }
 
     drawChart() {
         this.throttlePosition.toggleVisible(true)
@@ -108,5 +119,6 @@ class Chart extends ChartElement{
 
         this.drawYAxis()
         this.drawXAxis()
+        this.drawOptimalLine()
     }
 }

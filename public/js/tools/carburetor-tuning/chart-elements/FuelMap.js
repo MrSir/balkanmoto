@@ -11,6 +11,7 @@ class FuelMap extends ChartElement{
 
     buildPoints() {
         let coordinates = []
+        let running_average_factor = 10
 
         this.chart.idleCircuit.points.forEach((point) => {
             coordinates[point.x] = point.y
@@ -33,8 +34,29 @@ class FuelMap extends ChartElement{
         })
 
         coordinates.forEach((y, x) => {
+            let computed_y = y / 2
+            let average_y = y
+
+            if (x > running_average_factor) {
+                for (let i = 1; i < running_average_factor; i++) {
+                    average_y += coordinates[x-i]
+                }
+
+                console.log(average_y)
+
+                computed_y = (average_y / running_average_factor) / 2
+            }
+
+            if (computed_y > this.height) {
+                computed_y = this.height
+            } else if(computed_y < 0) {
+                computed_y = 0
+            }
+
+            console.log(x, y, computed_y, running_average_factor)
+
             this.points.push(
-                this.buildPoint(x, y/2, this.z)
+                this.buildPoint(x, computed_y, this.z)
             )
         })
 

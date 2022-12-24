@@ -12,6 +12,7 @@ class ControlPanel {
         this.createViewFolder()
             .createIdleCircuitFolder()
             .createMainCircuitFolder()
+            .createModificationsFolder()
     }
 
     createViewFolder() {
@@ -91,7 +92,7 @@ class ControlPanel {
             this.chart.fuelMap.redrawInScene()
         })
 
-        idleCircuitFolder.add(params, 'Pilot Mix Screw Out Turns', 0, 5, 0.25).onChange((turns) => {
+        idleCircuitFolder.add(params, 'Pilot Mix Screw Out Turns', 0, 5, 0.125).onChange((turns) => {
             this.chart.idleCircuit.mixScrewTurns = turns
             this.chart.idleCircuit.redrawInScene()
             this.chart.fuelMap.redrawInScene()
@@ -137,6 +138,34 @@ class ControlPanel {
         })
 
         mainCircuitFolder.open()
+
+        return this
+    }
+
+    createModificationsFolder() {
+        let modificationsFolder = this.gui.addFolder('Modifications')
+        let params = {
+            'Intake Type': 'Stock',
+            'Exhaust Type': 'Stock',
+        }
+
+        modificationsFolder
+            .add(params, 'Intake Type')
+            .options(['Stock', 'Better Breathing Filter', 'Heavy Breather/Intake', 'POD Filters'])
+            .listen()
+            .onChange((intake_type) => {
+                console.log(intake_type)
+            })
+
+        modificationsFolder
+            .add(params, 'Exhaust Type')
+            .options(['Stock', 'Drilled Stock', 'Slip-ons', 'Full Exhaust', '2 into 1', 'Performance Exhaust'])
+            .listen()
+            .onChange((intake_type) => {
+                console.log(intake_type)
+            })
+
+        modificationsFolder.open()
 
         return this
     }
