@@ -1,9 +1,9 @@
 class SceneInitializer {
-    constructor(scene, container, floorY) {
+    constructor(scene, container, z) {
         this.camera = null
         this.scene = scene
         this.container = container
-        this.floorY = floorY
+        this.z = z
     }
 
     addCamera() {

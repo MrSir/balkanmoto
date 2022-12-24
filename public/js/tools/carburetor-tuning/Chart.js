@@ -1,19 +1,25 @@
 class Chart extends ChartElement{
-    constructor(scene, renderer, camera, font, width, height, floorY) {
+    constructor(scene, renderer, camera, font, width, height, z) {
         super(scene, renderer, camera, font)
 
         this.width = width
         this.height = height
-        this.floorY = floorY
+        this.z = z
 
-        this.throttlePosition = new ThrottlePosition(scene, renderer, camera, font, this.height, floorY)
+        this.throttlePosition = new ThrottlePosition(scene, renderer, camera, font, this.height, z)
+        this.idleCircuit = new IdleCircuit(scene, renderer, camera, font, this.width, this.height, z)
+        this.mainFuelJet = new MainFuelJet(scene, renderer, camera, font, this.width, this.height, z)
+        this.needleClipPosition = new NeedleClipPosition(scene, renderer, camera, font, this.width, this.height, z)
+        this.needleDiameter = new NeedleDiameter(scene, renderer, camera, font, this.width, this.height, z)
+        this.needleTaper = new NeedleTaper(scene, renderer, camera, font, this.width, this.height, z)
+        this.fuelMap = new FuelMap(scene, renderer, camera, font, this.width, this.height, z, this)
     }
 
     drawYAxis() {
         let yAxis = this.buildLine(
             [
-                this.buildPoint(0, 0, this.floorY),
-                this.buildPoint(0, this.height, this.floorY),
+                this.buildPoint(0, 0, this.z),
+                this.buildPoint(0, this.height, this.z),
             ],
             this.blackMaterial
         )
@@ -28,14 +34,14 @@ class Chart extends ChartElement{
             yAxisElements.push(
                 this.buildLine(
                     [
-                        this.buildPoint(-yAxisLineWidth/2, i*yAxisLineSpace, this.floorY),
-                        this.buildPoint(yAxisLineWidth/2, i*yAxisLineSpace, this.floorY)
+                        this.buildPoint(-yAxisLineWidth/2, i*yAxisLineSpace, this.z),
+                        this.buildPoint(yAxisLineWidth/2, i*yAxisLineSpace, this.z)
                     ],
                     this.blackMaterial
                 )
             )
             yAxisElements.push(
-                this.buildLabel(yAxisLabels[i], - 200,i*yAxisLineSpace, this.floorY, this.blackMaterial)
+                this.buildLabel(yAxisLabels[i], - 200,i*yAxisLineSpace, this.z, this.blackMaterial)
             )
         }
         yAxisElements.forEach((element) => this.scene.add(element))
@@ -45,8 +51,8 @@ class Chart extends ChartElement{
         let xAxisY = 0
         let xAxis = this.buildLine(
             [
-                this.buildPoint(0, xAxisY, this.floorY),
-                this.buildPoint(0 + this.width, xAxisY, this.floorY),
+                this.buildPoint(0, xAxisY, this.z),
+                this.buildPoint(0 + this.width, xAxisY, this.z),
             ],
             this.blackMaterial
         )
@@ -61,14 +67,14 @@ class Chart extends ChartElement{
             xAxisElements.push(
                 this.buildLine(
                     [
-                        this.buildPoint(i*xAxisLineSpace, xAxisY-xAxisLineHeight, this.floorY),
-                        this.buildPoint(i*xAxisLineSpace, xAxisY+xAxisLineHeight, this.floorY)
+                        this.buildPoint(i*xAxisLineSpace, xAxisY-xAxisLineHeight, this.z),
+                        this.buildPoint(i*xAxisLineSpace, xAxisY+xAxisLineHeight, this.z)
                     ],
                     this.blackMaterial
                 )
             )
             xAxisElements.push(
-                this.buildLabel(xAxisLabels[i], i*xAxisLineSpace,xAxisY - 100, this.floorY, this.blackMaterial)
+                this.buildLabel(xAxisLabels[i], i*xAxisLineSpace,xAxisY - 100, this.z, this.blackMaterial)
             )
         }
         xAxisElements.forEach((element) => this.scene.add(element))
@@ -77,16 +83,23 @@ class Chart extends ChartElement{
             'Throttle Position',
             (2*xAxisLineSpace) - 120,
             xAxisY - 200,
-            this.floorY,
+            this.z,
             this.blackMaterial
         )
         this.scene.add(title)
     }
 
+
     drawChart() {
+        this.throttlePosition.toggleVisible(true)
+        this.idleCircuit.toggleVisible(false)
+        this.mainFuelJet.toggleVisible(false)
+        this.needleClipPosition.toggleVisible(false)
+        this.needleDiameter.toggleVisible(false)
+        this.needleTaper.toggleVisible(false)
+        this.fuelMap.toggleVisible(true)
+
         this.drawYAxis()
         this.drawXAxis()
-
-        this.throttlePosition.toggleVisible(true)
     }
 }

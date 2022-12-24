@@ -7,6 +7,7 @@ class ChartElement {
 
         this.meshesInitialized = false
         this.visible = false
+        this.points = []
         this.meshes = []
 
         this.blackMaterial = new THREE.LineBasicMaterial({color: 0x000000})
@@ -26,11 +27,21 @@ class ChartElement {
         }
     }
 
+    normalDistributionF(x, u, s) {
+        let numerator = Math.E ** (-0.5 * (((x - u) / s) ** 2))
+        let denominator = s * Math.sqrt(2 * Math.PI)
+
+        let y = numerator / denominator
+
+        return y
+    }
+
     buildMeshes() {
         // abstract method
     }
 
     toggleVisible(toggle) {
+        this.visible = toggle
         if (toggle) {
             if (!this.meshesInitialized) {
                 this.buildMeshes()
@@ -53,10 +64,15 @@ class ChartElement {
     redrawInScene() {
         this.removeFromScene()
 
+        this.points = []
         this.meshes = []
         this.buildMeshes()
 
-        this.drawInScene()
+        console.log(this, this.visible)
+
+        if (this.visible) {
+            this.drawInScene()
+        }
     }
 
     buildLabel(text, x, y, z, material) {
