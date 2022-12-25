@@ -13,6 +13,7 @@ class ControlPanel {
             .createIdleCircuitFolder()
             .createMainCircuitFolder()
             .createModificationsFolder()
+            .createProblemsFolder()
     }
 
     createViewFolder() {
@@ -24,6 +25,8 @@ class ControlPanel {
             'Show Needle Clip Position': false,
             'Show Needle Diameter': false,
             'Show Needle Taper': false,
+            'Show Intake Mod': false,
+            'Show Exhaust Mod': false,
         }
 
         viewFolder
@@ -66,6 +69,16 @@ class ControlPanel {
             .listen()
             .onChange((toggle) => {
                 this.chart.needleTaper.toggleVisible(toggle)
+            })
+
+        viewFolder
+            .add(params, 'Show Intake Mod')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.intakeModVisibility = toggle
+                if (this.chart.intakeMod !== null) {
+                    this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
+                }
             })
 
         viewFolder.open()
@@ -145,24 +158,70 @@ class ControlPanel {
     createModificationsFolder() {
         let modificationsFolder = this.gui.addFolder('Modifications')
         let params = {
-            'Intake Type': 'Stock',
-            'Exhaust Type': 'Stock',
+            'Intake': 'Stock',
+            'Exhaust': 'Stock',
         }
 
         modificationsFolder
-            .add(params, 'Intake Type')
+            .add(params, 'Intake')
             .options(['Stock', 'Better Breathing Filter', 'Heavy Breather/Intake', 'POD Filters'])
+            .listen()
+            .onChange((intake_type) => {
+                let oldIntakeMod = this.chart.intakeMod
+
+                if (oldIntakeMod !== null) {
+                    oldIntakeMod.removeFromScene()
+                }
+
+                switch(intake_type) {
+                    case 'Better Breathing Filter':
+                        this.chart.intakeMod = this.chart.betterFilter
+                        this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
+
+                        break;
+                    case 'Heavy Breather/Intake':
+                        this.chart.intakeMod = this.chart.heavybreatherIntake
+                        this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
+
+                        break;
+                    case 'POD Filters':
+                        this.chart.intakeMod = this.chart.podFilters
+                        this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
+
+                        break;
+                    default:
+                        this.chart.intakeMod.removeFromScene()
+                        this.chart.intakeMod = null
+                }
+
+                this.chart.fuelMap.redrawInScene()
+            })
+
+        modificationsFolder
+            .add(params, 'Exhaust')
+            .options(['Stock', 'Drilled Stock', 'Slip-ons', 'Full Exhaust', '2 into 1', 'Performance Exhaust'])
             .listen()
             .onChange((intake_type) => {
                 console.log(intake_type)
             })
 
+        modificationsFolder.open()
+
+        return this
+    }
+
+    createProblemsFolder() {
+        let modificationsFolder = this.gui.addFolder('Problems')
+        let params = {
+            'Problem': 'None'
+        }
+
         modificationsFolder
-            .add(params, 'Exhaust Type')
-            .options(['Stock', 'Drilled Stock', 'Slip-ons', 'Full Exhaust', '2 into 1', 'Performance Exhaust'])
+            .add(params, 'Problem')
+            .options(['None', 'Air Leak In Air Box', 'Air Leak In Carburetor Boots', 'Air Leak In Exhaust'])
             .listen()
-            .onChange((intake_type) => {
-                console.log(intake_type)
+            .onChange((problem) => {
+                console.log(problem)
             })
 
         modificationsFolder.open()

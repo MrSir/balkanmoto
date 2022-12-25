@@ -33,6 +33,12 @@ class FuelMap extends ChartElement{
             coordinates[point.x] = coordinates[point.x] + point.y
         })
 
+        if (this.chart.intakeMod !== null) {
+            this.chart.intakeMod.points.forEach((point) => {
+                coordinates[point.x] = coordinates[point.x] + (point.y) - (this.height/2)
+            })
+        }
+
         coordinates.forEach((y, x) => {
             let computed_y = y / 2
             let average_y = y
@@ -42,8 +48,6 @@ class FuelMap extends ChartElement{
                     average_y += coordinates[x-i]
                 }
 
-                console.log(average_y)
-
                 computed_y = (average_y / running_average_factor) / 2
             }
 
@@ -52,8 +56,6 @@ class FuelMap extends ChartElement{
             } else if(computed_y < 0) {
                 computed_y = 0
             }
-
-            console.log(x, y, computed_y, running_average_factor)
 
             this.points.push(
                 this.buildPoint(x, computed_y, this.z)

@@ -12,6 +12,13 @@ class Chart extends ChartElement{
         this.needleClipPosition = new NeedleClipPosition(scene, renderer, camera, font, this.width, this.height, z)
         this.needleDiameter = new NeedleDiameter(scene, renderer, camera, font, this.width, this.height, z)
         this.needleTaper = new NeedleTaper(scene, renderer, camera, font, this.width, this.height, z)
+
+        this.intakeModVisibility = false
+        this.intakeMod = null
+        this.betterFilter = new BetterFilter(scene, renderer, camera, font, this.width, this.height, z)
+        this.heavybreatherIntake = new HeavyBreatherIntake(scene, renderer, camera, font, this.width, this.height, z)
+        this.podFilters = new PodFilters(scene, renderer, camera, font, this.width, this.height, z)
+
         this.fuelMap = new FuelMap(scene, renderer, camera, font, this.width, this.height, z, this)
     }
 
@@ -108,6 +115,9 @@ class Chart extends ChartElement{
         this.needleClipPosition.toggleVisible(true)
         this.needleDiameter.toggleVisible(true)
         this.needleTaper.toggleVisible(true)
+        this.betterFilter.toggleVisible(true)
+        this.heavybreatherIntake.toggleVisible(true)
+        this.podFilters.toggleVisible(true)
         this.fuelMap.toggleVisible(true)
 
         // hide the rest after fuel map is built
@@ -116,6 +126,11 @@ class Chart extends ChartElement{
         this.needleClipPosition.toggleVisible(false)
         this.needleDiameter.toggleVisible(false)
         this.needleTaper.toggleVisible(false)
+
+        // hide mods
+        this.betterFilter.toggleVisible(false)
+        this.heavybreatherIntake.toggleVisible(false)
+        this.podFilters.toggleVisible(false)
 
         this.drawYAxis()
         this.drawXAxis()

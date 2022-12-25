@@ -12,6 +12,9 @@
     <script src="/js/tools/carburetor-tuning/chart-elements/NeedleClipPosition.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/chart-elements/NeedleDiameter.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/chart-elements/NeedleTaper.js" type="application/javascript"></script>
+    <script src="/js/tools/carburetor-tuning/chart-elements/intake-mods/BetterFilter.js" type="application/javascript"></script>
+    <script src="/js/tools/carburetor-tuning/chart-elements/intake-mods/HeavyBreatherIntake.js" type="application/javascript"></script>
+    <script src="/js/tools/carburetor-tuning/chart-elements/intake-mods/PodFilters.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/chart-elements/FuelMap.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/Chart.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/SceneInitializer.js" type="application/javascript"></script>

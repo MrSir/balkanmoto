@@ -68,8 +68,6 @@ class ChartElement {
         this.meshes = []
         this.buildMeshes()
 
-        console.log(this, this.visible)
-
         if (this.visible) {
             this.drawInScene()
         }
