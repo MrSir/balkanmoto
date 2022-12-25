@@ -99,13 +99,13 @@ class ControlPanel {
     createIdleCircuitFolder() {
         let idleCircuitFolder = this.gui.addFolder('Idle Circuit')
         let params = {
-            'Idle Speed (RPM)': 1100,
+            'Idle Throttle Position': 13.5,
             'Pilot Fuel Jet Size': 17.5,
             'Pilot Mix Screw Out Turns': 2.50
         }
 
-        idleCircuitFolder.add(params, 'Idle Speed (RPM)', 600, 1600, 10).onChange((position) => {
-            this.chart.throttlePosition.position = position / 4
+        idleCircuitFolder.add(params, 'Idle Throttle Position', 10, 20, 0.5).onChange((position) => {
+            this.chart.throttlePosition.position = (position/100) * this.chart.width
             this.chart.throttlePosition.redrawInScene()
         })
 
