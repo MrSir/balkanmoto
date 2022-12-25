@@ -15,6 +15,9 @@
     <script src="/js/tools/carburetor-tuning/chart-elements/intake-mods/BetterFilter.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/chart-elements/intake-mods/HeavyBreatherIntake.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/chart-elements/intake-mods/PodFilters.js" type="application/javascript"></script>
+    <script src="/js/tools/carburetor-tuning/chart-elements/exhaust-mods/DrilledStock.js" type="application/javascript"></script>
+    <script src="/js/tools/carburetor-tuning/chart-elements/exhaust-mods/SlipOns.js" type="application/javascript"></script>
+    <script src="/js/tools/carburetor-tuning/chart-elements/exhaust-mods/FullExhaust.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/chart-elements/FuelMap.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/Chart.js" type="application/javascript"></script>
     <script src="/js/tools/carburetor-tuning/SceneInitializer.js" type="application/javascript"></script>

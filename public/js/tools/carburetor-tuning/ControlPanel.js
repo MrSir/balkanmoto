@@ -81,6 +81,16 @@ class ControlPanel {
                 }
             })
 
+        viewFolder
+            .add(params, 'Show Exhaust Mod')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.exhaustModVisibility = toggle
+                if (this.chart.exhaustMod !== null) {
+                    this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
+                }
+            })
+
         viewFolder.open()
 
         return this
@@ -166,14 +176,14 @@ class ControlPanel {
             .add(params, 'Intake')
             .options(['Stock', 'Better Breathing Filter', 'Heavy Breather/Intake', 'POD Filters'])
             .listen()
-            .onChange((intake_type) => {
+            .onChange((intake) => {
                 let oldIntakeMod = this.chart.intakeMod
 
                 if (oldIntakeMod !== null) {
                     oldIntakeMod.removeFromScene()
                 }
 
-                switch(intake_type) {
+                switch(intake) {
                     case 'Better Breathing Filter':
                         this.chart.intakeMod = this.chart.betterFilter
                         this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
@@ -199,10 +209,37 @@ class ControlPanel {
 
         modificationsFolder
             .add(params, 'Exhaust')
-            .options(['Stock', 'Drilled Stock', 'Slip-ons', 'Full Exhaust', '2 into 1', 'Performance Exhaust'])
+            .options(['Stock', 'Drilled Stock', 'Slip-ons', 'Full Exhaust'])
             .listen()
-            .onChange((intake_type) => {
-                console.log(intake_type)
+            .onChange((exhaust) => {
+                let oldExhaustMod = this.chart.exhaustMod
+
+                if (oldExhaustMod !== null) {
+                    oldExhaustMod.removeFromScene()
+                }
+
+                switch(exhaust) {
+                    case 'Drilled Stock':
+                        this.chart.exhaustMod = this.chart.drilledStock
+                        this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
+
+                        break;
+                    case 'Slip-ons':
+                        this.chart.exhaustMod = this.chart.slipOns
+                        this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
+
+                        break;
+                    case 'Full Exhaust':
+                        this.chart.exhaustMod = this.chart.fullExhaust
+                        this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
+
+                        break;
+                    default:
+                        this.chart.exhaustMod.removeFromScene()
+                        this.chart.exhaustMod = null
+                }
+
+                this.chart.fuelMap.redrawInScene()
             })
 
         modificationsFolder.open()

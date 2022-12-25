@@ -8,7 +8,7 @@ class HeavyBreatherIntake extends ChartElement {
     }
 
     f(x) {
-        let y = -(((this.height/55)*x/this.width) ** 1.7) + (this.height/2.1)
+        let y = -(((this.height/55)*x/this.width) ** 1.5) + (this.height/2.1)
 
         if (y > this.height) {
             return this.height

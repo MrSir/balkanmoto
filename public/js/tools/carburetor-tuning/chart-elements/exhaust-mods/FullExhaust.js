@@ -1,4 +1,4 @@
-class PodFilters extends ChartElement {
+class FullExhaust extends ChartElement {
     constructor(scene, renderer, camera, font, width, height, z) {
         super(scene, renderer, camera, font)
 
@@ -8,7 +8,7 @@ class PodFilters extends ChartElement {
     }
 
     f(x) {
-        let y = -(((this.height/55)*x/this.width) ** 1.6) + (this.height/2.2)
+        let y = Math.pow(x * (this.height/10), 1/2.5)  + (this.height/2.7)
 
         if (y > this.height) {
             return this.height
@@ -27,7 +27,7 @@ class PodFilters extends ChartElement {
 
     buildMeshes() {
         this.meshes.push(
-            this.buildLine(this.buildPoints(), this.greenMaterial)
+            this.buildLine(this.buildPoints(), this.yellowMaterial)
         )
 
         this.meshesInitialized = true

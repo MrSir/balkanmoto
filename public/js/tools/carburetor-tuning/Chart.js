@@ -19,6 +19,12 @@ class Chart extends ChartElement{
         this.heavybreatherIntake = new HeavyBreatherIntake(scene, renderer, camera, font, this.width, this.height, z)
         this.podFilters = new PodFilters(scene, renderer, camera, font, this.width, this.height, z)
 
+        this.exhaustModVisibility = false
+        this.exhaustMod = null
+        this.drilledStock = new DrilledStock(scene, renderer, camera, font, this.width, this.height, z)
+        this.slipOns = new SlipOns(scene, renderer, camera, font, this.width, this.height, z)
+        this.fullExhaust = new FullExhaust(scene, renderer, camera, font, this.width, this.height, z)
+
         this.fuelMap = new FuelMap(scene, renderer, camera, font, this.width, this.height, z, this)
     }
 
@@ -118,6 +124,9 @@ class Chart extends ChartElement{
         this.betterFilter.toggleVisible(true)
         this.heavybreatherIntake.toggleVisible(true)
         this.podFilters.toggleVisible(true)
+        this.drilledStock.toggleVisible(true)
+        this.slipOns.toggleVisible(true)
+        this.fullExhaust.toggleVisible(true)
         this.fuelMap.toggleVisible(true)
 
         // hide the rest after fuel map is built
@@ -131,6 +140,9 @@ class Chart extends ChartElement{
         this.betterFilter.toggleVisible(false)
         this.heavybreatherIntake.toggleVisible(false)
         this.podFilters.toggleVisible(false)
+        this.drilledStock.toggleVisible(false)
+        this.slipOns.toggleVisible(false)
+        this.fullExhaust.toggleVisible(false)
 
         this.drawYAxis()
         this.drawXAxis()

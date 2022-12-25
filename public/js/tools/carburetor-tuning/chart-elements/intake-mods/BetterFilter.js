@@ -8,7 +8,7 @@ class BetterFilter extends ChartElement {
     }
 
     f(x) {
-        let y = -(((this.height/55)*x/this.width) ** 1.6) + (this.height/2)
+        let y = -(((this.height/55)*x/this.width) ** 1.3) + (this.height/2)
 
         if (y > this.height) {
             return this.height

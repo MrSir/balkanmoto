@@ -39,6 +39,12 @@ class FuelMap extends ChartElement{
             })
         }
 
+        if (this.chart.exhaustMod !== null) {
+            this.chart.exhaustMod.points.forEach((point) => {
+                coordinates[point.x] = coordinates[point.x] + (point.y) - (this.height/2)
+            })
+        }
+
         coordinates.forEach((y, x) => {
             let computed_y = y / 2
             let average_y = y
