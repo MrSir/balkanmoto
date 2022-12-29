@@ -30,7 +30,46 @@
 @section('content')
     <div id="info">
         <h1>Carburetor Tuning</h1>
-        TBD ...
+        <p>
+            Carburetor Tuning is one of those things that seems like black magic and engine whispering. In reality however it's deeply rooted in physics and engineering and boils down to balancing the Air/Fuel ratio for the entire operating range. When it comes to CV type carburators there really is only a few factors that can be changed, to produce the best performance. The beauty of carburetors is that they are fairly simple devices that make use of <a href="https://en.wikipedia.org/wiki/Bernoulli%27s_principle">Bernoulli's Principle</a> to achieve mixture atomization.
+        </p>
+        When it comes to CV Type Carburetors with most manufacturers you can typically see the different throttle ranges be affected by the following factors:
+        <ul>
+            <li>
+                0-25% Open
+                <ul>
+                    <li>
+                        Pilot Fuel Jet: The fuel jet used to control the amount of fuel the carburetor is able to access under start up and idle conditions. They are typically very small and can easily be clogged by modern fuels if left to sit for long periods of time. This is the primary reason a carbureted motorcycle with spark and compression would have a hard time starting or idling.
+                    </li>
+                    <li>
+                        Pilot Mixture Screw: This is the primary tuning tool that comes built in on pretty much every CV carburetor. The screw adjustment controls the amount of fuel allowed to be sucked up through the entire throttle range with the biggest impact at the initial start up and idling. Adjusting the mixture screw can help fine tune and correct lean/rich conditions in the operation of the carburetors. In a lot of cases simply adjusting the mixture screw is enough to correct the performance of the carburetors without actually swaping out other components.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                25%-75% Open
+                <ul>
+                    <li>
+                        Jet Needle Diameter: Since the jet needle is essentially used to plug the main fuel jet, it's diameter (measured at the thickest part) greatly determines how effectively it does just that. By replacing the needle with a thicker/thinner one, one can control the fuel mixture when the throttle is right at the beginning of the throttle range. The biggest impact can be felt at 12.5%-37.5% of open throttle.
+                    </li>
+                    <li>
+                        Jet Needle Clip Position: The Jet Needle Clip determines how high the needle will sit at rest. This by extension determines how much of the opening of the main fuel jet is clear for fuel to go through. Typically these come with 5 positions to put the needle clip. The top one being the leanest (pushing needle further down), and the bottom one the richest (pulling the needle the furthest up). Adjustments to the position of the Jet Needle Clip affect the next part of throttle operation range, from 25%-55%.
+                    </li>
+                    <li>
+                        Jet Needle Taper: The last characteristic of the jet needle is it's taper. This determines the angle at which the needle gets narrower with. A needle with less taper would typically be longer as well. Controlling the taper allows for changes to the air fuel ratio in the 40%-75% range.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                75%-100% Open
+                <ul>
+                    <li>
+                        Main Fuel Jet: Similar to the Pilot Fuel Jet, the Main Fuel Jet controls the amount of fuel the carburetor is able to access. The difference here is that it plays a row into the 3/4 to wide open throttle conditions instead. Typically replacing the intake components or the exhaust on a carbureted motorcycle would require these be replaced in order to compensate for the much higher air flow. Without upgrading them you would not be able to dial away the lean operations with just the mixture screw.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        There are other factors involved in the operation of the Carburetors like Throttle Valve Cutaway and Straight Diameter, however these typically involve replacing the entire carburetor. For the purposes of this tool, we will assume them to be constant.
     </div>
     <br/>
     <div id="small-screen-warning">Your screen is too small to view the canvas.</div>
