@@ -12,10 +12,13 @@ class ChartElement {
 
         this.blackMaterial = new THREE.LineBasicMaterial({color: 0x000000})
         this.redMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 })
-        this.greenMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 })
+
         this.blueMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff })
-        this.yellowMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 })
+        this.blueMediumMaterial = new THREE.LineBasicMaterial({ color: 0x6ba4ff })
         this.aquaMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff })
+
+        this.greenMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 })
+        this.yellowMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 })
         this.fusiaMaterial = new THREE.LineBasicMaterial({ color: 0xff00ff })
 
         this.textParameters = {

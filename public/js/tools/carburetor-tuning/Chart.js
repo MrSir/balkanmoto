@@ -25,6 +25,12 @@ class Chart extends ChartElement{
         this.slipOns = new SlipOns(scene, renderer, camera, font, this.width, this.height, z)
         this.fullExhaust = new FullExhaust(scene, renderer, camera, font, this.width, this.height, z)
 
+        this.problemVisibility = false
+        this.problem = null
+        this.airLeakAirBox = new AirLeakAirBox(scene, renderer, camera, font, this.width, this.height, z)
+        this.airLeakCarbBoots = new AirLeakCarbBoots(scene, renderer, camera, font, this.width, this.height, z)
+        this.airLeakExhaust = new AirLeakExhaust(scene, renderer, camera, font, this.width, this.height, z)
+
         this.fuelMap = new FuelMap(scene, renderer, camera, font, this.width, this.height, z, this)
     }
 
@@ -127,6 +133,9 @@ class Chart extends ChartElement{
         this.drilledStock.toggleVisible(true)
         this.slipOns.toggleVisible(true)
         this.fullExhaust.toggleVisible(true)
+        this.airLeakAirBox.toggleVisible(true)
+        this.airLeakCarbBoots.toggleVisible(true)
+        this.airLeakExhaust.toggleVisible(true)
         this.fuelMap.toggleVisible(true)
 
         // hide the rest after fuel map is built
@@ -143,6 +152,11 @@ class Chart extends ChartElement{
         this.drilledStock.toggleVisible(false)
         this.slipOns.toggleVisible(false)
         this.fullExhaust.toggleVisible(false)
+
+        // hide problems
+        this.airLeakAirBox.toggleVisible(false)
+        this.airLeakCarbBoots.toggleVisible(false)
+        this.airLeakExhaust.toggleVisible(false)
 
         this.drawYAxis()
         this.drawXAxis()

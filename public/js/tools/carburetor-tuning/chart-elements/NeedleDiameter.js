@@ -39,7 +39,7 @@ class NeedleDiameter extends ChartElement {
 
     buildMeshes() {
         this.meshes.push(
-            this.buildLine(this.buildPoints(), this.blueMaterial),
+            this.buildLine(this.buildPoints(), this.blueMediumMaterial),
         )
 
         this.meshesInitialized = true

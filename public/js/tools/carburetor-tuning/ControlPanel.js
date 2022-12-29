@@ -27,6 +27,7 @@ class ControlPanel {
             'Show Needle Taper': false,
             'Show Intake Mod': false,
             'Show Exhaust Mod': false,
+            'Show Problem': false,
         }
 
         viewFolder
@@ -91,6 +92,16 @@ class ControlPanel {
                 }
             })
 
+        viewFolder
+            .add(params, 'Show Problem')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.problemVisibility = toggle
+                if (this.chart.problem !== null) {
+                    this.chart.problem.toggleVisible(this.chart.problemVisibility)
+                }
+            })
+
         viewFolder.open()
 
         return this
@@ -131,7 +142,7 @@ class ControlPanel {
         let mainCircuitFolder = this.gui.addFolder('Main Circuit')
         let params = {
              'Main Fuel Jet Size': 112.5,
-             'Jet Needle Clip Position': 2,
+             'Jet Needle Clip Position': 1,
              'Jet Needle Diameter': 68,
              'Jet Needle Taper': 1,
         }
@@ -258,7 +269,34 @@ class ControlPanel {
             .options(['None', 'Air Leak In Air Box', 'Air Leak In Carburetor Boots', 'Air Leak In Exhaust'])
             .listen()
             .onChange((problem) => {
-                console.log(problem)
+                let oldProblem = this.chart.problem
+
+                if (oldProblem !== null) {
+                    oldProblem.removeFromScene()
+                }
+
+                switch(problem) {
+                    case 'Air Leak In Air Box':
+                        this.chart.problem = this.chart.airLeakAirBox
+                        this.chart.problem.toggleVisible(this.chart.problemVisibility)
+
+                        break;
+                    case 'Air Leak In Carburetor Boots':
+                        this.chart.problem = this.chart.airLeakCarbBoots
+                        this.chart.problem.toggleVisible(this.chart.problemVisibility)
+
+                        break;
+                    case 'Air Leak In Exhaust':
+                        this.chart.problem = this.chart.airLeakExhaust
+                        this.chart.problem.toggleVisible(this.chart.problemVisibility)
+
+                        break;
+                    default:
+                        this.chart.problem.removeFromScene()
+                        this.chart.problem = null
+                }
+
+                this.chart.fuelMap.redrawInScene()
             })
 
         modificationsFolder.open()

@@ -1,29 +1,17 @@
-class NeedleClipPosition extends ChartElement {
+class AirLeakCarbBoots extends ChartElement {
     constructor(scene, renderer, camera, font, width, height, z) {
         super(scene, renderer, camera, font)
 
         this.width = width
         this.height = height
         this.z = z
-
-        this.position = 1
-
-        this.mean = this.width * 0.4
-        this.standardDiviation = 260
-        this.multiplier = 1000**1.90
     }
 
     f(x) {
-        let adjustedMultiplier = this.multiplier  + (100000 * ((this.position/2)-1))
-
-        let y = this.normalDistributionF(x, this.mean, this.standardDiviation)
-
-        y *= adjustedMultiplier
+        let y = Math.pow(x * (this.height/20), 1/2.7)  + (this.height/2.8)
 
         if (y > this.height) {
             return this.height
-        } else if(y < 0) {
-            return 0
         }
 
         return y
@@ -39,7 +27,7 @@ class NeedleClipPosition extends ChartElement {
 
     buildMeshes() {
         this.meshes.push(
-            this.buildLine(this.buildPoints(), this.blueMediumMaterial),
+            this.buildLine(this.buildPoints(), this.redMaterial)
         )
 
         this.meshesInitialized = true
