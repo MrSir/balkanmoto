@@ -1,7 +1,6 @@
 class ControlPanel {
-    constructor(element) {
-        this.previousInitialized = false
-        this.initialized = false
+    constructor(element, chart) {
+        this.chart = chart
 
         this.gui = new THREE.GUI({
             width: 400,
@@ -11,81 +10,95 @@ class ControlPanel {
         element.appendChild(this.gui.domElement)
 
         this.createViewFolder()
-            .createDefaultsFolder()
-            // .createFrontTireFolder()
-            // .createRearTireFolder()
-            // .createFrameFolder()
-            // .createTripleTreeFolder()
-            // .createForkFolder()
-            // .createInitializeButton()
-    }
-
-    cleanUpGui() {
-        // this.gui.removeFolder(this.frontTireFolder)
-        // this.gui.removeFolder(this.rearTireFolder)
-        // this.gui.removeFolder(this.frameFolder)
-        // this.gui.removeFolder(this.tripleTreeFolder)
-        // this.gui.removeFolder(this.forkFolder)
-
-        if (this.initialized && !this.previousInitialized) {
-            this.gui.remove(this.initializeButton)
-        }
-    }
-
-    resetGuiTo(newParams) {
-        this.frameParameters = newParams
-
-        this.cleanUpGui()
-
-        // this.createFrontTireFolder()
-        //     .createRearTireFolder()
-        //     .createFrameFolder()
-        //     .createTripleTreeFolder()
-        //     .createForkFolder()
-
-        if (!this.initialized) {
-            this.createInitializeButton()
-        }
+            .createIdleCircuitFolder()
+            .createMainCircuitFolder()
+            .createModificationsFolder()
+            .createProblemsFolder()
     }
 
     createViewFolder() {
         let viewFolder = this.gui.addFolder('View')
         let params = {
-            'Show Geometry': false,
-            'Show Labels': true,
-            'Transparent Objects': false,
+            'Show Throttle Position': true,
+            'Show Idle Circuit': false,
+            'Show Main Fuel Jet': false,
+            'Show Needle Clip Position': false,
+            'Show Needle Diameter': false,
+            'Show Needle Taper': false,
+            'Show Intake Mod': false,
+            'Show Exhaust Mod': false,
+            'Show Problem': false,
         }
 
         viewFolder
-            .add(params, 'Show Geometry')
+            .add(params, 'Show Throttle Position')
             .listen()
             .onChange((toggle) => {
-                this.frame.setShowGeometry(toggle)
+                this.chart.throttlePosition.toggleVisible(toggle)
+            })
 
-                if (this.initialized) {
-                    this.frame.redrawInScene()
+        viewFolder
+            .add(params, 'Show Idle Circuit')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.idleCircuit.toggleVisible(toggle)
+            })
+
+        viewFolder
+            .add(params, 'Show Main Fuel Jet')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.mainFuelJet.toggleVisible(toggle)
+            })
+
+        viewFolder
+            .add(params, 'Show Needle Clip Position')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.needleClipPosition.toggleVisible(toggle)
+            })
+
+        viewFolder
+            .add(params, 'Show Needle Diameter')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.needleDiameter.toggleVisible(toggle)
+            })
+
+        viewFolder
+            .add(params, 'Show Needle Taper')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.needleTaper.toggleVisible(toggle)
+            })
+
+        viewFolder
+            .add(params, 'Show Intake Mod')
+            .listen()
+            .onChange((toggle) => {
+                this.chart.intakeModVisibility = toggle
+                if (this.chart.intakeMod !== null) {
+                    this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
                 }
             })
 
         viewFolder
-            .add(params, 'Show Labels')
+            .add(params, 'Show Exhaust Mod')
             .listen()
             .onChange((toggle) => {
-                this.frame.setShowLabels(toggle)
-
-                if (this.initialized) {
-                    this.frame.redrawInScene()
+                this.chart.exhaustModVisibility = toggle
+                if (this.chart.exhaustMod !== null) {
+                    this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
                 }
             })
 
         viewFolder
-            .add(params, 'Transparent Objects')
+            .add(params, 'Show Problem')
             .listen()
             .onChange((toggle) => {
-                this.frame.setTransparentObjects(toggle)
-
-                if (this.initialized) {
-                    this.frame.redrawInScene()
+                this.chart.problemVisibility = toggle
+                if (this.chart.problem !== null) {
+                    this.chart.problem.toggleVisible(this.chart.problemVisibility)
                 }
             })
 
@@ -94,289 +107,199 @@ class ControlPanel {
         return this
     }
 
-    createDefaultsFolder() {
-        let defaultsFolder = this.gui.addFolder('Defaults')
+    createIdleCircuitFolder() {
+        let idleCircuitFolder = this.gui.addFolder('Idle Circuit')
         let params = {
-            Defaults: 'Custom',
+            'Idle Throttle Position': 13.5,
+            'Pilot Fuel Jet Size': 17.5,
+            'Pilot Mix Screw Out Turns': 2.50
         }
 
-        let defaults = new Defaults()
-
-        this.customParameters = defaults.findDefaults('Custom')
-
-        defaultsFolder
-            .add(params, 'Defaults')
-            .options(defaults.getOptions())
-            .listen()
-            .onChange((name) => {
-                this.previousInitialized = this.initialized
-                this.initialized = name !== 'Custom'
-
-                this.frameParameters = defaults.findDefaults(name)
-
-                this.resetGuiTo(this.frameParameters)
-
-                if (name !== 'Custom') {
-                    this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
-                } else {
-                    this.frame.removeFromScene()
-                }
-            })
-
-        defaultsFolder.open()
-
-        return this
-    }
-
-    createInitializeButton() {
-        let initializeObject = {
-            initialize: () => {
-                this.previousInitialized = this.initialized
-                this.initialized = true
-
-                this.resetGuiTo(this.frameParameters)
-                this.frame.setParameters(this.frameParameters).initialCalculate().redrawInScene()
-            },
-        }
-
-        this.initializeButton = this.gui.add(initializeObject, 'initialize').name('INITIALIZE FRAME')
-
-        return this
-    }
-
-    createFrontTireFolder() {
-        this.frontTireFolder = this.gui.addFolder('Front Tire')
-        let params = {
-            'Tire Width (mm)': this.frameParameters.frontTire.width,
-            'Tire Aspect': this.frameParameters.frontTire.aspect,
-            'Rim Size (in)': this.frameParameters.frontTire.rimDiameterInInches,
-        }
-
-        this.frontTireFolder.add(params, 'Tire Width (mm)', 70, 320, 5).onChange((width) => {
-            this.frameParameters.frontTire.width = width
-            if (this.initialized) {
-                this.frame.setParameters(this.frameParameters).redrawInScene()
-            }
+        idleCircuitFolder.add(params, 'Idle Throttle Position', 10, 20, 0.5).onChange((position) => {
+            this.chart.throttlePosition.position = (position/100) * this.chart.width
+            this.chart.throttlePosition.redrawInScene()
         })
 
-        this.frontTireFolder
-            .add(params, 'Tire Aspect', 25, 95, 5)
-            .listen()
-            .onChange((aspect) => {
-                this.frameParameters.frontTire.aspect = aspect
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
+        idleCircuitFolder.add(params, 'Pilot Fuel Jet Size', 12, 22, 0.5).onChange((size) => {
+            this.chart.idleCircuit.fuelJetSize = size
+            this.chart.idleCircuit.redrawInScene()
+            this.chart.fuelMap.redrawInScene()
+        })
 
-        this.frontTireFolder
-            .add(params, 'Rim Size (in)', 13, 22, 1)
-            .listen()
-            .onChange((rimDiameterInInches) => {
-                this.frameParameters.frontTire.rimDiameterInInches = rimDiameterInInches
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
+        idleCircuitFolder.add(params, 'Pilot Mix Screw Out Turns', 0, 5, 0.125).onChange((turns) => {
+            this.chart.idleCircuit.mixScrewTurns = turns
+            this.chart.idleCircuit.redrawInScene()
+            this.chart.fuelMap.redrawInScene()
+        })
 
-        if (!this.initialized) {
-            this.frontTireFolder.open()
-        }
+
+        idleCircuitFolder.open()
 
         return this
     }
 
-    createRearTireFolder() {
-        this.rearTireFolder = this.gui.addFolder('Rear Tire')
+    createMainCircuitFolder() {
+        let mainCircuitFolder = this.gui.addFolder('Main Circuit')
         let params = {
-            'Tire Width (mm)': this.frameParameters.rearTire.width,
-            'Tire Aspect': this.frameParameters.rearTire.aspect,
-            'Rim Size (in)': this.frameParameters.rearTire.rimDiameterInInches,
+             'Main Fuel Jet Size': 112.5,
+             'Jet Needle Clip Position': 1,
+             'Jet Needle Diameter': 68,
+             'Jet Needle Taper': 1,
         }
 
-        this.rearTireFolder
-            .add(params, 'Tire Width (mm)', 70, 320, 5)
-            .listen()
-            .onChange((width) => {
-                this.frameParameters.rearTire.width = width
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
+        mainCircuitFolder.add(params, 'Main Fuel Jet Size', 110, 170, 0.5).onChange((size) => {
+            this.chart.mainFuelJet.fuelJetSize = size
+            this.chart.mainFuelJet.redrawInScene()
+            this.chart.fuelMap.redrawInScene()
+        })
 
-        this.rearTireFolder
-            .add(params, 'Tire Aspect', 25, 95, 5)
-            .listen()
-            .onChange((aspect) => {
-                this.frameParameters.rearTire.aspect = aspect
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
+        mainCircuitFolder.add(params, 'Jet Needle Clip Position', 1, 5, 1).onChange((position) => {
+            this.chart.needleClipPosition.position = position
+            this.chart.needleClipPosition.redrawInScene()
+            this.chart.fuelMap.redrawInScene()
+        })
 
-        this.rearTireFolder
-            .add(params, 'Rim Size (in)', 13, 22, 1)
-            .listen()
-            .onChange((rimDiameterInInches) => {
-                this.frameParameters.rearTire.rimDiameterInInches = rimDiameterInInches
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
+        mainCircuitFolder.add(params, 'Jet Needle Diameter', 65, 75, 1).onChange((diameter) => {
+            this.chart.needleDiameter.diameter = diameter
+            this.chart.needleDiameter.redrawInScene()
+            this.chart.fuelMap.redrawInScene()
+        })
 
-        if (!this.initialized) {
-            this.rearTireFolder.open()
-        }
+        mainCircuitFolder.add(params, 'Jet Needle Taper', 1, 2, 0.1).onChange((taper) => {
+            this.chart.needleTaper.taper = taper
+            this.chart.needleTaper.redrawInScene()
+            this.chart.fuelMap.redrawInScene()
+        })
+
+        mainCircuitFolder.open()
 
         return this
     }
 
-    createFrameFolder() {
-        this.frameFolder = this.gui.addFolder('Frame')
+    createModificationsFolder() {
+        let modificationsFolder = this.gui.addFolder('Modifications')
         let params = {
-            'Stem Rake (deg)': this.frameParameters.rake,
-            'Stem Length (mm)': this.frameParameters.stemLength,
-            'Wheelbase (mm)': this.frameParameters.wheelbase,
+            'Intake': 'Stock',
+            'Exhaust': 'Stock',
         }
 
-        this.frameFolder
-            .add(params, 'Stem Rake (deg)', 0, 45, 0.5)
+        modificationsFolder
+            .add(params, 'Intake')
+            .options(['Stock', 'Better Breathing Filter', 'Heavy Breather/Intake', 'POD Filters'])
             .listen()
-            .onChange((rake) => {
-                this.frameParameters.rake = rake
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
+            .onChange((intake) => {
+                let oldIntakeMod = this.chart.intakeMod
+
+                if (oldIntakeMod !== null) {
+                    oldIntakeMod.removeFromScene()
                 }
+
+                switch(intake) {
+                    case 'Better Breathing Filter':
+                        this.chart.intakeMod = this.chart.betterFilter
+                        this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
+
+                        break;
+                    case 'Heavy Breather/Intake':
+                        this.chart.intakeMod = this.chart.heavybreatherIntake
+                        this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
+
+                        break;
+                    case 'POD Filters':
+                        this.chart.intakeMod = this.chart.podFilters
+                        this.chart.intakeMod.toggleVisible(this.chart.intakeModVisibility)
+
+                        break;
+                    default:
+                        this.chart.intakeMod.removeFromScene()
+                        this.chart.intakeMod = null
+                }
+
+                this.chart.fuelMap.redrawInScene()
             })
 
-        this.frameFolder
-            .add(params, 'Stem Length (mm)', 100, 250, 1)
+        modificationsFolder
+            .add(params, 'Exhaust')
+            .options(['Stock', 'Drilled Stock', 'Slip-ons', 'Full Exhaust'])
             .listen()
-            .onChange((stemLength) => {
-                this.frameParameters.stemLength = stemLength
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
+            .onChange((exhaust) => {
+                let oldExhaustMod = this.chart.exhaustMod
+
+                if (oldExhaustMod !== null) {
+                    oldExhaustMod.removeFromScene()
                 }
+
+                switch(exhaust) {
+                    case 'Drilled Stock':
+                        this.chart.exhaustMod = this.chart.drilledStock
+                        this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
+
+                        break;
+                    case 'Slip-ons':
+                        this.chart.exhaustMod = this.chart.slipOns
+                        this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
+
+                        break;
+                    case 'Full Exhaust':
+                        this.chart.exhaustMod = this.chart.fullExhaust
+                        this.chart.exhaustMod.toggleVisible(this.chart.exhaustModVisibility)
+
+                        break;
+                    default:
+                        this.chart.exhaustMod.removeFromScene()
+                        this.chart.exhaustMod = null
+                }
+
+                this.chart.fuelMap.redrawInScene()
             })
 
-        if (!this.initialized) {
-            this.frameFolder
-                .add(params, 'Wheelbase (mm)', 1000, 2000, 1)
-                .listen()
-                .onChange((wheelbase) => {
-                    this.frameParameters.wheelbase = wheelbase
-                })
-        }
-
-        this.frameFolder.open()
+        modificationsFolder.open()
 
         return this
     }
 
-    createTripleTreeFolder() {
-        this.tripleTreeFolder = this.gui.addFolder('Triple Tree')
+    createProblemsFolder() {
+        let modificationsFolder = this.gui.addFolder('Problems')
         let params = {
-            'Offset (mm)': this.frameParameters.tripleTree.offset,
-            'Rake (deg)': this.frameParameters.tripleTree.rake,
-            'Top Yoke Thickness (mm)': this.frameParameters.tripleTree.topYokeThickness,
-            'Bottom Yoke Thickness (mm)': this.frameParameters.tripleTree.bottomYokeThickness,
+            'Problem': 'None'
         }
 
-        this.tripleTreeFolder
-            .add(params, 'Offset (mm)', 0, 80, 1)
+        modificationsFolder
+            .add(params, 'Problem')
+            .options(['None', 'Air Leak In Air Box', 'Air Leak In Carburetor Boots', 'Air Leak In Exhaust'])
             .listen()
-            .onChange((offset) => {
-                this.frameParameters.tripleTree.offset = offset
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
+            .onChange((problem) => {
+                let oldProblem = this.chart.problem
+
+                if (oldProblem !== null) {
+                    oldProblem.removeFromScene()
                 }
+
+                switch(problem) {
+                    case 'Air Leak In Air Box':
+                        this.chart.problem = this.chart.airLeakAirBox
+                        this.chart.problem.toggleVisible(this.chart.problemVisibility)
+
+                        break;
+                    case 'Air Leak In Carburetor Boots':
+                        this.chart.problem = this.chart.airLeakCarbBoots
+                        this.chart.problem.toggleVisible(this.chart.problemVisibility)
+
+                        break;
+                    case 'Air Leak In Exhaust':
+                        this.chart.problem = this.chart.airLeakExhaust
+                        this.chart.problem.toggleVisible(this.chart.problemVisibility)
+
+                        break;
+                    default:
+                        this.chart.problem.removeFromScene()
+                        this.chart.problem = null
+                }
+
+                this.chart.fuelMap.redrawInScene()
             })
 
-        this.tripleTreeFolder
-            .add(params, 'Rake (deg)', 0, 10, 1)
-            .listen()
-            .onChange((rake) => {
-                this.frameParameters.tripleTree.rake = rake
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
-
-        this.tripleTreeFolder
-            .add(params, 'Top Yoke Thickness (mm)', 20, 40, 1)
-            .listen()
-            .onChange((thickness) => {
-                this.frameParameters.tripleTree.topYokeThickness = thickness
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
-
-        this.tripleTreeFolder
-            .add(params, 'Bottom Yoke Thickness (mm)', 20, 40, 1)
-            .listen()
-            .onChange((thickness) => {
-                this.frameParameters.tripleTree.bottomYokeThickness = thickness
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
-
-        this.tripleTreeFolder.open()
-
-        return this
-    }
-
-    createForkFolder() {
-        this.forkFolder = this.gui.addFolder('Fork')
-        let params = {
-            'Offset (mm)': this.frameParameters.fork.offset,
-            'Length (mm)': this.frameParameters.fork.length,
-            'Diameter (mm)': this.frameParameters.fork.diameter,
-            'Width (mm)': this.frameParameters.fork.width,
-        }
-
-        this.forkFolder
-            .add(params, 'Length (mm)', 600, 1000, 1)
-            .listen()
-            .onChange((length) => {
-                this.frameParameters.fork.length = length
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
-
-        this.forkFolder
-            .add(params, 'Offset (mm)', 0, 150, 1)
-            .listen()
-            .onChange((offset) => {
-                this.frameParameters.fork.offset = offset
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
-
-        this.forkFolder
-            .add(params, 'Diameter (mm)', 27, 49, 1)
-            .listen()
-            .onChange((diameter) => {
-                this.frameParameters.fork.diameter = diameter
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
-
-        this.forkFolder
-            .add(params, 'Width (mm)', 100, 400, 1)
-            .listen()
-            .onChange((width) => {
-                this.frameParameters.fork.width = width
-                if (this.initialized) {
-                    this.frame.setParameters(this.frameParameters).redrawInScene()
-                }
-            })
-
-        this.forkFolder.open()
+        modificationsFolder.open()
 
         return this
     }
