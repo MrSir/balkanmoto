@@ -31,9 +31,8 @@
     <div id="info">
         <h1>Carburetor Tuning</h1>
         <p>
-            Carburetor Tuning is one of those things that seems like black magic and engine whispering. In reality however it's deeply rooted in physics and engineering and boils down to balancing the Air/Fuel ratio for the entire operating range. When it comes to CV type carburators there really is only a few factors that can be changed, to produce the best performance. The beauty of carburetors is that they are fairly simple devices that make use of <a href="https://en.wikipedia.org/wiki/Bernoulli%27s_principle">Bernoulli's Principle</a> to achieve mixture atomization.
+            Carburetor Tuning is one of those things that seems like black magic or engine whispering. In reality however it's deeply rooted in physics and engineering and boils down to balancing the Air/Fuel ratio for the entire operating range. When it comes to CV (Continuous Velocity) type carburetors there really is only a few factors that can affect performance. Since these simple devices make use of <a href="https://en.wikipedia.org/wiki/Bernoulli%27s_principle">Bernoulli's Principle</a> to achieve mixture atomization, the components that dictate how much air or fuel the carburetor can make use of are the ones we are interested in. Typically these components are designed to affect the mixture at different levels of the throttle being open. Below you can find these components and their effects.
         </p>
-        When it comes to CV Type Carburetors with most manufacturers you can typically see the different throttle ranges be affected by the following factors:
         <ul>
             <li>
                 0-25% Open
@@ -69,7 +68,8 @@
                 </ul>
             </li>
         </ul>
-        There are other factors involved in the operation of the Carburetors like Throttle Valve Cutaway and Straight Diameter, however these typically involve replacing the entire carburetor. For the purposes of this tool, we will assume them to be constant.
+        <p>There are other factors involved in the operation of the Carburetors like Throttle Valve Cutaway and Straight Diameter, however these typically involve replacing the entire carburetor. For the purposes of this tool, we will assume them to be constant.</p>
+        <p>DISCLAIMER: The below tool is meant to simulate the effects of making different changes to the carburetors. It is by no means a true simulation and should not be used for anything other than educational purposes. It was built based on the research I have done myself combined with some simply graphing and mathematics. The adjustable values are simply for demonstration purposes, and do not necessarily reflect real world numbers.</p>
     </div>
     <br/>
     <div id="small-screen-warning">Your screen is too small to view the canvas.</div>
