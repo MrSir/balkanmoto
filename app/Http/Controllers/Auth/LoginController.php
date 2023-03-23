@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use Google_Service_People;
+use Google_Service_PeopleService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -69,7 +68,7 @@ class LoginController extends Controller
                     'openid',
                     'profile',
                     'email',
-                    Google_Service_People::CONTACTS_READONLY
+                    Google_Service_PeopleService::CONTACTS_READONLY
                 ]
             )
             ->redirect();
