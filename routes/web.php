@@ -51,11 +51,13 @@ Route::resource(
     ]
 );
 
-Route::get(
+Route::resource(
     '/links',
+    'LinkController',
     [
-        'as' => 'links',
-        'uses' => 'Controller@links',
+        'only' => [
+            'index',
+        ],
     ]
 );
 
