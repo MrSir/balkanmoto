@@ -5,5 +5,6 @@
         <a href="/links.php">LINKS</a>
         <a href="https://www.youtube.com/channel/UCHbSArk-BwFhFQmtV_ws2Ng" target="_blank">YOUTUBE</a>
         <a href="https://www.instagram.com/balkanmoto2018/" target="_blank">INSTAGRAM</a>
+        <a href="https://ko-fi.com/balkanmoto" target="_blank">KO-FI</a>
     </div>
 </div>

@@ -29,6 +29,9 @@
             <div class="instagram">
                 <a href="https://www.instagram.com/balkanmoto2018/" target="_blank"><span class="fab fa-instagram"></span></a>
             </div>
+            <div class="instagram">
+                <a href="https://ko-fi.com/balkanmoto" target="_blank"><img src="/img/kofi.svg" color="#cbcbcb;"></a>
+            </div>
         </div>
     </div>
 </div>
