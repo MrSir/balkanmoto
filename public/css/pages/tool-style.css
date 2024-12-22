@@ -1,0 +1,45 @@
+.content-grid {
+    text-align: justify;
+    margin: 20px;
+    font-size: 14pt;
+}
+
+.content-grid p{
+    margin: 0px 0px 10px 0px;
+    text-indent: 30px;
+}
+
+.content-grid p a{
+    color: #636b6f;
+}
+
+.content-grid #canvas {
+    display: none;
+}
+
+#small-screen-warning {
+    display: block;
+    color: red;
+}
+
+.content-grid #canvas #control-panel {
+    position: absolute;
+}
+
+.content-grid #canvas .dg.main {
+    overflow-y: visible;
+}
+
+.dg .cr.function {
+    border-left: 3px solid #2FA1D6 !important;
+    background-color: #2FA1D6;
+    text-align: center;
+}
+
+.dg .cr.function .property-name{
+    width: 100%;
+}
+
+.slider:before {
+    display: none;
+}
