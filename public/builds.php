@@ -15,7 +15,7 @@
         <div class="post-grid">
             <div class="body">
                 <p>Here you will find a list of all of the builds I have done over the years.</p>
-                <p>Tools:
+                <p>Builds:
                     <ul>
                         <li><a href="/builds/wheelbarrow-cx.php">The Wheelbarrow CX - Wooden Push Bike</a></li>
                         <li><a href="/builds/2002-yamaha-vstar-1100-bobber.php">2002 Yamaha V-Star 1100 Bobber</a></li>
