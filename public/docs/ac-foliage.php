@@ -6,7 +6,7 @@
     <link href="/css/pages/article-style.css" rel="stylesheet">
     <link href="/css/pages/article-large-style.css" rel="stylesheet">
     
-    <meta name="keywords" content="asseto corsa, ">
+    <meta name="keywords" content="asseto corsa,3D trees">
 </head>
 <body>
 <div class="content container-grid">

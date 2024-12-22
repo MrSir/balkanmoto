@@ -4,7 +4,7 @@
         <div class="leather-overlay-text overlay-text">Leather Craft ...</div>
     </div>
     <div class="builds"></div>
-    <div class="builds-overlay overlay" onclick="window.open('/articles?tag=builds','_self');">
+    <div class="builds-overlay overlay" onclick="window.open('/builds.php','_self');">
         <div class="builds-overlay-text overlay-text">THE LATEST PROGRESS ON MY BUILDS ...</div>
     </div>
     <div class="cruises"></div>
