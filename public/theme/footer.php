@@ -1,10 +1,11 @@
 <div class="footer-grid">
     <div class="links">
-        <div class="footer-title">Links</div>
+        <div class="footer-title">Navigation</div>
         <ul>
-            <li><a href="/about">ABOUT</a></li>
-            <li><a href="/articles">ARTICLES</a></li>
-            <li><a href="/links">LINKS</a></li>
+            <li><a href="/about.php">ABOUT</a></li>
+            <li><a href="/builds.php">BUILDS</a></li>
+            <li><a href="/leather-craft.php">LEATHER CRAFT</a></li>
+            <li><a href="/links.php">LINKS</a></li>
         </ul>
     </div>
     <div class="links">
@@ -13,8 +14,13 @@
             <li><a href="/tools/suspension-geometry.php">SUSPENSION GEOMETRY</a></li>
 			<li><a href="/tools/carburetor-tuning.php">CARBURETOR TUNING</a></li>
         </ul>
+
     </div>
-    <div class="social">
+    <div class="social links">
+        <div class="footer-title">DOCUMENTATION</div>
+        <ul>
+            <li><a href="/docs/ac-foliage.php">AC Foliage Documentation v1.1</a></li>
+        </ul>
         <div class="footer-title">Social</div>
         <div class="icons">
             <div class="youtube">

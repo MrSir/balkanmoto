@@ -32,7 +32,7 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">Carburetor Tuning</div>
+    <div class="divider">CARBURETOR TUNING</div>
     <div class="content-grid">
         <div id="info">
             <p>

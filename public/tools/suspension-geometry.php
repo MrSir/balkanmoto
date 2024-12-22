@@ -19,7 +19,7 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">Suspension Geometry</div>
+    <div class="divider">SUSPENSION GEOMETRY</div>
     <div class="content-grid">
         <div id="info">
             <h2>Parameters</h2>
