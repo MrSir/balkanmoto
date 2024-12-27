@@ -16,7 +16,7 @@
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">
-                <img src="/img/docs/ac-foliage/title.jpg">
+                <img src="/docs/img/ac-foliage/title.jpg">
 
                 <p>
                 This tool helps streamline the process for configuring and placing 3D Trees on custom tracks in Assetto Corsa. For a tutorial on how to use it in your track modding work flow refer to the series below:
@@ -29,12 +29,12 @@
                 <p>Once installed running the <span style="background-color: lightgray">run.bat</span> is all you need to start AC Foliage.<br>
 
                 </p><h3>Point Cloud Files</h3>
-                <img src="/img/docs/ac-foliage/point-cloud.jpg">
+                <img src="/docs/img/ac-foliage/point-cloud.jpg">
                 <p>The Point Cloud section of the tool uses so called .pcd extension files. These can be generated from a mesh in <strong>blender</strong> by exporting it using the <a href="https://markhedleyjones.com/projects/blender-pcd-io" target="_blank">blender-pcd-io</a> plugin</p>
                 <p>This section will show you some general details about the point cloud you have imported to make the decisions around how to use the tool a little more straight forward. If the point cloud is parsed correctly it will also show you the first 6 points on the right side. (showing all the points eats up a ton of performances so it has been removed)
 
                 </p><h3>Tree Type Configuration</h3>
-                <img src="/img/docs/ac-foliage/tree-type.jpg">
+                <img src="/docs/img/ac-foliage/tree-type.jpg">
                 <p>The Tree Type configuration section of the tool is the key to how to effectively use it. The tool comes with a few pre-built default configs as well as the ability to define your own custom ones and save them for later updates.</p>
 
                 <h4>Default Configs</h4>
@@ -58,12 +58,12 @@
                 <p>See Planned Features below for additions coming soon to this configuration</p>
 
                 <h4>CSP Configs Override</h4>
-                <img src="/img/docs/ac-foliage/config-overrides.jpg">
+                <img src="/docs/img/ac-foliage/config-overrides.jpg">
                 <p>This section allows you to specific custom overrides for the size and width CSP configurations on the tree type basis. These values would be used to fill in the per line specifications in the TreeFX.</p>
                 <p>Note: In future versions, once I figure out what the best way to do it is, I'll include intuitive overrides for the color and brightness as well.</p>
 
                 <h3>Global CSP Configurations</h3>
-                <img src="/img/docs/ac-foliage/global-configs.jpg">
+                <img src="/docs/img/ac-foliage/global-configs.jpg">
                 <p>This section of the tool allows for configuring the TreeFX settings on a global level. These will apply if there are no specific configurations on a per tree line. These settings are split up into 2 categories. Variances and Other Configs.</p>
 
                 <h4>Variances</h4>

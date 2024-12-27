@@ -30,7 +30,7 @@
             </div>
             <div class="link">
                 <div class="box">
-                    <a href="/builds/1983-honda-sabre-v45-cafe-racer.php">1983 Honda Sabre V45 Cafe Racer</a>
+                    <a href="/builds/1982-83-honda-sabre-v45-cafe-racer.php">1982-83 Honda Sabre V45 Cafe Racer</a>
                 </div>
             </div>
         </div>
