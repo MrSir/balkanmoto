@@ -1,21 +1,23 @@
-.content-grid {
-    margin: 20px;
+.container-grid .content-grid {
     display: grid;
     grid-template-areas:
-            'posts'
-            'pagination'
-            'sidebar';
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-}
-
-.content-grid .posts{
-    grid-area: posts;
-    display: grid;
+            'main-grid'
+            'divider';
+    height: 100%;
     grid-gap: 20px;
+    background-color: lightgray;
 }
 
-.content-grid .posts .post-grid{
+.content-grid .main-grid{
+    grid-area: main-grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
+    grid-gap: 20px;
+    justify-content: center;
+    padding: 0px 20px;
+}
+
+.content-grid .main-grid .post-grid{
     display: grid;
     grid-template-areas:
             'image'
@@ -23,97 +25,57 @@
             'date'
             'summary';
     grid-template-columns: 1fr;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 5px 5px 10px darkgray;
 }
 
-.content-grid .posts .post-grid img{
+.content-grid .main-grid .post-grid img{
     grid-area: image;
     width: 100%;
 }
 
-.content-grid .posts .post-grid .title{
+.content-grid .main-grid .post-grid .title{
     grid-area: title;
     color: #636b6f;
     font-size: 24pt;
     text-align: left;
+    margin-top: 20px;
 }
 
-.content-grid .posts .post-grid .title a{
+.content-grid .main-grid .post-grid .title a{
     text-decoration: none;
     color: #636b6f;
 }
 
-.content-grid .posts .post-grid .date{
+.content-grid .main-grid .post-grid .date{
     grid-area: date;
     font-size: 20pt;
-    color: lightgray;
     text-align: left;
+    color: lightgray;
 }
 
-.content-grid .posts .post-grid .summary{
+.content-grid .main-grid .post-grid .summary{
     grid-area: summary;
     font-size: 16pt;
     text-align: left;
 }
 
-.content-grid .posts .post-grid .summary a{
+.content-grid .main-grid .post-grid .summary a{
     color: #636b6f;
 }
 
-.content-grid .sidebar{
-    grid-area: sidebar;
-    text-align: justify;
+.content-grid .divider{
+    height: 55px;
+    line-height: 55px;
+    background-color: #ced4da;
+    font-size: 25pt;
 }
 
-.content-grid .sidebar #keyword {
-    width: 100%;
-    height: 40px;
-    display: block;
-    margin-bottom: 20px;
-    padding: 5px 10px;
-    border: 2px solid  #636b6f;
-    border-radius: 5px;
-    font-size: 14pt;
-    text-align: right;
-    box-sizing : border-box;
+.content-grid .divider1{
+    grid-area: divider1;
 }
 
-.content-grid .sidebar .tags .tag{
-    display: inline-block;
-}
-
-.content-grid .sidebar .tags .tag a{
-    text-decoration: none;
-    color: #636b6f;
-}
-
-.content-grid .sidebar .tags .tag a:hover{
-    text-decoration: underline;
-}
-
-.content-grid .sidebar .tags .very-small {
-    font-size: 14pt;
-}
-
-.content-grid .sidebar .tags .small {
-    font-size: 18pt;
-}
-
-.content-grid .sidebar .tags .medium {
-    font-size: 22pt;
-}
-
-.content-grid .sidebar .tags .large {
-    font-size: 26pt;
-}
-
-.content-grid .sidebar .tags .very-large {
-    font-size: 30pt;
-}
-
-.content-grid .sidebar a.create{
-    color: #636b6f;
-    text-decoration: none;
-    display: block;
-    margin-top: 20px;
-    font-size: 18pt;
+.content-grid .divider2{
+    grid-area: divider2;
 }

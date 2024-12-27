@@ -10,7 +10,7 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">1982-83 HONDA SABRE V45 CAFE RACER</div>
+    <div class="divider">1982-83 HONDA SABRE V45 CAFE RACER - THE CAFE SABRE</div>
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">

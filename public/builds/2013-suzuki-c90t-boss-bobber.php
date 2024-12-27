@@ -10,7 +10,7 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">2013 SUZUKI C90T BOSS BOBBER</div>
+    <div class="divider">2013 SUZUKI C90T BOSS - THE BOSS BOBBER</div>
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">

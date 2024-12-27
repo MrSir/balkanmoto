@@ -4,14 +4,4 @@
         grid-gap: 50px;
         padding: 30px 50px;
     }
-
-    .content-grid .instagram-grid{
-        grid-area: instagram-grid;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 410px));
-        grid-auto-flow: dense;
-        grid-gap: 50px;
-        justify-content: center;
-        padding: 30px 50px 50px 50px;
-    }
 }
