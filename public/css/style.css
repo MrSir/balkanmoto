@@ -75,7 +75,7 @@ a{
     grid-template-areas:
             'leather'
             'builds'
-            'cruises';
+            'tools';
     grid-template-columns: 1fr;
 }
 
@@ -124,15 +124,15 @@ a{
     display: grid;
 }
 
-.container-grid .header-grid .cruises-overlay {
-    grid-area: cruises;
+.container-grid .header-grid .tools-overlay {
+    grid-area: tools;
 }
 
-.container-grid .header-grid .cruises:hover + .cruises-overlay{
+.container-grid .header-grid .tools:hover + .tools-overlay{
     display: grid;
 }
 
-.container-grid .header-grid .cruises-overlay:hover {
+.container-grid .header-grid .tools-overlay:hover {
     display: grid;
 }
 
@@ -144,11 +144,11 @@ a{
     background-size: cover;
 }
 
-.container-grid .header-grid .cruises {
-    grid-area: cruises;
+.container-grid .header-grid .tools {
+    grid-area: tools;
     height: 0px;
     padding-bottom: 66.66%;
-    background: url('/img/header/cruises_1080x720.jpg') center;
+    background: url('/img/header/tools_1080x720.jpg') center;
     background-size: cover;
 }
 
