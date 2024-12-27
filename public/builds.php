@@ -15,12 +15,12 @@
         <div class="content-center">
             <div class="link">
                 <div class="box">
-                    <a href="/builds/wheelbarrow-cx.php">The Wheelbarrow CX - Wooden Push Bike</a>
+                    <a href="/builds/2002-yamaha-vstar-1100-bobber.php">2002 Yamaha V-Star 1100 Bobber</a>
                 </div>
             </div>
             <div class="link">
                 <div class="box">
-                    <a href="/builds/2002-yamaha-vstar-1100-bobber.php">2002 Yamaha V-Star 1100 Bobber</a>
+                    <a href="/builds/wheelbarrow-cx.php">The Wheelbarrow CX - Wooden Push Bike</a>
                 </div>
             </div>
             <div class="link">
