@@ -18,8 +18,8 @@
                 <div class="title"><a href="/wall-art/wheelbarrow-cx.php">The Wheelbarrow CX - Wooden Push Bike</a></div>
             </div>
             <div class="post-grid">
-                <img src="/img/no_image.jpg" alt="Article Cover">
-                <div class="title"><a href="#">The Cafe Sabre Blueprint</a></div>
+                <img src="/wall-art/img/cafe-sabre-blueprint/thumbnail.jpg" alt="Article Cover">
+                <div class="title"><a href="/wall-art/cafe-sabre-blueprint.php">The Cafe Sabre Blueprint</a></div>
             </div>
             <div class="post-grid">
                 <img src="/img/no_image.jpg" alt="Article Cover">

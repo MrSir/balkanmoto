@@ -13,7 +13,8 @@
     <div class="content-grid">
         <div class="welcome">
             <h2>Welcome</h2>
-            <p>You found BalkanMoto's website. Here you will find details about the builds, leather craft, and wall art created by me. Additionally you will find some very useful tools to help understand various components of motorcycles. Don't forget to checkout the social links in order to keep up to date with my latest work.</p>
+            <p>This is a place to learn, explore, and share the journey of building custom motorcycles. I’ve always been fascinated by the process of taking raw materials and turning them into something personal and unique. Whether it’s building a custom bike, crafting leather gear, or creating wall art that captures the spirit of riding, this site is all about sharing what I’ve learned along the way.</p>
+            <p>Here, you’ll find tips, tutorials, and inspiration through the prism of my series. It’s not about being a professional—it’s about the joy of learning, experimenting, and pushing the limits of what you can create.</p>
         </div>
         <div class="builds-grid">
             <div class="build">

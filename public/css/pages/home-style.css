@@ -28,6 +28,7 @@
 
 .container-grid .content-grid .welcome h2{
     text-align: center;
+    margin: 25px 0px;
 }
 
 .container-grid .content-grid .builds-grid{
