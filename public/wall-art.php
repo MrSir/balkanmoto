@@ -22,8 +22,8 @@
                 <div class="title"><a href="/wall-art/cafe-sabre-blueprint.php">The Cafe Sabre Blueprint</a></div>
             </div>
             <div class="post-grid">
-                <img src="/img/no_image.jpg" alt="Article Cover">
-                <div class="title"><a href="#">Honda VF750 Engine</a></div>
+                <img src="/wall-art/img/honda-vf750-engine/thumbnail.jpg" alt="Article Cover">
+                <div class="title"><a href="/wall-art/honda-vf750-engine.php">Honda VF750 Engine</a></div>
             </div>
             <div class="post-grid">
                 <img src="/img/no_image.jpg" alt="Article Cover">

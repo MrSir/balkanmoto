@@ -10,7 +10,7 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">THE WHEELBARROW CX - WOODEN PUSH BIKE</div>
+    <div class="divider">THE CAFE SABRE BLUEPRINT</div>
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">
