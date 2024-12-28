@@ -13,7 +13,7 @@
             'welcome'
             'builds-grid'
             'other-grid';
-    grid-gap: 50px;
+    grid-gap: 20px;
     box-shadow: none;
 }
 
@@ -72,4 +72,5 @@
     grid-area: other-grid;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
+    grid-gap: 20px;
 }
