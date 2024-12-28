@@ -25,7 +25,7 @@ a{
             'content'
             'footer';
     grid-template-rows: 150px auto 55px 1fr auto;
-    background-color: #ced4da;
+    background-color: lightgray;
 }
 
 .container-grid .menu-grid{
@@ -164,9 +164,9 @@ a{
 
 .container-grid .content-grid {
     grid-area: content;
-    padding: 25px;
+    padding: 50px;
     background-color: white;
-    box-shadow: 5px 5px 10px darkgray;
+    background-color: lightgray;
 }
 
 .container-grid .footer-grid {

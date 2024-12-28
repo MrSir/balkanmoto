@@ -36,6 +36,7 @@
     <div class="divider">CARBURETOR TUNING</div>
     <div class="content-grid">
         <div id="info">
+            <h2>Details</h2>
             <p>
                 Carburetor Tuning is one of those things that seems like black magic or engine whispering. In reality however it's deeply rooted in physics and engineering and boils down to balancing the Air/Fuel ratio for the entire operating range. When it comes to CV (Continuous Velocity) type carburetors there really is only a few factors that can affect performance. Since these simple devices make use of <a href="https://en.wikipedia.org/wiki/Bernoulli%27s_principle">Bernoulli's Principle</a> to achieve mixture atomization, the components that dictate how much air or fuel the carburetor can make use of are the ones we are interested in. Typically these components are designed to affect the mixture at different levels of the throttle being open. Below you can find these components and their effects.
             </p>

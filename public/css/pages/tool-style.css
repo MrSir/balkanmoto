@@ -1,19 +1,20 @@
-.content-grid {
+.container-grid .content-grid {
     text-align: justify;
     margin: 20px;
     font-size: 14pt;
+    padding-top: 10px;
 }
 
-.content-grid p{
+.container-grid .content-grid p{
     margin: 0px 0px 10px 0px;
     text-indent: 30px;
 }
 
-.content-grid p a{
+.container-grid .content-grid p a{
     color: #636b6f;
 }
 
-.content-grid #canvas {
+.container-grid .content-grid #canvas {
     display: none;
 }
 
@@ -22,11 +23,11 @@
     color: red;
 }
 
-.content-grid #canvas #control-panel {
+.container-grid .content-grid #canvas #control-panel {
     position: absolute;
 }
 
-.content-grid #canvas .dg.main {
+.container-grid .content-grid #canvas .dg.main {
     overflow-y: visible;
 }
 

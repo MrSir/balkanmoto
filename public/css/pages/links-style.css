@@ -1,15 +1,17 @@
-.content-grid {
+.container-grid .content-grid {
     text-align: justify;
     margin: 20px;
     font-size: 14pt;
 }
 
 .link .box {
-    border: 1px solid #636b6f;
+    /*border: 1px solid #636b6f;*/
     margin: 5px 0px;
     padding: 5px;
     text-align: center;
     width: 400px;
+    background-color: white;
+    box-shadow: 5px 5px 10px darkgray;
 }
 
 .link .box a {

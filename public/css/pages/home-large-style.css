@@ -1,7 +1,10 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
-    .content-grid .main-grid {
+    .container-grid .content-grid .builds-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 50px;
+    }
+    .container-grid .content-grid .other-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 50px;
-        padding: 30px 50px;
     }
 }

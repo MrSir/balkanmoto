@@ -18,10 +18,6 @@
                 <div class="title"><a href="/builds/2002-yamaha-vstar-1100-bobber.php">2002 Yamaha V-Star 1100 Bobber - The Jocker Bobber</a></div>
             </div>
             <div class="post-grid">
-                <img src="/builds/img/wheelbarrow-cx/painted_2.jpg" alt="Article Cover">
-                <div class="title"><a href="/builds/wheelbarrow-cx.php">The Wheelbarrow CX - Wooden Push Bike</a></div>
-            </div>
-            <div class="post-grid">
                 <img src="/builds/img/2013-suzuki-c90t-boss-bobber/modified.jpg" alt="Article Cover">
                 <div class="title"><a href="/builds/2013-suzuki-c90t-boss-bobber.php">2013 Suzuki C90T BOSS - The BOSS Bobber</a></div>
             </div>

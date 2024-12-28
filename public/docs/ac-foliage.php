@@ -12,10 +12,11 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">AC Foliage Documentation v1.1</div>
+    <div class="divider">AC Foliage v1.1</div>
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">
+                <h1>Documentation</h1>
                 <img src="/docs/img/ac-foliage/title.jpg">
 
                 <p>

@@ -1,12 +1,13 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
-    .content-grid {
+    .container-grid .content-grid {
         text-align: justify;
-        margin: 20px auto;
+        margin: 25px auto;
+        padding: 0;
         font-size: 16pt;
         max-width: 800px;
     }
 
-    .link .box {
+    .container-grid .link .box {
         width: 400px;
     }
 }

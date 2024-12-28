@@ -1,6 +1,7 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
-    .content-grid {
+    .container-grid .content-grid {
         margin: 20px auto;
         max-width: 1000px;
+        padding-top: 10px;
     }
 }

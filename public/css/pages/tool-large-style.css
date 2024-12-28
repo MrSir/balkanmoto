@@ -1,22 +1,22 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
-    .content-grid {
+    .container-grid .content-grid {
         text-align: justify;
-        margin: 20px 0px;
+        margin: 20px auto;
         font-size: 16pt;
-        max-width: 100%;
+        width: 1200px;
     }
 
-    .content-grid #info {
+    .container-grid .content-grid #info {
         margin: 0px auto;
         max-width: 1200px;
     }
 
-    .content-grid p {
+    .container-grid .content-grid p {
         margin: 0px 0px 10px 0px;
         text-indent: 30px;
     }
 
-    .content-grid #canvas {
+    .container-grid .content-grid #canvas {
         display: block;
         width: 1200px;
         height: 840px;
