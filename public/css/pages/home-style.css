@@ -19,8 +19,15 @@
 
 .container-grid .content-grid .welcome{
     grid-area: welcome;
+    text-align: left;
+    padding: 0px 20px;
     background-color: white;
     box-shadow: 5px 5px 10px darkgray;
+    font-size: 18pt;
+}
+
+.container-grid .content-grid .welcome h2{
+    text-align: center;
 }
 
 .container-grid .content-grid .builds-grid{

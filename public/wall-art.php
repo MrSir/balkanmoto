@@ -14,15 +14,19 @@
     <div class="content-grid">
         <div class="grid-item main-grid">
             <div class="post-grid">
-                <img src="/builds/img/wheelbarrow-cx/painted_2.jpg" alt="Article Cover">
-                <div class="title"><a href="/builds/wheelbarrow-cx.php">The Wheelbarrow CX - Wooden Push Bike</a></div>
+                <img src="/wall-art/img/wheelbarrow-cx/painted_2.jpg" alt="Article Cover">
+                <div class="title"><a href="/wall-art/wheelbarrow-cx.php">The Wheelbarrow CX - Wooden Push Bike</a></div>
             </div>
             <div class="post-grid">
-                <img src="/img/#.jpg" alt="Article Cover">
+                <img src="/img/no_image.jpg" alt="Article Cover">
                 <div class="title"><a href="#">The Cafe Sabre Blueprint</a></div>
             </div>
             <div class="post-grid">
-                <img src="/img/#.jpg" alt="Article Cover">
+                <img src="/img/no_image.jpg" alt="Article Cover">
+                <div class="title"><a href="#">Honda VF750 Engine</a></div>
+            </div>
+            <div class="post-grid">
+                <img src="/img/no_image.jpg" alt="Article Cover">
                 <div class="title"><a href="#">Helmet Hangers</a></div>
             </div>
         </div>

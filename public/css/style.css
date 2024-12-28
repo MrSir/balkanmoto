@@ -175,7 +175,7 @@ a{
     grid-template-columns: repeat(auto-fit, minmax(280px, 700px));
     background-color: #383838;
     justify-content: center;
-    padding: 20px;
+    padding: 20px 50px;
     grid-column-gap: 20px;
     grid-gap: 20px;
 }

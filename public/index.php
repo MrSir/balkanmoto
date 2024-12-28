@@ -13,7 +13,7 @@
     <div class="content-grid">
         <div class="welcome">
             <h2>Welcome</h2>
-            <p>Lorum Ipsum</p>
+            <p>You found BalkanMoto's website. Here you will find details about the builds, leather craft, and wall art created by me. Additionally you will find some very useful tools to help understand various components of motorcycles. Don't forget to checkout the social links in order to keep up to date with my latest work.</p>
         </div>
         <div class="builds-grid">
             <div class="build">
@@ -31,11 +31,11 @@
         </div>
         <div class="other-grid">
             <div class="other">
-                <img src="/img/#.jpg" alt="Article Cover">
+                <img src="/img/wall-art.jpg" alt="Article Cover">
                 <div class="title"><a href="/wall-art.php">Wall Art</a></div>
             </div>
             <div class="other">
-                <img src="/img/#.jpg" alt="Article Cover">
+                <img src="/img/tools.jpg" alt="Article Cover">
                 <div class="title"><a href="/tools.php">Tools</a></div>
             </div>
         </div>
