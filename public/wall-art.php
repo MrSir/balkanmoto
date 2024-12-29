@@ -26,8 +26,8 @@
                 <div class="title"><a href="/wall-art/honda-vf750-engine.php">Honda VF750 Engine</a></div>
             </div>
             <div class="post-grid">
-                <img src="/img/no_image.jpg" alt="Article Cover">
-                <div class="title"><a href="#">Helmet Hangers</a></div>
+                <img src="/wall-art/img/helmet-hangers/thumbnail.jpg" alt="Article Cover">
+                <div class="title"><a href="/wall-art/helmet-hangers.php">Helmet Hangers</a></div>
             </div>
         </div>
     </div>
