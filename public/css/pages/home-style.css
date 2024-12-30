@@ -1,98 +1,77 @@
-.content-grid {
-    display: grid;
+.container-grid {
     grid-template-areas:
-            'divider1'
-            'main-grid'
-            'divider2';
-            /*'instagram-grid';*/
-    height: 100%;
-    grid-gap: 20px;
+            'menu-grid'
+            'header-grid'
+            'content'
+            'footer';
+    grid-template-rows: 150px auto 1fr auto;
 }
 
-.content-grid .main-grid{
-    grid-area: main-grid;
+.container-grid .content-grid {
+    display: grid;
+    grid-template-areas:
+            'welcome'
+            'builds-grid'
+            'other-grid';
+    grid-gap: 20px;
+    box-shadow: none;
+    padding: 20px;
+}
+
+.container-grid .content-grid .welcome{
+    grid-area: welcome;
+    text-align: left;
+    padding: 0px 20px;
+    background-color: white;
+    box-shadow: 5px 5px 10px darkgray;
+    font-size: 18pt;
+}
+
+.container-grid .content-grid .welcome h2{
+    text-align: center;
+    margin: 25px 0px;
+}
+
+.container-grid .content-grid .builds-grid{
+    grid-area: builds-grid;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
     grid-gap: 20px;
     justify-content: center;
-    padding: 0px 20px;
 }
 
-.content-grid .main-grid .post-grid{
+.container-grid .content-grid .builds-grid .build, .container-grid .content-grid .other-grid .other{
     display: grid;
     grid-template-areas:
             'image'
-            'title'
-            'date'
-            'summary';
+            'title';
     grid-template-columns: 1fr;
+    background-color: white;
+    box-shadow: 5px 5px 10px darkgray;
+    padding: 25px;
 }
 
-.content-grid .main-grid .post-grid img{
+.container-grid .content-grid .builds-grid .build img, .container-grid .content-grid .other-grid .other img{
     grid-area: image;
     width: 100%;
+    margin-bottom: 20px;
 }
 
-.content-grid .main-grid .post-grid .title{
+.container-grid .content-grid .builds-grid .build .title, .container-grid .content-grid .other-grid .other .title{
     grid-area: title;
     color: #636b6f;
     font-size: 24pt;
     text-align: left;
 }
 
-.content-grid .main-grid .post-grid .title a{
+.container-grid .content-grid .builds-grid .build .title a, .container-grid .content-grid .other-grid .other .title a{
     text-decoration: none;
     color: #636b6f;
 }
 
-.content-grid .main-grid .post-grid .date{
-    grid-area: date;
-    font-size: 20pt;
-    text-align: left;
-    color: lightgray;
-}
-
-.content-grid .main-grid .post-grid .summary{
-    grid-area: summary;
-    font-size: 16pt;
-    text-align: left;
-}
-
-.content-grid .main-grid .post-grid .summary a{
-    color: #636b6f;
-}
-
-.content-grid .divider{
-    height: 55px;
-    line-height: 55px;
-    background-color: #ced4da;
-    font-size: 25pt;
-}
-
-.content-grid .divider1{
-    grid-area: divider1;
-}
-
-.content-grid .divider2{
-    grid-area: divider2;
-}
-
-.content-grid .instagram-grid{
-    grid-area: instagram-grid;
+.container-grid .content-grid .other-grid {
+    grid-area: other-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 410px));
-    grid-auto-flow: dense;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
     grid-gap: 20px;
-    justify-content: center;
-    padding: 0px 20px 20px 20px;
-}
-
-
-.content-grid .instagram-grid .post-grid{
-    border: 1px solid black;
-    padding-bottom: 100%;
-    background-position: left bottom;
-    background-repeat: no-repeat;
-    background-size: cover;
-    cursor: pointer;
 }

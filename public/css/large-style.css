@@ -3,7 +3,7 @@
         grid-area: header-grid;
         display: grid;
         height: 100%;
-        grid-template-areas: 'leather builds cruises';
+        grid-template-areas: 'leather builds tools';
         grid-template-columns: repeat(3, 1fr);
     }
 
@@ -32,10 +32,25 @@
     }
 
     .container-grid .footer-grid {
-        grid-template-columns: repeat(3, minmax(200px, 400px));
+        grid-template-columns: repeat(4, minmax(200px, 400px));
     }
 
     .container-grid .footer-grid .links ul li{
         border-bottom: none;
+    }
+
+    .container-grid .divider {
+        font-size: 25pt;
+    }
+
+    .container-grid .content-grid {
+        grid-area: content;
+        padding: 50px;
+        background-color: lightgray;
+    }
+
+    .container-grid .content-grid iframe{
+        width: 1000px;
+        height: 563px;
     }
 }

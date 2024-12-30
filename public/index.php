@@ -1,60 +1,47 @@
-<?php
+<!doctype html>
+<html lang="en-ca">
+<head>
+    <?php include("./theme/header-meta.php"); ?>
 
-/**
- * Laravel - A PHP Framework For Web Artisans
- *
- * @package  Laravel
- * @author   Taylor Otwell <taylor@laravel.com>
- */
-
-define('LARAVEL_START', microtime(true));
-
-/*
-|--------------------------------------------------------------------------
-| Register The Auto Loader
-|--------------------------------------------------------------------------
-|
-| Composer provides a convenient, automatically generated class loader for
-| our application. We just need to utilize it! We'll simply require it
-| into the script here so that we don't have to worry about manual
-| loading any of our classes later on. It feels great to relax.
-|
-*/
-
-require __DIR__.'/../vendor/autoload.php';
-
-/*
-|--------------------------------------------------------------------------
-| Turn On The Lights
-|--------------------------------------------------------------------------
-|
-| We need to illuminate PHP development, so let us turn on the lights.
-| This bootstraps the framework and gets it ready for use, then it
-| will load up this application so that we can run it and send
-| the responses back to the browser and delight our users.
-|
-*/
-
-$app = require_once __DIR__.'/../bootstrap/app.php';
-
-/*
-|--------------------------------------------------------------------------
-| Run The Application
-|--------------------------------------------------------------------------
-|
-| Once we have the application, we can handle the incoming request
-| through the kernel, and send the associated response back to
-| the client's browser allowing them to enjoy the creative
-| and wonderful application we have prepared for them.
-|
-*/
-
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-);
-
-$response->send();
-
-$kernel->terminate($request, $response);
+    <link href="/css/pages/home-style.css" rel="stylesheet">
+    <link href="/css/pages/home-large-style.css" rel="stylesheet">
+</head>
+<body>
+<div class="content container-grid">
+    <?php include("./theme/menu.php"); ?>
+    <?php include("./theme/header.php"); ?>
+    <div class="content-grid">
+        <div class="welcome">
+            <h2>Welcome</h2>
+            <p>This is a place to learn, explore, and share the journey of building custom motorcycles. I’ve always been fascinated by the process of taking raw materials and turning them into something personal and unique. Whether it’s building a custom bike, crafting leather gear, or creating wall art that captures the spirit of riding, this site is all about sharing what I’ve learned along the way.</p>
+            <p>Here, you’ll find tips, tutorials, and hopefully some inspiration for your next build. It’s not about being a professional—it’s about the joy of learning, experimenting, and pushing the limits of what you can create.</p>
+        </div>
+        <div class="builds-grid">
+            <div class="build">
+                <img src="/builds/img/2002-yamaha-vstar-1100-bobber/current_2.jpg" alt="Article Cover">
+                <div class="title"><a href="/builds/2002-yamaha-vstar-1100-bobber.php">2002 Yamaha V-Star 1100 Bobber - The Jocker Bobber</a></div>
+            </div>
+            <div class="build">
+                <img src="/builds/img/2013-suzuki-c90t-boss-bobber/modified.jpg" alt="Article Cover">
+                <div class="title"><a href="/builds/2013-suzuki-c90t-boss-bobber.php">2013 Suzuki C90T BOSS - The BOSS Bobber</a></div>
+            </div>
+            <div class="build">
+                <img src="/builds/img/1982-83-honda-sabre-v45-cafe-racer/the_finished_build.jpg" alt="Article Cover">
+                <div class="title"><a href="/builds/1982-83-honda-sabre-v45-cafe-racer.php">1982-83 Honda Sabre V45 Cafe Racer - The Cafe Sabre</a></div>
+            </div>
+        </div>
+        <div class="other-grid">
+            <div class="other">
+                <img src="/img/wall-art.jpg" alt="Article Cover">
+                <div class="title"><a href="/wall-art.php">Wall Art</a></div>
+            </div>
+            <div class="other">
+                <img src="/img/tools.jpg" alt="Article Cover">
+                <div class="title"><a href="/tools.php">Tools</a></div>
+            </div>
+        </div>
+    </div>
+    <?php include("./theme/footer.php"); ?>
+</div>
+</body>
+</html>

@@ -1,17 +1,15 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
-    .content-grid .main-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .container-grid .content-grid {
         grid-gap: 50px;
-        padding: 30px 50px;
+        padding: 50px;
     }
 
-    .content-grid .instagram-grid{
-        grid-area: instagram-grid;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 410px));
-        grid-auto-flow: dense;
+    .container-grid .content-grid .builds-grid {
+        grid-template-columns: repeat(3, 1fr);
         grid-gap: 50px;
-        justify-content: center;
-        padding: 30px 50px 50px 50px;
+    }
+    .container-grid .content-grid .other-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 50px;
     }
 }
