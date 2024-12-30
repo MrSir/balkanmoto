@@ -2,14 +2,14 @@
     text-align: justify;
     margin: 20px;
     font-size: 14pt;
+    padding: 0px;
 }
 
 .link .box {
-    /*border: 1px solid #636b6f;*/
-    margin: 5px 0px;
+    margin: 5px auto;
     padding: 5px;
     text-align: center;
-    width: 400px;
+    width: 300px;
     background-color: white;
     box-shadow: 5px 5px 10px darkgray;
 }

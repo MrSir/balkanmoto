@@ -169,8 +169,8 @@ a{
 }
 
 .container-grid .content-grid iframe{
-    width: 332px;
-    height: 188px;
+    width: 100%;
+    aspect-ratio: 1.77;
 }
 
 .container-grid .footer-grid {

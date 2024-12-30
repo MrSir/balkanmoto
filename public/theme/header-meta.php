@@ -9,8 +9,7 @@
 <meta name="theme-color" content="#383838">
 
 <!-- Fonts -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="/fonts/fontawesome-free-6.7.2-web/css/all.css">
 <link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
 
 <link href="/css/style.css" rel="stylesheet">

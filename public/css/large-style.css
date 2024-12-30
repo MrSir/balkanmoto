@@ -48,9 +48,4 @@
         padding: 50px;
         background-color: lightgray;
     }
-
-    .container-grid .content-grid iframe{
-        width: 1000px;
-        height: 563px;
-    }
 }
