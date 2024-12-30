@@ -1,7 +1,7 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
     .container-grid .content-grid {
         text-align: justify;
-        margin: 20px auto;
+        margin: 50px auto;
         font-size: 16pt;
         width: 1200px;
     }
