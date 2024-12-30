@@ -54,7 +54,7 @@
                 </ul>
 
                 <h2>The Blueprint</h2>
-                <img src="/leather-craft/img/the-balanmoto-bbq-apron/assembled-template.jpg" alt="base" style="border:1px solid black;height:400px;width:311px;">
+                <img src="/leather-craft/img/the-balanmoto-bbq-apron/assembled-template.jpg" style="border:1px solid black;height:400px;width:311px;">
                 <p>
                     Click the links below to download the templates.
                     <ul>
