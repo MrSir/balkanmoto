@@ -35,7 +35,7 @@
 
                 <h2>The Wheelbarrow CX Series</h2>
                 <p>This is the series that chronicles the build.</p>
-                <iframe width="1000" height="563" src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEVbNL24JMC3hxkyewp6R0D-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEVbNL24JMC3hxkyewp6R0D-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </div>

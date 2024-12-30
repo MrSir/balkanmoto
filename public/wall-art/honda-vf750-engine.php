@@ -30,7 +30,7 @@
 
                 <h2>How a V45 Engine Works Series</h2>
                 <p>This is the series that chronicles the breakdown, and mounting of the motor.</p>
-                <iframe width="1000" height="563" src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEUa_8GHV-5bgc0IVmPIID7S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEUa_8GHV-5bgc0IVmPIID7S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </div>

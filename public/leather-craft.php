@@ -14,7 +14,7 @@
     <div class="content-grid">
         <div class="grid-item main-grid">
               <div class="post-grid">
-                  <img src="/leather-craft/img/suspension_geometry.jpg" alt="Article Cover">
+                  <img src="/leather-craft/img/the-jocker-bobber-seat/thumbnail.jpg" alt="Article Cover">
                   <div class="title"><a href="/leather-craft/the-jocker-bobber-seat.php">The Jocker Bobber Seat</a></div>
               </div>
               <div class="post-grid">

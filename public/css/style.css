@@ -276,32 +276,6 @@ a{
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);
 }
 
-.content-grid .pagination{
-    grid-area: pagination;
-    list-style: none;
-    padding: 0px;
-    margin: 20px 0px 0px 0px;
-}
-
-.content-grid .pagination li{
-    display: inline-block;
-}
-
-.content-grid .pagination a{
-    text-decoration: none;
-    color: #a1a1a1;
-    font-size: 20pt;
-}
-
-.content-grid .pagination a:hover{
-    color: #636b6f;
-}
-
-.content-grid .pagination a.active{
-    font-weight: bold;
-    color: #636b6f;
-}
-
 .switch {
     position: relative;
     display: inline-block;

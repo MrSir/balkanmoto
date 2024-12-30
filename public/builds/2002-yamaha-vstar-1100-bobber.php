@@ -72,7 +72,7 @@
 
                 <h2>The Jocker Bobber Series</h2>
                 <p>This is the series that chronicles the build. It's still going...</p>
-                <iframe width="1000" height="563" src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEU-3mP-xKq_cn66aQr-gd4i" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEU-3mP-xKq_cn66aQr-gd4i" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </div>

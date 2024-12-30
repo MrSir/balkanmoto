@@ -32,7 +32,7 @@
                 <p>The pipe pieces can be pre-assembled before mounting on the wall. They don't need to be tightened a terrible amount, hand tight is fine. The spray paint is mostly for the wood, but one could spray the metal as well to get a more uniform look. In my case I lef the pipes their original color. Finally the leather wrap for the wood is more to protect the inside of the helmet lining from the flatness of the wood and it's sharp sides. If you have the tools you could machine the wood piece to a more round shape and skip the leather all together. I found this to be a good inexpensive compromise, and I already had the tools and dies for the leather.</p>
 
                 <h2>The Final Product</h2>
-                <iframe width="1000" height="563" src="https://www.youtube.com/embed/mTip01U6IxE?si=e1vm9o19lRU3q9Ay" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/mTip01U6IxE?si=e1vm9o19lRU3q9Ay" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </div>

@@ -131,10 +131,10 @@
 
                 <h2>How to build a Cafe Racer Series</h2>
                 <p>This is the first of the series around this project, and documents my journey on the build</p>
-                <iframe width="1000" height="563" src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEWRmc_wHvq9fMHSfcXa5QiO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEWRmc_wHvq9fMHSfcXa5QiO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <h2>How to fix a Cafe Racer Series</h2>
                 <p>This is the second of the series around this project, and documents how I ended up fixing my own project and got it be a truly road worthy motorcycle.</p>
-                <iframe width="1000" height="563" src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEU7KSyNKcsSCwaU-hIOQi77" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEU7KSyNKcsSCwaU-hIOQi77" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </div>

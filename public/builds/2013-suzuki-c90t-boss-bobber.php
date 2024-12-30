@@ -49,7 +49,7 @@
 
                 <h2>How to build a BOSS Bobber Series</h2>
                 <p>This is a short series chronicling the build.</p>
-                <iframe width="1000" height="563" src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEVsIgIc6UkMALWlZbIzI8ZF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLPOp2IhKEuEVsIgIc6UkMALWlZbIzI8ZF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </div>

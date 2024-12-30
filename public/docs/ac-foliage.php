@@ -85,7 +85,7 @@
                 <p>The tool will generate a file inside of it's <span style="background-color: lightgray">/tree_fx_configs/</span> directory named <span style="background-color: lightgray">treefx_list.txt</span>. If the file exists a numerical suffix will be added.</p>
 
                 <h2>Tutorial Series</h2>
-                <iframe width="1000" height="550" src="https://www.youtube.com/embed/aOzAglNQ5v0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+                <iframe src="https://www.youtube.com/embed/aOzAglNQ5v0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
 
                 <h2>Planned Features</h2><p>
                 The following are features I plan on adding to the tool to allow for a little more realism in foliage distribution and better TreeFX feature utilization:
