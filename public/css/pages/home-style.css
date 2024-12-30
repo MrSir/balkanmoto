@@ -15,6 +15,7 @@
             'other-grid';
     grid-gap: 20px;
     box-shadow: none;
+    padding: 20px;
 }
 
 .container-grid .content-grid .welcome{

@@ -14,7 +14,10 @@
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">
-                TBD
+                <h2>The Idea</h2>
+                <p></p>
+                <h2>The Final Product</h2>
+                <iframe src="https://www.youtube.com/embed/mh7_5geqrVg?si=tOHv22Cc7XdVl1-a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </div>

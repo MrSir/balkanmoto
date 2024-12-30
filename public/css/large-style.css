@@ -38,4 +38,19 @@
     .container-grid .footer-grid .links ul li{
         border-bottom: none;
     }
+
+    .container-grid .divider {
+        font-size: 25pt;
+    }
+
+    .container-grid .content-grid {
+        grid-area: content;
+        padding: 50px;
+        background-color: lightgray;
+    }
+
+    .container-grid .content-grid iframe{
+        width: 1000px;
+        height: 563px;
+    }
 }

@@ -22,7 +22,7 @@
                   <div class="title"><a href="/leather-craft/the-cafe-sabre-saddlebags.php">The Cafe Sabre Saddlebags</a></div>
               </div>
               <div class="post-grid">
-                  <img src="/leather-craft/img/carb_tunning.jpg" alt="Article Cover">
+                  <img src="/leather-craft/img/the-balanmoto-bbq-apron/thumbnail.jpg" alt="Article Cover">
                   <div class="title"><a href="/leather-craft/the-balkanmoto-bbq-apron.php">The BalkanMoto BBQ Apron</a></div>
               </div>
         </div>

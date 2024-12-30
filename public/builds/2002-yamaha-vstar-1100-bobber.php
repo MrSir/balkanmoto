@@ -10,7 +10,7 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">2002 YAMAHA V-STAR 1100 BOBBER - The JOCKER BOBBER</div>
+    <div class="divider">2002 YAMAHA V-STAR 1100 BOBBER - THE JOCKER BOBBER</div>
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">

@@ -1,5 +1,6 @@
 html, body {
     background-size: 100%;
+    background-color: lightgray;
     color: #636b6f;
     font-family: 'Teko', sans-serif;
     font-weight: 100;
@@ -157,16 +158,19 @@ a{
     grid-area: divider;
     height: 55px;
     line-height: 55px;
-    font-size: 25pt;
+    font-size: 16pt;
     background-color: #383838;
     color: white;
 }
 
 .container-grid .content-grid {
     grid-area: content;
-    padding: 50px;
-    background-color: white;
-    background-color: lightgray;
+    padding: 0px 20px 20px 20px;
+}
+
+.container-grid .content-grid iframe{
+    width: 332px;
+    height: 188px;
 }
 
 .container-grid .footer-grid {
