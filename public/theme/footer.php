@@ -29,9 +29,6 @@
             <div class="youtube">
                 <a href="https://www.youtube.com/channel/UCHbSArk-BwFhFQmtV_ws2Ng" target="_blank"><span class="fab fa-youtube"></span></a>
             </div>
-            <div class="instagram">
-                <a href="https://www.instagram.com/balkanmoto2018/" target="_blank"><span class="fab fa-instagram"></span></a>
-            </div>
             <div class="ko-fi">
                 <a href="https://ko-fi.com/balkanmoto" target="_blank"><img src="/img/kofi.svg" class="icon" /></a>
             </div>

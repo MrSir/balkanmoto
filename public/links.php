@@ -74,11 +74,6 @@
         </div>
         <div class="link">
             <div class="box">
-                <a href="https://www.instagram.com/balkanmoto2018/" target="_blank">Instagram</a>
-            </div>
-        </div>
-        <div class="link">
-            <div class="box">
                 <a href="https://ko-fi.com/balkanmoto" target="_blank">Ko-fi</a>
             </div>
         </div>
