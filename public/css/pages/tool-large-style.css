@@ -19,9 +19,14 @@
 
     .container-grid .content-grid #canvas {
         display: block;
+        position: relative;
         width: 1200px;
         height: 840px;
         margin: 0px auto;
+    }
+
+    .container-grid .content-grid #canvas #control-panel{
+        display: block;
     }
 
     .slider:before {

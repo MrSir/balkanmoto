@@ -23,8 +23,42 @@
     color: red;
 }
 
-.container-grid .content-grid #canvas #control-panel {
+.container-grid .content-grid #canvas #control-panel{
     position: absolute;
+}
+
+.container-grid .content-grid #canvas #control-panels{
+    position: absolute;
+}
+
+.container-grid .content-grid #canvas #control-panel-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.container-grid .content-grid #canvas #control-panel-left div{
+    position: relative;
+}
+
+.container-grid .content-grid #canvas #control-panel-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.container-grid .content-grid #canvas #control-panel-right div{
+    position: relative;
+}
+
+.container-grid .content-grid #canvas #scene-control-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.container-grid .content-grid #canvas #scene-control-panel div{
+    position: relative;
 }
 
 .container-grid .content-grid #canvas .dg.main {
