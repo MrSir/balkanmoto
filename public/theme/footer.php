@@ -13,6 +13,7 @@
         <div class="footer-title">Tools</div>
         <ul>
             <li><a href="/tools/suspension-geometry.php">SUSPENSION GEOMETRY</a></li>
+            <li><a href="/tools/suspension-tuning.php">SUSPENSION TUNING</a></li>
 			<li><a href="/tools/carburetor-tuning.php">CARBURETOR TUNING</a></li>
         </ul>
 
