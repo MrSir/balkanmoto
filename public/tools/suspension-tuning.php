@@ -75,12 +75,12 @@
             loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
                 let fork1 = new Fork3D.Fork(
                     floorY,
-                    -400,  0,
-                    42, 1000,
-                    10,
+                    -400,  -20,
+                    43, 1000,
+                    -100,
                     200,
                     200,
-                    0,
+                    27,
                     80,
                     0
                 )
@@ -90,12 +90,12 @@
 
                 let fork2 = new Fork3D.Fork(
                     floorY,
-                    400,  0,
-                    42, 1000,
-                    10,
+                    400,  -20,
+                    43, 1000,
+                    -100,
                     200,
                     200,
-                    0,
+                    27,
                     80,
                     0
                 )

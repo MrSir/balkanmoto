@@ -42,27 +42,35 @@ export class ControlPanel {
     createSettingsFolder() {
         let settingsFolder = this.gui.addFolder('Settings')
         let params = {
+            'Spring (N/mm)': 5.6,
             'Preload (mm)': 0,
             'Compression Damping': 0,
             'Rebound Damping': 0,
         }
 
         settingsFolder
-            .add(params, 'Preload (mm)', 0, 100, 1, true)
+            .add(params, 'Spring (N/mm)', 5, 9.5, 0.1)
+            .onChange((spring) => {
+                this.fork.spring = spring
+                this.fork.redrawInScene(this.scene)
+            })
+
+        settingsFolder
+            .add(params, 'Preload (mm)', 0, 100, 1)
             .onChange((preload) => {
                 this.fork.preload = preload
                 this.fork.redrawInScene(this.scene)
             })
 
         settingsFolder
-            .add(params, 'Compression Damping', 0, 10, 1, true)
+            .add(params, 'Compression Damping', 0, 10, 1)
             .onChange((damping) => {
                 this.fork.compressionDamping = damping
                 this.fork.redrawInScene(this.scene)
             })
 
         settingsFolder
-            .add(params, 'Rebound Damping', 0, 10, 1, true)
+            .add(params, 'Rebound Damping', 0, 10, 1)
             .onChange((damping) => {
                 this.fork.reboundDamping = damping
                 this.fork.redrawInScene(this.scene)

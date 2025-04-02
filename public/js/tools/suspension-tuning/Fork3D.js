@@ -20,6 +20,7 @@ export class Fork {
         this.width = width
         this.stemLength = stemLength
 
+        this.spring = 5.6
         this.preload = 0
         this.compressionDamping = 0
         this.reboundDamping = 0
@@ -136,7 +137,9 @@ export class Fork {
     }
 
     buildSpring(yCoordinate, zCoordinate) {
-        let spring = new Spring3D.Spring(this.radius - 12, 3, 50, 24, (this.length * 0.6) - this.preload, 1)
+        let ratio = this.spring /  5.6
+
+        let spring = new Spring3D.Spring(this.radius - 12, 3 * ratio, 40, 24, (this.length * 0.6) - this.preload, 1)
         spring.update()
 
         spring.position.set(0, yCoordinate + (this.length / 2) - 120 , zCoordinate)
@@ -284,6 +287,8 @@ export class Fork {
         this.pivot.add(bottomYoke)
 
         this.pivot.rotateY(- Math.PI / 2)
+
+        this.pivot.rotateZ(this.tripleTreeRakeInRadians)
 
         return this
     }
