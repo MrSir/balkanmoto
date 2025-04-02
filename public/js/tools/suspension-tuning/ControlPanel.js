@@ -4,7 +4,7 @@ export class ControlPanel {
     constructor(element, scene, fork) {
         this.gui = new GUI({
             container: element,
-            width: 200,
+            width: 300,
             title: "Fork Parameters",
             closeFolders: true,
         })
@@ -43,12 +43,28 @@ export class ControlPanel {
         let settingsFolder = this.gui.addFolder('Settings')
         let params = {
             'Preload (mm)': 0,
+            'Compression Damping': 0,
+            'Rebound Damping': 0,
         }
 
         settingsFolder
             .add(params, 'Preload (mm)', 0, 100, 1, true)
             .onChange((preload) => {
                 this.fork.preload = preload
+                this.fork.redrawInScene(this.scene)
+            })
+
+        settingsFolder
+            .add(params, 'Compression Damping', 0, 10, 1, true)
+            .onChange((damping) => {
+                this.fork.compressionDamping = damping
+                this.fork.redrawInScene(this.scene)
+            })
+
+        settingsFolder
+            .add(params, 'Rebound Damping', 0, 10, 1, true)
+            .onChange((damping) => {
+                this.fork.reboundDamping = damping
                 this.fork.redrawInScene(this.scene)
             })
 

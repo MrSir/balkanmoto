@@ -21,6 +21,8 @@ export class Fork {
         this.stemLength = stemLength
 
         this.preload = 0
+        this.compressionDamping = 0
+        this.reboundDamping = 0
 
         this.rake = rake
         this.forkTripleTreeBaseOffset = forkTripleTreeBaseOffset
