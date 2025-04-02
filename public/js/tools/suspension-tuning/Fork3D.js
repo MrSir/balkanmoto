@@ -134,7 +134,7 @@ export class Fork {
     }
 
     buildSpring(yCoordinate, zCoordinate) {
-        let spring = new Spring3D.Spring(this.radius - 12, 3, 50, 24, this.length * 0.6, 1)
+        let spring = new Spring3D.Spring(this.radius - 12, 3, 50, 24, (this.length * 0.6) - this.preload, 1)
         spring.update()
 
         spring.position.set(0, yCoordinate + (this.length / 2) - 120 , zCoordinate)
