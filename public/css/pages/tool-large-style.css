@@ -23,6 +23,10 @@
         height: 840px;
         margin: 0px auto;
     }
+    .container-grid .content-grid #canvas #control-panel{
+        display: block;
+        width: 1200px;
+    }
 
     .slider:before {
         display: none;

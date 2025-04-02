@@ -20,6 +20,8 @@ export class Fork {
         this.width = width
         this.stemLength = stemLength
 
+        this.preload = 0
+
         this.rake = rake
         this.forkTripleTreeBaseOffset = forkTripleTreeBaseOffset
         this.frameStemTopHeight = frameStemTopHeight
@@ -35,8 +37,8 @@ export class Fork {
         this.tripleTreeMaterial = new THREE.MeshPhysicalMaterial({
             color: 0xc4c4c4,
             roughness: 0.2,
-            metalness: 0.7,
-            transparent: true,
+            metalness: 1.0,
+            transparent: false,
             opacity: 0.5,
             depthWrite: true,
             depthTest: true,
@@ -44,18 +46,27 @@ export class Fork {
             //wireframe: true,
         })
 
-        this.forkTubeMaterial = new THREE.MeshPhysicalMaterial({
+        this.goldForkTubeMaterial = new THREE.MeshPhysicalMaterial({
             color: 0xffd700,
             emissive: 0x000000,
-            metalness: 0.7,
+            metalness: 1.0,
             flatShading: false,
-            roughness: 0.5,
+            roughness: 0.2,
             reflectivity: 1,
-            clearcoat: 0.7,
+            clearcoat: 0.0,
             transparent: true,
             opacity: 0.5,
             depthWrite: true,
             depthTest: true,
+        })
+
+        this.silverForkTubeMaterial = new THREE.MeshStandardMaterial({
+            color: 0xc4c4c4,
+            emissive: 0x000000,
+            metalness: 1.0,
+            roughness: 0.2,
+            transparent: true,
+            opacity: 0.8,
         })
     }
 
@@ -64,7 +75,11 @@ export class Fork {
     }
 
     setTransparency(toggle) {
-        this.forkTubeMaterial.transparent = toggle
+        this.goldForkTubeMaterial.transparent = toggle
+        this.goldForkTubeMaterial.opacity = toggle ? 0.5 : 1
+        this.silverForkTubeMaterial.transparent = toggle
+        this.silverForkTubeMaterial.opacity = toggle ? 0.8 : 1
+
         return this
     }
 
@@ -95,7 +110,7 @@ export class Fork {
             this.heightSegments
         )
 
-        let mesh = new THREE.Mesh(geometry, this.forkTubeMaterial)
+        let mesh = new THREE.Mesh(geometry, this.goldForkTubeMaterial)
         mesh.castShadow = true
         mesh.position.set(0, yCoordinate + (this.length / 2) + 150, zCoordinate)
 
@@ -111,7 +126,7 @@ export class Fork {
             this.heightSegments
         )
 
-        let mesh = new THREE.Mesh(geometry, this.tripleTreeMaterial)
+        let mesh = new THREE.Mesh(geometry, this.silverForkTubeMaterial)
         mesh.castShadow = true
         mesh.position.set(0, yCoordinate + (this.length / 2) - 250, zCoordinate)
 
@@ -119,7 +134,7 @@ export class Fork {
     }
 
     buildSpring(yCoordinate, zCoordinate) {
-        let spring = new Spring3D.Spring(this.radius - 8, 3, 40, 24, this.length * 0.6, 1)
+        let spring = new Spring3D.Spring(this.radius - 12, 3, 50, 24, this.length * 0.6, 1)
         spring.update()
 
         spring.position.set(0, yCoordinate + (this.length / 2) - 120 , zCoordinate)
@@ -277,6 +292,11 @@ export class Fork {
 
     addToObject(object) {
         object.add(this.pivot)
+    }
+
+    redrawInScene(scene) {
+        this.removeFromObject(scene)
+        this.buildFork().addToObject(scene)
     }
 }
 

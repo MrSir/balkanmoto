@@ -23,8 +23,24 @@
     color: red;
 }
 
-.container-grid .content-grid #canvas #control-panel {
+.container-grid .content-grid #canvas #control-panel{
     position: absolute;
+}
+
+.container-grid .content-grid #canvas #control-panel-left {
+    float: left;
+}
+
+.container-grid .content-grid #canvas #control-panel-left div{
+    position: relative;
+}
+
+.container-grid .content-grid #canvas #control-panel-right {
+    float: right;
+}
+
+.container-grid .content-grid #canvas #control-panel-right div{
+    position: relative;
 }
 
 .container-grid .content-grid #canvas .dg.main {

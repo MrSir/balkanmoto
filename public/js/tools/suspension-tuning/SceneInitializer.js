@@ -41,12 +41,8 @@ export class SceneInitializer {
     }
 
     addLights() {
-        let hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444)
-        hemiLight.position.set(0, 20, 0)
-        this.scene.add(hemiLight)
-
         let dirLight = new THREE.DirectionalLight(0xffffff)
-        dirLight.position.set(200, 500, 1500)
+        dirLight.position.set(0, 1000, 1500)
         dirLight.castShadow = true
         dirLight.shadow.camera.top = 5000
         dirLight.shadow.camera.bottom = -5000
@@ -55,6 +51,21 @@ export class SceneInitializer {
         dirLight.shadow.camera.near = 0.01
         dirLight.shadow.camera.far = 100000
         this.scene.add(dirLight)
+
+        const ambientLight = new THREE.AmbientLight( 0x000000 );
+        this.scene.add( ambientLight );
+
+        const light1 = new THREE.DirectionalLight( 0xffffff, 1 );
+        light1.position.set( 0, 500, 2000 );
+        this.scene.add( light1 );
+
+        const light2 = new THREE.DirectionalLight( 0xffffff, 1 );
+        light2.position.set( 1500, 500, 2000 );
+        this.scene.add( light2 );
+
+        const light3 = new THREE.DirectionalLight( 0xffffff, 1 );
+        light3.position.set( - 1500, - 500, 2000 );
+        this.scene.add( light3 );
 
         return this
     }
