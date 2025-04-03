@@ -13,6 +13,7 @@
                 "three/gui": "/js/tools/three/addons/libs/lil-gui.module.min.js",
                 "sceneInitializer": "/js/tools/suspension-tuning/SceneInitializer.js",
                 "controlPanel": "/js/tools/suspension-tuning/ControlPanel.js",
+                "sceneControlPanel": "/js/tools/suspension-tuning/SceneControlPanel.js",
                 "fork3D": "/js/tools/suspension-tuning/Fork3D.js",
                 "spring3D": "/js/tools/suspension-tuning/Spring3D.js",
                 "tire3D": "/js/tools/suspension-tuning/Tire3D.js"
@@ -48,15 +49,18 @@
         <br/>
         <div id="small-screen-warning">Your screen is too small to view the canvas.</div>
         <div id="canvas">
-            <div id="control-panel">
-                <div id="control-panel-left"></div>
-                <div id="control-panel-right"></div>
+            <div id="control-panel-left"></div>
+            <div id="control-panel-right"></div>
+            <div id="scene-control-panel"></div>
+            <div id="control-panels">
+
             </div>
         </div>
         <script type="module">
             import * as THREE from 'three';
             import * as THREE_Addons from 'three/addons';
             import * as SI from 'sceneInitializer';
+            import * as SCP from 'sceneControlPanel';
             import * as CP from 'controlPanel';
             import * as Fork3D from 'fork3D';
 
@@ -65,6 +69,7 @@
             let container = document.getElementById('canvas')
             let cpLeftContainer = document.getElementById('control-panel-left')
             let cpRightContainer = document.getElementById('control-panel-right')
+            let scpContainer = document.getElementById('scene-control-panel')
             let scene = new THREE.Scene()
             scene.background = new THREE.Color( 0xa0a0a0 );
 
@@ -102,6 +107,8 @@
                 fork2.buildFork().addToObject(scene)
 
                 let controlPanelRight = new CP.ControlPanel(cpRightContainer, scene, fork2)
+
+                let sceneControlPanel = new SCP.SceneControlPanel(scpContainer, scene, [fork1, fork2])
             })
 
 

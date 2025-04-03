@@ -20,10 +20,12 @@ export class Fork {
         this.width = width
         this.stemLength = stemLength
 
-        this.spring = 5.6
+        this.spring = 6.0
         this.preload = 0
         this.compressionDamping = 0
         this.reboundDamping = 0
+
+        this.compression = 0.0
 
         this.rake = rake
         this.forkTripleTreeBaseOffset = forkTripleTreeBaseOffset
@@ -41,12 +43,11 @@ export class Fork {
             color: 0xc4c4c4,
             roughness: 0.2,
             metalness: 1.0,
-            transparent: false,
+            transparent: true,
             opacity: 0.5,
             depthWrite: true,
             depthTest: true,
             flatShading: false,
-            //wireframe: true,
         })
 
         this.goldForkTubeMaterial = new THREE.MeshPhysicalMaterial({
@@ -68,8 +69,9 @@ export class Fork {
             emissive: 0x000000,
             metalness: 1.0,
             roughness: 0.2,
-            transparent: true,
-            opacity: 0.8,
+            transparent: false,
+            depthWrite: true,
+            depthTest: true,
         })
     }
 
@@ -80,8 +82,8 @@ export class Fork {
     setTransparency(toggle) {
         this.goldForkTubeMaterial.transparent = toggle
         this.goldForkTubeMaterial.opacity = toggle ? 0.5 : 1
-        this.silverForkTubeMaterial.transparent = toggle
-        this.silverForkTubeMaterial.opacity = toggle ? 0.8 : 1
+        this.tripleTreeMaterial.transparent = toggle
+        this.tripleTreeMaterial.opacity = toggle ? 0.5 : 1
 
         return this
     }
@@ -106,25 +108,25 @@ export class Fork {
 
     buildForkTube(yCoordinate, zCoordinate) {
         let geometry = new THREE.CylinderGeometry(
-            this.radius,
-            this.radius,
-            this.length - 300,
+            this.radius + 3,
+            this.radius + 3,
+            562,
             this.radiusSegments,
             this.heightSegments
         )
 
         let mesh = new THREE.Mesh(geometry, this.goldForkTubeMaterial)
         mesh.castShadow = true
-        mesh.position.set(0, yCoordinate + (this.length / 2) + 150, zCoordinate)
+        mesh.position.set(0, yCoordinate + (this.length / 2) + 200 - this.compression, zCoordinate)
 
         return mesh
     }
 
     buildForkInsideTube(yCoordinate, zCoordinate) {
         let geometry = new THREE.CylinderGeometry(
-            this.radius - 5,
-            this.radius - 5,
-            this.length - 500,
+            this.radius,
+            this.radius,
+            561,
             this.radiusSegments,
             this.heightSegments
         )
@@ -137,12 +139,21 @@ export class Fork {
     }
 
     buildSpring(yCoordinate, zCoordinate) {
-        let ratio = this.spring /  5.6
+        let thickness_ratio = this.spring /  6.0
+        let thickness = 2.0 * thickness_ratio
 
-        let spring = new Spring3D.Spring(this.radius - 12, 3 * ratio, 40, 24, (this.length * 0.6) - this.preload, 1)
+        let diameter_ratio = 38 / (38 - (thickness * 2))
+        let diameter = 38 / diameter_ratio
+        let radius = diameter / 2
+
+        let turns = 30
+
+        let height = 425 - this.preload - this.compression
+
+        let spring = new Spring3D.Spring(radius, thickness, turns, 24, height, 1)
         spring.update()
 
-        spring.position.set(0, yCoordinate + (this.length / 2) - 120 , zCoordinate)
+        spring.position.set(0, yCoordinate + (this.length / 2) + 50 , zCoordinate)
 
         return spring
     }
@@ -164,7 +175,7 @@ export class Fork {
 
         mesh.position.set(
             0 - this.forkTripleTreeBaseOffset,
-            yCoordinate + this.frameStemTopHeight - topDiff,
+            yCoordinate + this.frameStemTopHeight - topDiff - this.compression,
             0
         )
 
@@ -232,7 +243,7 @@ export class Fork {
 
         mesh.position.set(
             0 - this.forkTripleTreeBaseOffset,
-            yCoordinate + this.frameStemTopHeight - topDiff - 3,
+            yCoordinate + this.frameStemTopHeight - topDiff - 3  - this.compression,
             0
         )
 
@@ -248,7 +259,7 @@ export class Fork {
 
         mesh.position.set(
             0 - this.forkTripleTreeBaseOffset,
-            yCoordinate + this.frameStemTopHeight - topDiff - this.stemLength + yokeDepth - 1,
+            yCoordinate + this.frameStemTopHeight - topDiff - this.stemLength + yokeDepth - 1  - this.compression,
             0
         )
 

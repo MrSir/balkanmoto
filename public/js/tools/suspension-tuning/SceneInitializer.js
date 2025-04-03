@@ -34,7 +34,7 @@ export class SceneInitializer {
         this.controls = new THREE_Addons.OrbitControls(this.camera, this.renderer.domElement)
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.25
-        this.controls.minDistance = 1000
+        this.controls.minDistance = 500
         this.controls.maxDistance = 100000
 
         return this

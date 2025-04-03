@@ -27,8 +27,14 @@
     position: absolute;
 }
 
+.container-grid .content-grid #canvas #control-panels{
+    position: absolute;
+}
+
 .container-grid .content-grid #canvas #control-panel-left {
-    float: left;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .container-grid .content-grid #canvas #control-panel-left div{
@@ -36,10 +42,22 @@
 }
 
 .container-grid .content-grid #canvas #control-panel-right {
-    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .container-grid .content-grid #canvas #control-panel-right div{
+    position: relative;
+}
+
+.container-grid .content-grid #canvas #scene-control-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.container-grid .content-grid #canvas #scene-control-panel div{
     position: relative;
 }
 
