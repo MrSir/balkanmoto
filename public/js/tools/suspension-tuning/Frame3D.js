@@ -4,10 +4,10 @@ import * as Fork3D from 'fork3D';
 
 export class Frame {
     constructor(floorY, parameters, x = 0) {
-        this.rearTireX = -700
-        this.showGeometry = false
+        this.rearTireX = -1000
+        this.showGeometry = true
         this.showLabels =false
-        this.transparentObjects = false
+        this.transparentObjects = true
 
         this.floorY = floorY
         this.parameters = parameters
@@ -42,10 +42,11 @@ export class Frame {
             parameters.fork.length,
             parameters.fork.offset,
             parameters.fork.width,
-            parameters.fork.stemLength,
-            parameters.fork.rake,
-            parameters.fork.forkTripleTreeBaseOffset,
-            parameters.fork.frameStemTopHeight,
+            parameters.tripleTree,
+            parameters.fork.spring,
+            parameters.fork.preload,
+            parameters.fork.compressionDamping,
+            parameters.fork.reboundDamping,
             parameters.fork.compression
         )
 
@@ -70,11 +71,6 @@ export class Frame {
         })
 
         this.initialCalculate()
-    }
-
-    setTransparentObjects(toggle) {
-        this.transparentObjects = toggle
-        return this
     }
 
     setBackboneLength(backboneLength) {
@@ -173,7 +169,6 @@ export class Frame {
 
     initialCalculate() {
         this.rearTire.calculateWheelDimensions().calculateYBasedOnWheelDiameter()
-
         this.frontTire.calculateWheelDimensions().calculateYBasedOnWheelDiameter()
 
         let A = new THREE.Vector3(this.rearTire.x, this.rearTire.y, 0)
@@ -182,7 +177,7 @@ export class Frame {
         let AE = A.distanceTo(E)
         let FE = this.parameters.fork.length - this.parameters.fork.offset - this.parameters.fork.compression
         let DFE = this.degToRad(0)
-        let CD = this.parameters.fork.forkTripleTreeBaseOffset
+        let CD = this.parameters.tripleTree.offset
         let WBC = this.degToRad(this.parameters.rake)
         let BC = FE
         let DE = 0
@@ -214,6 +209,11 @@ export class Frame {
     calculateFrontTirePosition() {
         this.rearTire.calculateWheelDimensions().calculateYBasedOnWheelDiameter()
         this.frontTire.calculateWheelDimensions().calculateYBasedOnWheelDiameter()
+        this.fork.offset = this.parameters.fork.offset
+        this.fork.spring = this.parameters.fork.spring
+        this.fork.preload = this.parameters.fork.preload
+        this.fork.compressionDamping = this.parameters.fork.compressionDamping
+        this.fork.reboundDamping = this.parameters.fork.reboundDamping
         this.fork.compression = this.parameters.fork.compression
 
         let AB = this.backboneLength
@@ -229,7 +229,7 @@ export class Frame {
 
         let ABC = this.frameStemAngle + this.degToRad(this.parameters.rake)
 
-        let CD = this.parameters.fork.forkTripleTreeBaseOffset
+        let CD = this.parameters.tripleTree.offset
         let CE = CD + DE
 
         let AC = this.calculate3rdSideFrom2Sides1Angle(AB, BC, ABC)
@@ -342,14 +342,14 @@ export class Frame {
     }
 
     addToObject(object) {
-        this.rearTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.pivot)
+        this.rearTire.buildTire().addToObject(this.pivot)
 
         this.calculateFrontTirePosition()
 
-        this.frontTire.buildTire().setTransparency(this.transparentObjects).addToObject(this.pivot)
+        this.frontTire.buildTire().addToObject(this.pivot)
 
         this.fork.tire = this.frontTire
-        this.fork.buildFork().addToObject(this.pivot)
+        this.fork.setTransparency(this.transparentObjects).buildFork().addToObject(this.pivot)
         this.fork.pivot.rotateZ(this.verticalStemAngle + this.degToRad(0))
 
         if (this.showGeometry) {
@@ -358,7 +358,6 @@ export class Frame {
 
         this.pivot.rotation.y = -Math.PI / 2
         this.pivot.position.x = this.x
-        this.pivot.position.z = -300
 
         object.add(this.pivot)
 

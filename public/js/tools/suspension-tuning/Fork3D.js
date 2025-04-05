@@ -3,7 +3,7 @@ import * as Spring3D from 'spring3D';
 import * as Tire3D from 'tire3D';
 
 export class Fork {
-    constructor(floorY, x, y, diameter, stanchionTubeLength, outerTubeLength, length, offset, width, stemLength, rake, forkTripleTreeBaseOffset, frameStemTopHeight, compression) {
+    constructor(floorY, x, y, diameter, stanchionTubeLength, outerTubeLength, length, offset, width, tripleTreeParameters, spring, preload, compressionDamping, reboundDamping, compression) {
         this.radiusSegments = 32
         this.heightSegments = 1
         this.stemRadius = 12
@@ -15,18 +15,15 @@ export class Fork {
         this.length = length
         this.offset = offset
         this.width = width
-        this.stemLength = stemLength
 
-        this.spring = 6.0
-        this.preload = 0
-        this.compressionDamping = 0
-        this.reboundDamping = 0
+        this.spring = spring
+        this.preload = preload
+        this.compressionDamping = compressionDamping
+        this.reboundDamping = reboundDamping
 
         this.compression = compression
 
-        this.rake = rake
-        this.forkTripleTreeBaseOffset = forkTripleTreeBaseOffset
-        this.frameStemTopHeight = frameStemTopHeight
+        this.tripleTreeParameters = tripleTreeParameters
 
         this.tire = null
 
@@ -55,7 +52,7 @@ export class Fork {
             metalness: 1.0,
             roughness: 0.2,
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.8,
             depthWrite: true,
             depthTest: true,
         })
@@ -66,7 +63,7 @@ export class Fork {
             metalness: 1.0,
             roughness: 0.2,
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.8,
             depthWrite: true,
             depthTest: true,
         })
@@ -90,8 +87,6 @@ export class Fork {
         mesh.castShadow = true
         mesh.position.set(0, 0, 0)
         mesh.rotateX(Math.PI / 2)
-        // mesh.position.y = this.tire.x
-        // mesh.position.z = this.width / 2
 
         return mesh
     }
@@ -137,13 +132,13 @@ export class Fork {
         let radius = diameter / 2
 
         let turns = 30
-
-        let height = 425 - this.preload - this.compression
+        let length = 425
+        let height = length - this.preload - this.compression
 
         let spring = new Spring3D.Spring(radius, thickness, turns, 24, height, 1)
         spring.update()
 
-        spring.position.set(0, (this.stanchionTubeLength / 2) + (height / 2), 0)
+        spring.position.set(0, this.length - length, 0)
 
         return spring
     }
@@ -152,7 +147,7 @@ export class Fork {
         let geometry = new THREE.CylinderGeometry(
             this.stemRadius,
             this.stemRadius,
-            this.stemLength,
+            this.tripleTreeParameters.stemLength,
             this.radiusSegments,
             this.heightSegments
         )
@@ -160,8 +155,8 @@ export class Fork {
         mesh.castShadow = true
 
         mesh.position.set(
-            0 - this.forkTripleTreeBaseOffset,
-            this.length - (this.stemLength / 2) - this.compression,
+            0 - this.tripleTreeParameters.offset,
+            this.length - (this.tripleTreeParameters.stemLength / 2) - this.offset - this.compression,
             0
         )
 
@@ -223,10 +218,10 @@ export class Fork {
     }
 
     buildTopYoke() {
-        let mesh = this.buildYoke(80, 20)
+        let mesh = this.buildYoke(this.tripleTreeParameters.offset, this.tripleTreeParameters.topYokeThickness)
 
         mesh.position.set(
-            0 - this.forkTripleTreeBaseOffset,
+            0 - this.tripleTreeParameters.offset,
             this.length - this.offset - this.compression,
             0
         )
@@ -235,12 +230,11 @@ export class Fork {
     }
 
     buildBottomYoke() {
-        let thickness = 30
-        let mesh = this.buildYoke(80, thickness)
+        let mesh = this.buildYoke(this.tripleTreeParameters.offset, this.tripleTreeParameters.bottomYokeThickness)
 
         mesh.position.set(
-            0 - this.forkTripleTreeBaseOffset,
-            this.length - this.stemLength + thickness + this.offset - this.compression,
+            0 - this.tripleTreeParameters.offset,
+            this.length - this.offset - this.tripleTreeParameters.stemLength - this.compression,
             0
         )
 
@@ -255,8 +249,8 @@ export class Fork {
         let leftSpring = this.buildSpring()
         let pivotLeftFork = new THREE.Group()
         pivotLeftFork.position.set(0, 0, -this.width / 2)
-        pivotLeftFork.add(forkLeftCylinder)
         pivotLeftFork.add(forkLeftInnerCylinder)
+        pivotLeftFork.add(forkLeftCylinder)
         pivotLeftFork.add(leftSpring)
 
         let forkRightCylinder = this.buildForkTube()

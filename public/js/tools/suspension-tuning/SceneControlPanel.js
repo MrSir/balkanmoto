@@ -18,15 +18,25 @@ export class SceneControlPanel {
     createViewFolder() {
         let folder = this.gui.addFolder('View')
         let params = {
-            'Show Labels': true,
+            // 'Show Labels': true,
+            'Show Geometry': true,
             'Transparent Objects': true,
         }
 
+        // folder
+        //     .add(params, 'Show Labels')
+        //     .onChange((toggle) => {
+        //         this.objects.forEach((element) => {
+        //             element.setShowLabels(toggle)
+        //             element.redrawInScene(this.scene)
+        //         })
+        //     })
+
         folder
-            .add(params, 'Show Labels')
+            .add(params, 'Show Geometry')
             .onChange((toggle) => {
                 this.objects.forEach((element) => {
-                    element.setShowLabels(toggle)
+                    element.showGeometry = toggle
                     element.redrawInScene(this.scene)
                 })
             })
@@ -35,7 +45,7 @@ export class SceneControlPanel {
             .add(params, 'Transparent Objects')
             .onChange((toggle) => {
                 this.objects.forEach((element) => {
-                    element.setTransparency(toggle)
+                    element.transparentObjects = toggle
                     element.redrawInScene(this.scene)
                 })
             })

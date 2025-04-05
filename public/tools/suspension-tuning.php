@@ -81,40 +81,48 @@
             let loader = new THREE_Addons.FontLoader()
             loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
                 let frameParameters = {
-                    "frontTire": {
-                      "width":  90,
-                      "aspect": 90,
-                      "rimDiameterInInches": 21,
+                    rake: 30,
+                    wheelbase: 1590,
+                    frontTire: {
+                      width:  90,
+                      aspect: 90,
+                      rimDiameterInInches: 21,
                     },
-                    "rearTire": {
-                      "width":  150,
-                      "aspect": 70,
-                      "rimDiameterInInches": 18,
+                    rearTire: {
+                      width:  150,
+                      aspect: 70,
+                      rimDiameterInInches: 18,
                     },
-                    "wheelbase": 1590,
-
-                    "rake": 30,
-                    "fork": {
-                      "diameter": 43,
-                      "stanchionTubeLength": 561,
-                      "outerTubeLength": 562,
-                      "tubeOverlap": 196,
-                      "length": 927,
-                      "offset": 10,
-                      "width": 200,
-                      "stemLength": 200,
-                      "forkTripleTreeBaseOffset": 80,
-                      "frameStemTopHeight": 0,
-                      "compression": 0,
+                    tripleTree: {
+                        offset: 60,
+                        rake: 0,
+                        stemLength: 200,
+                        topYokeThickness: 20,
+                        bottomYokeThickness: 30,
+                    },
+                    fork: {
+                      diameter: 43,
+                      stanchionTubeLength: 561,
+                      outerTubeLength: 562,
+                      length: 927,
+                      offset: 3,
+                      width: 200,
+                      spring: 6.0,
+                      preload: 0,
+                      compressionDamping: 0,
+                      reboundDamping: 0,
+                      compression: 0,
                     }
                 }
 
 
-                let frame1 = new Frame3D.Frame(floorY, frameParameters, -400)
+                let frame1 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), -400)
                 frame1.addToObject(scene)
+                let controlPanelLeft = new CP.ControlPanel(cpLeftContainer, scene, frame1)
 
-                let frame2 = new Frame3D.Frame(floorY, frameParameters, 400)
+                let frame2 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), 400)
                 frame2.addToObject(scene)
+                let controlPanelRight = new CP.ControlPanel(cpRightContainer, scene, frame2)
 
                 let sceneControlPanel = new SCP.SceneControlPanel(scpContainer, scene, [frame1, frame2])
             })
