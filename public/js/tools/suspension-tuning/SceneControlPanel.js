@@ -53,7 +53,7 @@ export class SceneControlPanel {
             .add(params, 'Compression (mm)', 0, 210, 1)
             .onChange((compression) => {
                 this.objects.forEach((element) => {
-                    element.compression = compression
+                    element.parameters.fork.compression = compression
                     element.redrawInScene(this.scene)
                 })
             })

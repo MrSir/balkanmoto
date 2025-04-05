@@ -14,6 +14,7 @@
                 "sceneInitializer": "/js/tools/suspension-tuning/SceneInitializer.js",
                 "controlPanel": "/js/tools/suspension-tuning/ControlPanel.js",
                 "sceneControlPanel": "/js/tools/suspension-tuning/SceneControlPanel.js",
+                "frame3D": "/js/tools/suspension-tuning/Frame3D.js",
                 "fork3D": "/js/tools/suspension-tuning/Fork3D.js",
                 "spring3D": "/js/tools/suspension-tuning/Spring3D.js",
                 "tire3D": "/js/tools/suspension-tuning/Tire3D.js"
@@ -62,6 +63,7 @@
             import * as SI from 'sceneInitializer';
             import * as SCP from 'sceneControlPanel';
             import * as CP from 'controlPanel';
+            import * as Frame3D from 'frame3D';
             import * as Fork3D from 'fork3D';
 
             const floorY = -500
@@ -78,37 +80,43 @@
 
             let loader = new THREE_Addons.FontLoader()
             loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
-                let fork1 = new Fork3D.Fork(
-                    floorY,
-                    -400,  -20,
-                    43, 1000,
-                    -100,
-                    200,
-                    200,
-                    27,
-                    80,
-                    0
-                )
-                fork1.buildFork().addToObject(scene)
+                let frameParameters = {
+                    "frontTire": {
+                      "width":  90,
+                      "aspect": 90,
+                      "rimDiameterInInches": 21,
+                    },
+                    "rearTire": {
+                      "width":  150,
+                      "aspect": 70,
+                      "rimDiameterInInches": 18,
+                    },
+                    "wheelbase": 1590,
 
-                let controlPanelLeft = new CP.ControlPanel(cpLeftContainer, scene, fork1)
+                    "rake": 30,
+                    "fork": {
+                      "diameter": 43,
+                      "stanchionTubeLength": 561,
+                      "outerTubeLength": 562,
+                      "tubeOverlap": 196,
+                      "length": 927,
+                      "offset": 10,
+                      "width": 200,
+                      "stemLength": 200,
+                      "forkTripleTreeBaseOffset": 80,
+                      "frameStemTopHeight": 0,
+                      "compression": 0,
+                    }
+                }
 
-                let fork2 = new Fork3D.Fork(
-                    floorY,
-                    400,  -20,
-                    43, 1000,
-                    -100,
-                    200,
-                    200,
-                    27,
-                    80,
-                    0
-                )
-                fork2.buildFork().addToObject(scene)
 
-                let controlPanelRight = new CP.ControlPanel(cpRightContainer, scene, fork2)
+                let frame1 = new Frame3D.Frame(floorY, frameParameters, -400)
+                frame1.addToObject(scene)
 
-                let sceneControlPanel = new SCP.SceneControlPanel(scpContainer, scene, [fork1, fork2])
+                let frame2 = new Frame3D.Frame(floorY, frameParameters, 400)
+                frame2.addToObject(scene)
+
+                let sceneControlPanel = new SCP.SceneControlPanel(scpContainer, scene, [frame1, frame2])
             })
 
 

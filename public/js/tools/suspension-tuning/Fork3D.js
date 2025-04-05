@@ -3,18 +3,15 @@ import * as Spring3D from 'spring3D';
 import * as Tire3D from 'tire3D';
 
 export class Fork {
-    constructor(floorY, x, y, diameter, length, offset, width, stemLength, rake, forkTripleTreeBaseOffset, frameStemTopHeight) {
+    constructor(floorY, x, y, diameter, stanchionTubeLength, outerTubeLength, length, offset, width, stemLength, rake, forkTripleTreeBaseOffset, frameStemTopHeight, compression) {
         this.radiusSegments = 32
         this.heightSegments = 1
         this.stemRadius = 12
         
-        this.floorY = floorY
-
-        this.x = x
-        this.y = y
-
         this.diameter = diameter
         this.radius = diameter / 2
+        this.stanchionTubeLength = stanchionTubeLength
+        this.outerTubeLength = outerTubeLength
         this.length = length
         this.offset = offset
         this.width = width
@@ -25,11 +22,13 @@ export class Fork {
         this.compressionDamping = 0
         this.reboundDamping = 0
 
-        this.compression = 0.0
+        this.compression = compression
 
         this.rake = rake
         this.forkTripleTreeBaseOffset = forkTripleTreeBaseOffset
         this.frameStemTopHeight = frameStemTopHeight
+
+        this.tire = null
 
         this.forkMaterial = new THREE.MeshPhongMaterial({
             color: 0x333333333,
@@ -50,14 +49,11 @@ export class Fork {
             flatShading: false,
         })
 
-        this.goldForkTubeMaterial = new THREE.MeshPhysicalMaterial({
+        this.goldForkTubeMaterial = new THREE.MeshStandardMaterial({
             color: 0xffd700,
             emissive: 0x000000,
             metalness: 1.0,
-            flatShading: false,
             roughness: 0.2,
-            reflectivity: 1,
-            clearcoat: 0.0,
             transparent: true,
             opacity: 0.5,
             depthWrite: true,
@@ -69,76 +65,70 @@ export class Fork {
             emissive: 0x000000,
             metalness: 1.0,
             roughness: 0.2,
-            transparent: false,
+            transparent: true,
+            opacity: 0.5,
             depthWrite: true,
             depthTest: true,
         })
     }
 
-    get tripleTreeRakeInRadians() {
-        return THREE.MathUtils.degToRad(this.rake)
-    }
-
     setTransparency(toggle) {
         this.goldForkTubeMaterial.transparent = toggle
         this.goldForkTubeMaterial.opacity = toggle ? 0.5 : 1
+        this.silverForkTubeMaterial.transparent = toggle
+        this.silverForkTubeMaterial.opacity = toggle ? 0.5 : 1
         this.tripleTreeMaterial.transparent = toggle
         this.tripleTreeMaterial.opacity = toggle ? 0.5 : 1
 
         return this
     }
 
-    buildTire() {
-        let tire = new Tire3D.Tire(this.floorY, 90, 90, 21, 0, 0, Math.PI / 2)
-        tire.calculateWheelDimensions().calculateYBasedOnWheelDiameter().buildTire()
-
-        return tire
-    }
-
-    buildWheelAxle(yCoordinate) {
+    buildWheelAxle() {
         let geometry = new THREE.CylinderGeometry(10, 10, this.width, this.radiusSegments, this.heightSegments)
 
         let mesh = new THREE.Mesh(geometry, this.forkMaterial)
         mesh.castShadow = true
-        mesh.position.y = yCoordinate
+        mesh.position.set(0, 0, 0)
         mesh.rotateX(Math.PI / 2)
+        // mesh.position.y = this.tire.x
+        // mesh.position.z = this.width / 2
 
         return mesh
     }
 
-    buildForkTube(yCoordinate, zCoordinate) {
+    buildForkTube() {
         let geometry = new THREE.CylinderGeometry(
             this.radius + 3,
             this.radius + 3,
-            562,
+            this.outerTubeLength,
             this.radiusSegments,
             this.heightSegments
         )
 
         let mesh = new THREE.Mesh(geometry, this.goldForkTubeMaterial)
         mesh.castShadow = true
-        mesh.position.set(0, yCoordinate + (this.length / 2) + 200 - this.compression, zCoordinate)
+        mesh.position.set(0, this.length - (this.stanchionTubeLength / 2) - this.compression, 0)
 
         return mesh
     }
 
-    buildForkInsideTube(yCoordinate, zCoordinate) {
+    buildForkInsideTube() {
         let geometry = new THREE.CylinderGeometry(
             this.radius,
             this.radius,
-            561,
+            this.stanchionTubeLength,
             this.radiusSegments,
             this.heightSegments
         )
 
         let mesh = new THREE.Mesh(geometry, this.silverForkTubeMaterial)
         mesh.castShadow = true
-        mesh.position.set(0, yCoordinate + (this.length / 2) - 250, zCoordinate)
+        mesh.position.set(0, this.stanchionTubeLength / 2, 0)
 
         return mesh
     }
 
-    buildSpring(yCoordinate, zCoordinate) {
+    buildSpring() {
         let thickness_ratio = this.spring /  6.0
         let thickness = 2.0 * thickness_ratio
 
@@ -153,12 +143,12 @@ export class Fork {
         let spring = new Spring3D.Spring(radius, thickness, turns, 24, height, 1)
         spring.update()
 
-        spring.position.set(0, yCoordinate + (this.length / 2) + 50 , zCoordinate)
+        spring.position.set(0, (this.stanchionTubeLength / 2) + (height / 2), 0)
 
         return spring
     }
 
-    buildForkStem(yCoordinate) {
+    buildForkStem() {
         let geometry = new THREE.CylinderGeometry(
             this.stemRadius,
             this.stemRadius,
@@ -169,13 +159,9 @@ export class Fork {
         let mesh = new THREE.Mesh(geometry, this.forkMaterial)
         mesh.castShadow = true
 
-        let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * (this.length - this.offset)
-        let YBasedOnDimensions = stemAxleLength - this.stemLength / 2
-        let topDiff = this.frameStemTopHeight - YBasedOnDimensions
-
         mesh.position.set(
             0 - this.forkTripleTreeBaseOffset,
-            yCoordinate + this.frameStemTopHeight - topDiff - this.compression,
+            this.length - (this.stemLength / 2) - this.compression,
             0
         )
 
@@ -236,30 +222,25 @@ export class Fork {
         return mesh
     }
 
-    buildTopYoke(yCoordinate) {
+    buildTopYoke() {
         let mesh = this.buildYoke(80, 20)
-        let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * (this.length - this.offset)
-        let topDiff = this.frameStemTopHeight - stemAxleLength
 
         mesh.position.set(
             0 - this.forkTripleTreeBaseOffset,
-            yCoordinate + this.frameStemTopHeight - topDiff - 3  - this.compression,
+            this.length - this.offset - this.compression,
             0
         )
 
         return mesh
     }
 
-    buildBottomYoke(yCoordinate) {
-        let mesh = this.buildYoke(80, 30)
-
-        let yokeDepth = mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z
-        let stemAxleLength = Math.cos(this.tripleTreeRakeInRadians) * (this.length - this.offset)
-        let topDiff = this.frameStemTopHeight - stemAxleLength
+    buildBottomYoke() {
+        let thickness = 30
+        let mesh = this.buildYoke(80, thickness)
 
         mesh.position.set(
             0 - this.forkTripleTreeBaseOffset,
-            yCoordinate + this.frameStemTopHeight - topDiff - this.stemLength + yokeDepth - 1  - this.compression,
+            this.length - this.stemLength + thickness + this.offset - this.compression,
             0
         )
 
@@ -267,39 +248,41 @@ export class Fork {
     }
 
     buildFork() {
-        let tire = this.buildTire()
-        let wheelAxle = this.buildWheelAxle(tire.y)
+        let wheelAxle = this.buildWheelAxle()
 
-        let forkLeftCylinder = this.buildForkTube(tire.y, -this.width / 2)
-        let forkLeftInnerCylinder = this.buildForkInsideTube(tire.y, -this.width / 2)
-        let leftSpring = this.buildSpring(tire.y, -this.width / 2)
+        let forkLeftCylinder = this.buildForkTube()
+        let forkLeftInnerCylinder = this.buildForkInsideTube()
+        let leftSpring = this.buildSpring()
+        let pivotLeftFork = new THREE.Group()
+        pivotLeftFork.position.set(0, 0, -this.width / 2)
+        pivotLeftFork.add(forkLeftCylinder)
+        pivotLeftFork.add(forkLeftInnerCylinder)
+        pivotLeftFork.add(leftSpring)
 
-        let forkRightCylinder = this.buildForkTube(tire.y,this.width / 2)
-        let forkRightInnerCylinder = this.buildForkInsideTube(tire.y, this.width / 2)
-        let rightSpring = this.buildSpring(tire.y, this.width / 2)
+        let forkRightCylinder = this.buildForkTube()
+        let forkRightInnerCylinder = this.buildForkInsideTube()
+        let rightSpring = this.buildSpring()
+        let pivotRightFork = new THREE.Group()
+        pivotRightFork.position.set(0, 0, this.width / 2)
+        pivotRightFork.add(forkRightCylinder)
+        pivotRightFork.add(forkRightInnerCylinder)
+        pivotRightFork.add(rightSpring)
 
-        let forkStem = this.buildForkStem(tire.y)
-        let topYoke = this.buildTopYoke(tire.y)
-        let bottomYoke = this.buildBottomYoke(tire.y)
+        let forkStem = this.buildForkStem()
+        let topYoke = this.buildTopYoke()
+        let bottomYoke = this.buildBottomYoke()
+        let pivotTripleTree = new THREE.Group()
+        pivotTripleTree.position.set(0, 0, 0)
+        pivotTripleTree.add(forkStem)
+        pivotTripleTree.add(topYoke)
+        pivotTripleTree.add(bottomYoke)
 
         this.pivot = new THREE.Group()
-        this.pivot.position.set(this.x, this.y, 0)
-        this.pivot.add(tire.lathe)
+        this.pivot.position.set(this.tire.x, this.tire.y, 0)
         this.pivot.add(wheelAxle)
-        this.pivot.add(forkLeftCylinder)
-        this.pivot.add(forkLeftInnerCylinder)
-        this.pivot.add(leftSpring)
-        this.pivot.add(forkRightCylinder)
-        this.pivot.add(forkRightInnerCylinder)
-        this.pivot.add(rightSpring)
-
-        this.pivot.add(forkStem)
-        this.pivot.add(topYoke)
-        this.pivot.add(bottomYoke)
-
-        this.pivot.rotateY(- Math.PI / 2)
-
-        this.pivot.rotateZ(this.tripleTreeRakeInRadians)
+        this.pivot.add(pivotLeftFork)
+        this.pivot.add(pivotRightFork)
+        this.pivot.add(pivotTripleTree)
 
         return this
     }
