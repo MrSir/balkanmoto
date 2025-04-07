@@ -42,6 +42,7 @@ export class Frame {
             parameters.fork.length,
             parameters.fork.offset,
             parameters.fork.width,
+            parameters.fork.travel,
             parameters.tripleTree,
             parameters.fork.spring,
             parameters.fork.preload,
@@ -167,6 +168,29 @@ export class Frame {
         return (2 * area) / base
     }
 
+    isAtEquilibrium() {
+        if (this.fork.stroke === 100) {
+            return true
+        }
+
+        let weightOnFork = (this.parameters.load.motorcycleWeight + this.parameters.load.riderWeight) * 0.48
+        let Fn = weightOnFork * 9.81
+        let F = Fn / Math.cos(this.verticalStemAngle)
+
+        let k = this.fork.spring.rate * 2 * 1000 // convert from N/mm to N/m
+        let length = this.fork.spring.length
+        let x = (F / k)
+        let springStroke = ((x * 1000) / length) * 100
+
+        let result = springStroke <= this.fork.stroke
+
+        if (result) {
+            this.restingStroke = springStroke
+        }
+
+        return result
+    }
+
     initialCalculate() {
         this.rearTire.calculateWheelDimensions().calculateYBasedOnWheelDiameter()
         this.frontTire.calculateWheelDimensions().calculateYBasedOnWheelDiameter()
@@ -175,7 +199,7 @@ export class Frame {
         let E = new THREE.Vector3(this.frontTire.x, this.frontTire.y, 0)
 
         let AE = A.distanceTo(E)
-        let FE = this.parameters.fork.length - this.parameters.fork.offset - this.parameters.fork.compression
+        let FE = this.parameters.fork.length - this.parameters.fork.offset - this.fork.compression
         let DFE = this.degToRad(0)
         let CD = this.parameters.tripleTree.offset
         let WBC = this.degToRad(this.parameters.rake)
@@ -214,11 +238,10 @@ export class Frame {
         this.fork.preload = this.parameters.fork.preload
         this.fork.compressionDamping = this.parameters.fork.compressionDamping
         this.fork.reboundDamping = this.parameters.fork.reboundDamping
-        this.fork.compression = this.parameters.fork.compression
 
         let AB = this.backboneLength
         let DFE = this.degToRad(0)
-        let FE = this.parameters.fork.length - this.parameters.fork.offset - this.parameters.fork.compression
+        let FE = this.parameters.fork.length - this.parameters.fork.offset - this.fork.compression
         let BC = FE
         let DE = 0
 

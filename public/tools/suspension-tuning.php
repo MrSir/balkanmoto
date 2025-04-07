@@ -60,6 +60,7 @@
         <script type="module">
             import * as THREE from 'three';
             import * as THREE_Addons from 'three/addons';
+            import {Tween, Easing} from 'https://unpkg.com/@tweenjs/tween.js@23.1.3/dist/tween.esm.js'
             import * as SI from 'sceneInitializer';
             import * as SCP from 'sceneControlPanel';
             import * as CP from 'controlPanel';
@@ -83,6 +84,10 @@
                 let frameParameters = {
                     rake: 30,
                     wheelbase: 1590,
+                    load: {
+                        motorcycleWeight: 205,
+                        riderWeight: 95
+                    },
                     frontTire: {
                       width:  90,
                       aspect: 90,
@@ -107,7 +112,11 @@
                       length: 927,
                       offset: 3,
                       width: 200,
-                      spring: 6.0,
+                      travel: 210,
+                      spring: {
+                        rate: 6.0,
+                        length: 425
+                      },
                       preload: 0,
                       compressionDamping: 0,
                       reboundDamping: 0,
@@ -140,7 +149,6 @@
                 requestAnimationFrame(animate)
 
                 sceneInitializer.controls.update()
-
                 sceneInitializer.renderer.render(scene, sceneInitializer.camera)
             }
 

@@ -3,7 +3,7 @@ import * as Spring3D from 'spring3D';
 import * as Tire3D from 'tire3D';
 
 export class Fork {
-    constructor(floorY, x, y, diameter, stanchionTubeLength, outerTubeLength, length, offset, width, tripleTreeParameters, spring, preload, compressionDamping, reboundDamping, compression) {
+    constructor(floorY, x, y, diameter, stanchionTubeLength, outerTubeLength, length, offset, width, travel, tripleTreeParameters, spring, preload, compressionDamping, reboundDamping, compression) {
         this.radiusSegments = 32
         this.heightSegments = 1
         this.stemRadius = 12
@@ -21,7 +21,8 @@ export class Fork {
         this.compressionDamping = compressionDamping
         this.reboundDamping = reboundDamping
 
-        this.compression = compression
+        this.travel = travel
+        this.stroke = 0
 
         this.tripleTreeParameters = tripleTreeParameters
 
@@ -80,6 +81,14 @@ export class Fork {
         return this
     }
 
+    get totalTravel() {
+        return this.travel - this.preload
+    }
+
+    get compression() {
+        return this.totalTravel * this.stroke / 100
+    }
+
     buildWheelAxle() {
         let geometry = new THREE.CylinderGeometry(10, 10, this.width, this.radiusSegments, this.heightSegments)
 
@@ -124,7 +133,7 @@ export class Fork {
     }
 
     buildSpring() {
-        let thickness_ratio = this.spring /  6.0
+        let thickness_ratio = this.spring.rate /  6.0
         let thickness = 2.0 * thickness_ratio
 
         let diameter_ratio = 38 / (38 - (thickness * 2))
@@ -132,8 +141,12 @@ export class Fork {
         let radius = diameter / 2
 
         let turns = 30
-        let length = 425
-        let height = length - this.preload - this.compression
+        let length = this.spring.length
+        let preloadLength = length - this.preload
+        let compressionLength = (preloadLength / 2) * this.stroke / 100
+
+        // TODO find a better way to estimate the spring height
+        let height = preloadLength - compressionLength
 
         let spring = new Spring3D.Spring(radius, thickness, turns, 24, height, 1)
         spring.update()

@@ -12,14 +12,14 @@ export class ControlPanel {
         this.scene = scene
         this.frame = frame
 
-        this.createSettingsFolder()
+        this.createSettingsFolder().createLoadFolder()
     }
 
     createSettingsFolder() {
         let folder = this.gui.addFolder('Settings')
         let params = {
             'Fork Tube Offset (mm)': 0.0,
-            'Spring (N/mm)': 6.0,
+            'Spring Rate (N/mm)': 6.0,
             'Preload (mm)': 0,
             'Compression Damping': 0,
             'Rebound Damping': 0,
@@ -33,9 +33,9 @@ export class ControlPanel {
             })
 
         folder
-            .add(params, 'Spring (N/mm)', 5, 9.5, 0.1)
-            .onChange((spring) => {
-                this.frame.parameters.fork.spring = spring
+            .add(params, 'Spring Rate (N/mm)', 5, 9.5, 0.1)
+            .onChange((rate) => {
+                this.frame.parameters.fork.spring.rate = rate
                 this.frame.redrawInScene(this.scene)
             })
 
@@ -58,6 +58,28 @@ export class ControlPanel {
             .onChange((damping) => {
                 this.frame.parameters.fork.reboundDamping = damping
                 this.frame.redrawInScene(this.scene)
+            })
+
+        return this
+    }
+
+    createLoadFolder() {
+        let folder = this.gui.addFolder('Load')
+        let params = {
+            'Motorcycle Weight (kg)': 205.0,
+            'Rider Weight (kg)': 95.0
+        }
+
+        folder
+            .add(params, 'Motorcycle Weight (kg)', 0, 300, 1)
+            .onChange((motorcycleWeight) => {
+                this.frame.parameters.load.motorcycleWeight = motorcycleWeight
+            })
+
+        folder
+            .add(params, 'Rider Weight (kg)', 0, 300, 1)
+            .onChange((riderWeight) => {
+                this.frame.parameters.load.riderWeight = riderWeight
             })
 
         return this
