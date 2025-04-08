@@ -17,6 +17,7 @@ export class SceneInitializer {
             10000
         )
         this.camera.position.set(0, 500, 2500)
+        this.camera.rotation.order = "YZX"
 
         return this
     }

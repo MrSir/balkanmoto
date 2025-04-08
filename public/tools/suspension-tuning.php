@@ -13,10 +13,12 @@
                 "three/gui": "/js/tools/three/addons/libs/lil-gui.module.min.js",
                 "sceneInitializer": "/js/tools/suspension-tuning/SceneInitializer.js",
                 "controlPanel": "/js/tools/suspension-tuning/ControlPanel.js",
+                "controlPanelV2": "/js/tools/suspension-tuning/ControlPanelV2.js",
                 "sceneControlPanel": "/js/tools/suspension-tuning/SceneControlPanel.js",
                 "frame3D": "/js/tools/suspension-tuning/Frame3D.js",
                 "fork3D": "/js/tools/suspension-tuning/Fork3D.js",
                 "spring3D": "/js/tools/suspension-tuning/Spring3D.js",
+                "geometry": "/js/tools/suspension-tuning/Geometry.js",
                 "tire3D": "/js/tools/suspension-tuning/Tire3D.js"
             }
         }
@@ -64,8 +66,10 @@
             import * as SI from 'sceneInitializer';
             import * as SCP from 'sceneControlPanel';
             import * as CP from 'controlPanel';
+            import * as CPV2 from 'controlPanelV2';
             import * as Frame3D from 'frame3D';
             import * as Fork3D from 'fork3D';
+            import {Geometry} from 'geometry';
 
             const floorY = -500
 
@@ -84,9 +88,10 @@
                 let frameParameters = {
                     rake: 30,
                     wheelbase: 1590,
-                    load: {
-                        motorcycleWeight: 205,
-                        riderWeight: 95
+                    weight: 205,
+                    rider: {
+                        weight: 90,
+                        gearWeight: 5,
                     },
                     frontTire: {
                       width:  90,
@@ -99,41 +104,48 @@
                       rimDiameterInInches: 18,
                     },
                     tripleTree: {
-                        offset: 60,
                         rake: 0,
+                        width: 200,
+                        offset: 60,
                         stemLength: 200,
                         topYokeThickness: 20,
                         bottomYokeThickness: 30,
                     },
                     fork: {
                       diameter: 43,
-                      stanchionTubeLength: 561,
-                      outerTubeLength: 562,
                       length: 927,
                       offset: 3,
-                      width: 200,
-                      travel: 210,
+                      stanchionTubeLength: 561,
+                      outerTubeLength: 562,
                       spring: {
                         rate: 6.0,
-                        length: 425
+                        length: 425,
+                        preload: 5,
                       },
-                      preload: 0,
+                      oilWeight: 10,
                       compressionDamping: 0,
                       reboundDamping: 0,
-                      compression: 0,
                     }
                 }
 
+                let parameters1 = JSON.parse(JSON.stringify(frameParameters))
+                let geometry = new Geometry(parameters1, floorY, font, -1000, -400, -Math.PI / 2)
+                geometry.calculate()
+                geometry.buildGeometry()
+                scene.add(geometry.pivot)
 
-                let frame1 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), -400)
-                frame1.addToObject(scene)
-                let controlPanelLeft = new CP.ControlPanel(cpLeftContainer, scene, frame1)
+                let controlPanelLeft = new CPV2.ControlPanel(cpLeftContainer, scene, geometry)
 
-                let frame2 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), 400)
-                frame2.addToObject(scene)
-                let controlPanelRight = new CP.ControlPanel(cpRightContainer, scene, frame2)
-
-                let sceneControlPanel = new SCP.SceneControlPanel(scpContainer, scene, [frame1, frame2])
+//
+//                 let frame1 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), -400)
+//                 frame1.addToObject(scene)
+//                 let controlPanelLeft = new CP.ControlPanel(cpLeftContainer, scene, frame1)
+//
+//                 let frame2 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), 400)
+//                 frame2.addToObject(scene)
+//                 let controlPanelRight = new CP.ControlPanel(cpRightContainer, scene, frame2)
+//
+//                 let sceneControlPanel = new SCP.SceneControlPanel(scpContainer, scene, [frame1, frame2])
             })
 
 
