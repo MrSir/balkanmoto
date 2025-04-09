@@ -47,14 +47,6 @@ export class Spring extends THREE.Mesh{
             pos.needsUpdate = true;
         }
     }
-
-    removeFromObject(object) {
-        object.remove(this)
-    }
-
-    addToObject(object) {
-        object.add(this)
-    }
 }
 
 export default {}

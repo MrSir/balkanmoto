@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import * as THREE_Addons from 'three/addons';
+import {Tire} from 'tire';
+import {Fork} from 'fork';
 
 export class Geometry {
     constructor(parameters, floorY, font, xOffset = 0, pivotXOffset = 0, pivotYRotation = 0) {
@@ -93,6 +95,8 @@ export class Geometry {
         return {
             rake: this.parameters.rake,
             wheelbase: this.parameters.wheelbase,
+            // backbone: this.parameters.backbone,
+            // stemAngle: this.parameters.stemAngle,
             weight: this.parameters.weight,
         }
     }
@@ -128,6 +132,7 @@ export class Geometry {
     calculateForkDimensions() {
         return {
             diameter: this.parameters.fork.diameter,
+            radius: this.parameters.fork.diameter / 2,
             stanchionTubeLength: this.parameters.fork.stanchionTubeLength,
             outerTubeLength: this.parameters.fork.outerTubeLength,
             length: this.parameters.fork.length,
@@ -163,7 +168,7 @@ export class Geometry {
         }
     }
 
-    calculate() {
+    initialCalculate() {
         this.frame.dimensions = this.calculateFrameDimensions()
         this.rearTire.dimensions = this.calculateWheelDimensions(
             this.parameters.rearTire.width,
@@ -218,23 +223,65 @@ export class Geometry {
 
         this.frame.dimensions.backbone = AB
         this.frame.dimensions.stemAngle = ABE - ZBE
+    }
+
+    calculate() {
+        // this.frame.dimensions = this.calculateFrameDimensions()
+        this.rearTire.dimensions = this.calculateWheelDimensions(
+            this.parameters.rearTire.width,
+            this.parameters.rearTire.aspect,
+            this.parameters.rearTire.rimDiameterInInches
+        )
+        this.rearTire.position = {
+            x: this.xOffset,
+            y: this.floorY + this.rearTire.dimensions.radius
+        }
+        this.frontTire.dimensions = this.calculateWheelDimensions(
+            this.parameters.frontTire.width,
+            this.parameters.frontTire.aspect,
+            this.parameters.frontTire.rimDiameterInInches
+        )
+        this.frontTire.position = {
+            x: this.rearTire.position.x + this.frame.dimensions.wheelbase,
+            y: this.floorY + this.frontTire.dimensions.radius
+        }
+        this.tripleTree.dimensions = this.calculateTripleTreeDimensions()
+        this.fork.dimensions = this.calculateForkDimensions()
+        this.spring.dimensions = this.calculateSpringDimensions()
+        this.rider.dimensions = this.calculateRiderDimensions()
+
+        let AB = this.frame.dimensions.backbone
+        let DFE = this.degToRad(this.tripleTree.dimensions.rake)
+        let FE = this.fork.dimensions.length - this.fork.dimensions.offset - this.forkCompression
+        let BC = FE
+        let DE = 0
+
+        if (DFE > 0) {
+            BC = this.calculateAdjFromHypAndAngle(FE, DFE)
+            DE = this.calculateOpFromHypAndAngle(FE, DFE)
+        }
 
         let ABC = this.frame.dimensions.stemAngle + this.degToRad(this.frame.dimensions.rake)
+
+        let CD = this.tripleTree.dimensions.offset
+        let CE = CD + DE
+
         let AC = this.calculate3rdSideFrom2Sides1Angle(AB, BC, ABC)
         let ACB = this.calculateAngleFrom3Sides(AC, BC, AB)
         let BCE = this.degToRad(90)
         let ACE = ACB + BCE
 
-        AE = this.calculate3rdSideFrom2Sides1Angle(AC, CE, ACE)
+        let AE = this.calculate3rdSideFrom2Sides1Angle(AC, CE, ACE)
         let LE = this.calculate3rdSideInRightAngleTriangle(Math.abs(this.rearTire.position.y - this.frontTire.position.y), AE)
         this.frontTire.position.x = LE + this.rearTire.position.x
 
-        // this.A.x = new THREE.Vector3(this.rearTire.position.x, this.rearTire.position.y, 0)
+        this.A = new THREE.Vector3(this.rearTire.position.x, this.rearTire.position.y, 0)
         this.E = new THREE.Vector3(LE + this.rearTire.position.x, this.frontTire.position.y, 0)
 
         // Compute B
         let AL = this.rearTire.position.y - this.E.y
         let LEA = Math.asin(AL / AC)
+        let BE = this.calculateHypotenuseInRightAngleTriangle(BC, CE)
         let EAB = this.calculateAngleFrom3Sides(AB, AE, BE)
         let RAB = EAB - LEA
         let AR = Math.cos(RAB) * AB
@@ -245,6 +292,7 @@ export class Geometry {
         this.M = new THREE.Vector3(this.E.x, this.B.y, 0)
         let BM = this.B.distanceTo(this.M)
         let EBM = Math.acos(BM / BE)
+        let CBE = Math.acos(BC / BE)
         let CBM = CBE + EBM
         let BN = this.calculateAdjFromHypAndAngle(BC, CBM)
         let CN = this.calculateOpFromHypAndAngle(BC, CBM)
@@ -290,6 +338,12 @@ export class Geometry {
         this.trailPoint = this.G
     }
 
+    initialize() {
+        this.initialCalculate()
+        this.calculate()
+        this.buildGeometry()
+    }
+
     drawLineWithVectors(name, vector1, vector2, color) {
         let g = new THREE.BufferGeometry().setFromPoints([vector1, vector2])
         g.name = name
@@ -315,6 +369,7 @@ export class Geometry {
     }
 
     buildGeometry() {
+        // GEOMETRY
         this.drawPointLabel("A", this.A, this.grayLineMaterial)
         this.drawPointLabel("B", this.B, this.grayLineMaterial)
         this.drawPointLabel("C", this.C, this.grayLineMaterial)
@@ -356,6 +411,20 @@ export class Geometry {
         this.pointLabels.forEach(label => {
             this.pivot.add(label)
         })
+
+        // TIRES
+        this.rearTire.geometry = new Tire(this.rearTire)
+        this.rearTire.geometry.buildGeometry().updateGeometry()
+        this.pivot.add(this.rearTire.geometry.lathe)
+
+        this.frontTire.geometry = new Tire(this.frontTire)
+        this.frontTire.geometry.buildGeometry().updateGeometry()
+        this.pivot.add(this.frontTire.geometry.lathe)
+
+        // FORK
+        this.fork.geometry = new Fork(this)
+        this.fork.geometry.buildGeometry().updateGeometry()
+        this.pivot.add(this.fork.geometry.pivot)
 
         this.pivot.rotation.y = this.pivotYRotation
         this.pivot.position.x = this.pivotXOffset
@@ -409,6 +478,11 @@ export class Geometry {
         this.updateLine("FE", this.F, this.E)
         this.updateLine("FD", this.F, this.D)
         this.updateLine("ED", this.E, this.D)
+
+        this.rearTire.geometry.updateGeometry()
+        this.frontTire.geometry.updateGeometry()
+
+        this.fork.geometry.updateGeometry()
     }
 }
 

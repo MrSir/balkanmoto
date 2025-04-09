@@ -12,14 +12,12 @@
                 "three/addons": "/js/tools/three/addons/Addons.js",
                 "three/gui": "/js/tools/three/addons/libs/lil-gui.module.min.js",
                 "sceneInitializer": "/js/tools/suspension-tuning/SceneInitializer.js",
-                "controlPanel": "/js/tools/suspension-tuning/ControlPanel.js",
-                "controlPanelV2": "/js/tools/suspension-tuning/ControlPanelV2.js",
-                "sceneControlPanel": "/js/tools/suspension-tuning/SceneControlPanel.js",
-                "frame3D": "/js/tools/suspension-tuning/Frame3D.js",
-                "fork3D": "/js/tools/suspension-tuning/Fork3D.js",
-                "spring3D": "/js/tools/suspension-tuning/Spring3D.js",
+                "cp": "/js/tools/suspension-tuning/cp.js",
+                "scp": "/js/tools/suspension-tuning/scp.js",
                 "geometry": "/js/tools/suspension-tuning/Geometry.js",
-                "tire3D": "/js/tools/suspension-tuning/Tire3D.js"
+                "fork": "/js/tools/suspension-tuning/fork.js",
+                "spring": "/js/tools/suspension-tuning/spring.js",
+                "tire": "/js/tools/suspension-tuning/tire.js"
             }
         }
     </script>
@@ -64,11 +62,8 @@
             import * as THREE_Addons from 'three/addons';
             import {Tween, Easing} from 'https://unpkg.com/@tweenjs/tween.js@23.1.3/dist/tween.esm.js'
             import * as SI from 'sceneInitializer';
-            import * as SCP from 'sceneControlPanel';
-            import * as CP from 'controlPanel';
-            import * as CPV2 from 'controlPanelV2';
-            import * as Frame3D from 'frame3D';
-            import * as Fork3D from 'fork3D';
+            import {SceneControlPanel} from 'scp';
+            import {ControlPanel} from 'cp';
             import {Geometry} from 'geometry';
 
             const floorY = -500
@@ -128,24 +123,21 @@
                     }
                 }
 
-                let parameters1 = JSON.parse(JSON.stringify(frameParameters))
-                let geometry = new Geometry(parameters1, floorY, font, -1000, -400, -Math.PI / 2)
-                geometry.calculate()
-                geometry.buildGeometry()
-                scene.add(geometry.pivot)
+                const xOffset = -1000
+                const leftOffset = -400
+                const rightOffset = 400
 
-                let controlPanelLeft = new CPV2.ControlPanel(cpLeftContainer, scene, geometry)
+                let geometryLeft = new Geometry(JSON.parse(JSON.stringify(frameParameters)), floorY, font, xOffset, leftOffset, -Math.PI / 2)
+                geometryLeft.initialize()
+                scene.add(geometryLeft.pivot)
+                let controlPanelLeft = new ControlPanel(cpLeftContainer, scene, geometryLeft)
 
-//
-//                 let frame1 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), -400)
-//                 frame1.addToObject(scene)
-//                 let controlPanelLeft = new CP.ControlPanel(cpLeftContainer, scene, frame1)
-//
-//                 let frame2 = new Frame3D.Frame(floorY, JSON.parse(JSON.stringify(frameParameters)), 400)
-//                 frame2.addToObject(scene)
-//                 let controlPanelRight = new CP.ControlPanel(cpRightContainer, scene, frame2)
-//
-//                 let sceneControlPanel = new SCP.SceneControlPanel(scpContainer, scene, [frame1, frame2])
+                let geometryRight = new Geometry(JSON.parse(JSON.stringify(frameParameters)), floorY, font, xOffset, rightOffset, -Math.PI / 2)
+                geometryRight.initialize()
+                scene.add(geometryRight.pivot)
+                let controlPanelRight = new ControlPanel(cpRightContainer, scene, geometryRight)
+
+                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [])
             })
 
 
