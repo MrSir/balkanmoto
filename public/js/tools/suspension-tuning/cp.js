@@ -27,7 +27,7 @@ export class ControlPanel {
             .add(params, 'Weight (kg)', 150, 300, 1)
             .onChange((weight) => {
                 this.geometry.parameters.weight = weight
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
@@ -47,7 +47,7 @@ export class ControlPanel {
             .add(params, 'Weight (kg)', 70, 200, 1)
             .onChange((weight) => {
                 this.geometry.parameters.rider.weight = weight
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
@@ -55,7 +55,7 @@ export class ControlPanel {
             .add(params, 'Gear Weight (kg)', 0, 50, 1)
             .onChange((weight) => {
                 this.geometry.parameters.rider.gearWeight = weight
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
@@ -77,7 +77,7 @@ export class ControlPanel {
             .add(params, 'Fork Tube Offset (mm)', 0, 30, 1)
             .onChange((offset) => {
                 this.geometry.parameters.fork.offset = offset
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
@@ -85,15 +85,15 @@ export class ControlPanel {
             .add(params, 'Spring Rate (N/mm)', 5, 9.5, 0.1)
             .onChange((rate) => {
                 this.geometry.parameters.fork.spring.rate = rate
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
         folder
-            .add(params, 'Spring Preload (mm)', 5, 50, 1)
+            .add(params, 'Spring Preload (mm)', 0, 15, 0.1)
             .onChange((preload) => {
                 this.geometry.parameters.fork.spring.preload = preload
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
@@ -101,7 +101,7 @@ export class ControlPanel {
             .add(params, 'Compression Damping', 0, 10, 1)
             .onChange((damping) => {
                 this.geometry.parameters.fork.compressionDamping = damping
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
@@ -109,7 +109,7 @@ export class ControlPanel {
             .add(params, 'Rebound Damping', 0, 10, 1)
             .onChange((damping) => {
                 this.geometry.parameters.fork.reboundDamping = damping
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 
@@ -117,7 +117,7 @@ export class ControlPanel {
             .add(params, 'Oil Weight', 5, 15, 2.5)
             .onChange((weight) => {
                 this.geometry.parameters.fork.oilWeight = weight
-                this.geometry.calculate()
+                this.geometry.update()
                 this.geometry.updateGeometry()
             })
 

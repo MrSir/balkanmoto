@@ -3,11 +3,8 @@ import {Spring} from 'spring';
 
 export class Fork {
     constructor(geometry) {
-        this.radiusSegments = 32
-        this.heightSegments = 1
-        this.stemRadius = 12
-
         this.geometry = geometry;
+
         this.forkGeometry = geometry.fork.dimensions;
         this.tripleTreeGeometry = geometry.tripleTree.dimensions;
 
@@ -115,14 +112,13 @@ export class Fork {
         let turns = 30
         let length = this.geometry.spring.dimensions.length
         let preloadLength = length - this.geometry.spring.dimensions.preload
-        let compressionLength = (preloadLength / 2) * this.geometry.fork.dimensions.stroke / 100
 
-        let height = preloadLength - compressionLength
+        let height = preloadLength - this.geometry.compression
 
         let spring = new Spring(radius, thickness, turns, 24, height, 1)
         spring.update()
 
-        spring.position.set(0, length / 2, 0)
+        spring.position.set(0, this.forkGeometry.length - (this.forkGeometry.outerTubeLength / 2) - height - this.geometry.spring.dimensions.preload - this.geometry.compression, 0)
 
         return spring
     }
@@ -214,16 +210,16 @@ export class Fork {
         this.pivotTripleTree.add(bottomYoke)
 
         let forkLeftInnerCylinder = this.buildForkInsideTube()
-        let leftSpring = this.buildSpring()
+        this.leftSpring = this.buildSpring()
         this.pivotLeftFork = new THREE.Group()
         this.pivotLeftFork.add(forkLeftInnerCylinder)
-        this.pivotLeftFork.add(leftSpring)
+        this.pivotLeftFork.add(this.leftSpring)
 
         let forkRightInnerCylinder = this.buildForkInsideTube()
-        let rightSpring = this.buildSpring()
+        this.rightSpring = this.buildSpring()
         this.pivotRightFork = new THREE.Group()
         this.pivotRightFork.add(forkRightInnerCylinder)
-        this.pivotRightFork.add(rightSpring)
+        this.pivotRightFork.add(this.rightSpring)
 
         this.forkLeftCylinder = this.buildForkTube()
         this.forkRightCylinder = this.buildForkTube()
@@ -239,12 +235,22 @@ export class Fork {
         return this
     }
 
+    updateSpringsGeometry() {
+        this.pivotLeftFork.remove(this.leftSpring)
+        this.leftSpring = this.buildSpring()
+        this.pivotLeftFork.add(this.leftSpring)
+
+        this.pivotRightFork.remove(this.rightSpring)
+        this.rightSpring = this.buildSpring()
+        this.pivotRightFork.add(this.rightSpring)
+    }
+
     updateGeometry() {
         this.pivot.position.set(this.geometry.frontTire.position.x, this.geometry.frontTire.position.y, 0)
 
         this.pivotTripleTree.position.set(
             0 - this.tripleTreeGeometry.offset,
-            this.forkGeometry.length - this.geometry.fork.dimensions.offset,
+            this.forkGeometry.length - this.geometry.fork.dimensions.offset + this.geometry.spring.dimensions.preload - this.geometry.compression,
             0
         )
 
@@ -253,14 +259,16 @@ export class Fork {
 
         this.forkLeftCylinder.position.set(
             0,
-            this.forkGeometry.length - (this.forkGeometry.outerTubeLength / 2) + this.geometry.fork.dimensions.offset,
+            this.forkGeometry.length - (this.forkGeometry.outerTubeLength / 2) + this.geometry.spring.dimensions.preload - this.geometry.compression,
             -this.tripleTreeGeometry.width / 2
         )
         this.forkRightCylinder.position.set(
             0,
-            this.forkGeometry.length - (this.forkGeometry.outerTubeLength / 2) + this.geometry.fork.dimensions.offset,
+            this.forkGeometry.length - (this.forkGeometry.outerTubeLength / 2) + this.geometry.spring.dimensions.preload - this.geometry.compression,
             this.tripleTreeGeometry.width / 2
         )
+
+        this.updateSpringsGeometry()
 
         this.pivot.rotation.z = this.geometry.verticalStemAngle
     }

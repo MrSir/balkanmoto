@@ -26,6 +26,8 @@ export class Geometry {
         this.spring = {}
         this.tripleTree = {}
 
+        this.compression = 0
+
         this.textParameters = {
             font: this.font,
             size: 30,
@@ -137,11 +139,10 @@ export class Geometry {
             outerTubeLength: this.parameters.fork.outerTubeLength,
             length: this.parameters.fork.length,
             offset: this.parameters.fork.offset,
-            travel: (this.parameters.fork.spring.length - this.parameters.fork.spring.preload) / 2,
+            travel: (this.parameters.fork.spring.length / 2) - this.parameters.fork.spring.preload,
             compressionDamping: this.parameters.fork.compressionDamping,
             reboundDamping: this.parameters.fork.reboundDamping,
             oilWeight: this.parameters.fork.oilWeight,
-            stroke: 0
         }
     }
 
@@ -149,12 +150,8 @@ export class Geometry {
         return {
             rate: this.parameters.fork.spring.rate,
             length: this.parameters.fork.spring.length,
-            preload: this.parameters.fork.spring.preload
+            preload: this.parameters.fork.spring.preload,
         }
-    }
-
-    get forkCompression() {
-        return this.fork.dimensions.travel * this.fork.dimensions.stroke / 100
     }
 
     calculateTripleTreeDimensions() {
@@ -197,7 +194,7 @@ export class Geometry {
         this.E = new THREE.Vector3(this.frontTire.position.x, this.frontTire.position.y, 0)
 
         let AE = this.A.distanceTo(this.E)
-        let FE = this.fork.dimensions.length - this.fork.dimensions.offset - this.forkCompression
+        let FE = this.fork.dimensions.length - this.fork.dimensions.offset + this.spring.dimensions.preload - this.compression
         let DFE = this.degToRad(this.tripleTree.dimensions.rake)
         let CD = this.tripleTree.dimensions.offset
         let ZBC = this.degToRad(this.frame.dimensions.rake)
@@ -223,6 +220,31 @@ export class Geometry {
 
         this.frame.dimensions.backbone = AB
         this.frame.dimensions.stemAngle = ABE - ZBE
+    }
+
+    isAtEquilibrium() {
+        let weightOnFork = this.parameters.weight + this.parameters.rider.weight + this.parameters.rider.gearWeight
+
+        let Fn = weightOnFork * 9.81
+        let F = Fn / Math.cos(this.verticalStemAngle)
+
+        let k = this.spring.dimensions.rate * 2 * 1000 // convert from N/mm to N/m
+        let length = this.spring.dimensions.length
+        let x = (F / k)
+        let springStroke = ((x * 1000) / length) * 100
+
+        return springStroke <= this.compression
+    }
+
+    adjustForWeight() {
+        for (let compression =0; compression <= this.fork.dimensions.travel; compression++) {
+            this.compression = compression
+
+            this.calculate()
+            if (this.isAtEquilibrium()) {
+                break
+            }
+        }
     }
 
     calculate() {
@@ -252,7 +274,7 @@ export class Geometry {
 
         let AB = this.frame.dimensions.backbone
         let DFE = this.degToRad(this.tripleTree.dimensions.rake)
-        let FE = this.fork.dimensions.length - this.fork.dimensions.offset - this.forkCompression
+        let FE = this.fork.dimensions.length - this.fork.dimensions.offset + this.spring.dimensions.preload - this.compression
         let BC = FE
         let DE = 0
 
@@ -341,7 +363,15 @@ export class Geometry {
     initialize() {
         this.initialCalculate()
         this.calculate()
+        this.adjustForWeight()
+        // console.log("initial static sag", this.compression / this.fork.dimensions.travel)
         this.buildGeometry()
+    }
+
+    update() {
+        this.calculate()
+        this.adjustForWeight()
+        console.log(this.fork.dimensions.travel)
     }
 
     drawLineWithVectors(name, vector1, vector2, color) {

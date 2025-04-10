@@ -13,7 +13,7 @@ export class SceneControlPanel {
         this.scene = scene
         this.objects = objects
 
-        this.createViewFolder().createManualFolder().createStaticFolder().createDynamicFolder()
+        this.createViewFolder().createSymulationFolder()
     }
 
     createViewFolder() {
@@ -54,66 +54,8 @@ export class SceneControlPanel {
         return this
     }
 
-    createManualFolder() {
-        let folder = this.gui.addFolder('Manual Simulation')
-        let params = {
-            'Fork Stroke (%)': 0.0,
-        }
-
-        folder
-            .add(params, 'Fork Stroke (%)', 0, 100, 1)
-            .onChange((stroke) => {
-                this.objects.forEach((element) => {
-                    element.fork.stroke = stroke
-                    element.redrawInScene(this.scene)
-                })
-            })
-
-        return this
-    }
-
-    createStaticFolder() {
-        let folder = this.gui.addFolder('Static Simulation')
-
-        let simulateButton = {
-            simulate: () => {
-                this.objects.forEach((element) => {
-                    element.fork.stroke = 0
-                    element.redrawInScene(this.scene)
-
-                    let springSqueeze = new Tween(element, false)
-                        .to({fork: {stroke: 100}}, 2500)
-                        .onUpdate(
-                            (frame) => {
-                                if (!element.isAtEquilibrium()) {
-                                    frame.redrawInScene(this.scene)
-                                }
-                            }
-                        )
-                        .start()
-
-                    function animate(time) {
-                        springSqueeze.update(time)
-
-                        requestAnimationFrame(animate)
-                    }
-                    requestAnimationFrame(animate)
-                })
-
-                // this.objects.forEach((element) => {
-                //     element.fork.stroke = element.restingStroke
-                //     element.redrawInScene(this.scene)
-                // })
-            },
-        }
-
-        folder.add(simulateButton, 'simulate').name('Simulate')
-
-        return this
-    }
-
-    createDynamicFolder() {
-        let folder = this.gui.addFolder('Dynamic Simulation')
+    createSymulationFolder() {
+        let folder = this.gui.addFolder('Simulation')
 
         let simulateButton = {
             simulate: () => {

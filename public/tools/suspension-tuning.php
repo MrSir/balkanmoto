@@ -115,7 +115,7 @@
                       spring: {
                         rate: 6.0,
                         length: 425,
-                        preload: 5,
+                        preload: 2.5,
                       },
                       oilWeight: 10,
                       compressionDamping: 0,
@@ -137,7 +137,7 @@
                 scene.add(geometryRight.pivot)
                 let controlPanelRight = new ControlPanel(cpRightContainer, scene, geometryRight)
 
-                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [])
+                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [geometryLeft])
             })
 
 
