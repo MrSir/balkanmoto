@@ -24,7 +24,7 @@ export class ControlPanel {
         }
 
         folder
-            .add(params, 'Weight (kg)', 150, 300, 1)
+            .add(params, 'Weight (kg)', 0, 300, 1)
             .onChange((weight) => {
                 this.geometry.parameters.weight = weight
                 this.geometry.update()
@@ -44,7 +44,7 @@ export class ControlPanel {
         }
 
         folder
-            .add(params, 'Weight (kg)', 70, 200, 1)
+            .add(params, 'Weight (kg)', 0, 200, 1)
             .onChange((weight) => {
                 this.geometry.parameters.rider.weight = weight
                 this.geometry.update()
