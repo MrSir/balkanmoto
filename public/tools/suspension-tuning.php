@@ -81,7 +81,7 @@
             let loader = new THREE_Addons.FontLoader()
             loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
                 let frameParameters = {
-                    rake: 30,
+                    rake: 27,
                     wheelbase: 1590,
                     weight: 205,
                     rider: {

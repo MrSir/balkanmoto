@@ -42,6 +42,8 @@ export class Geometry {
 
         this.lines = []
         this.pointLabels = []
+        this.dimensionLabels = []
+        this.dimensionPoints = {}
 
         this.pivot = new THREE.Group()
     }
@@ -50,11 +52,15 @@ export class Geometry {
         return inches * 25.4
     }
 
-    degToRad(deg) {
+    mm2in(mm) {
+        return mm / 25.4
+    }
+
+    deg2rad(deg) {
         return (deg * Math.PI) / 180
     }
 
-    radToDeg(rad) {
+    rad2deg(rad) {
         return (rad * 180) / Math.PI
     }
 
@@ -195,9 +201,9 @@ export class Geometry {
 
         let AE = this.A.distanceTo(this.E)
         let FE = this.fork.dimensions.length - this.fork.dimensions.offset + this.spring.dimensions.preload - this.compression
-        let DFE = this.degToRad(this.tripleTree.dimensions.rake)
+        let DFE = this.deg2rad(this.tripleTree.dimensions.rake)
         let CD = this.tripleTree.dimensions.offset
-        let ZBC = this.degToRad(this.frame.dimensions.rake)
+        let ZBC = this.deg2rad(this.frame.dimensions.rake)
         let BC = FE
         this.DE = 0
 
@@ -247,6 +253,22 @@ export class Geometry {
         }
     }
 
+    calculateDimensionPoints() {
+        this.dimensionPoints = {
+            wheelbase: [
+                new THREE.Vector3(this.X.x, this.floorY + 1, 200),
+                new THREE.Vector3(this.Y.x, this.floorY + 1, 200),
+            ],
+            trail: [
+                new THREE.Vector3(this.X.x, this.floorY + 1, 250),
+                new THREE.Vector3(this.G.x, this.floorY + 1, 250),
+            ],
+            rake: [
+                new THREE.Vector3(this.B.x, this.floorY + 1, 0),
+            ]
+        }
+    }
+
     calculate() {
         // this.frame.dimensions = this.calculateFrameDimensions()
         this.rearTire.dimensions = this.calculateWheelDimensions(
@@ -273,7 +295,7 @@ export class Geometry {
         this.rider.dimensions = this.calculateRiderDimensions()
 
         let AB = this.frame.dimensions.backbone
-        let DFE = this.degToRad(this.tripleTree.dimensions.rake)
+        let DFE = this.deg2rad(this.tripleTree.dimensions.rake)
         let FE = this.fork.dimensions.length - this.fork.dimensions.offset + this.spring.dimensions.preload - this.compression
         let BC = FE
         let DE = 0
@@ -283,14 +305,14 @@ export class Geometry {
             DE = this.calculateOpFromHypAndAngle(FE, DFE)
         }
 
-        let ABC = this.frame.dimensions.stemAngle + this.degToRad(this.frame.dimensions.rake)
+        let ABC = this.frame.dimensions.stemAngle + this.deg2rad(this.frame.dimensions.rake)
 
         let CD = this.tripleTree.dimensions.offset
         let CE = CD + DE
 
         let AC = this.calculate3rdSideFrom2Sides1Angle(AB, BC, ABC)
         let ACB = this.calculateAngleFrom3Sides(AC, BC, AB)
-        let BCE = this.degToRad(90)
+        let BCE = this.deg2rad(90)
         let ACE = ACB + BCE
 
         let AE = this.calculate3rdSideFrom2Sides1Angle(AC, CE, ACE)
@@ -352,12 +374,18 @@ export class Geometry {
 
         this.verticalStemAngle = Math.PI / 2 - LCB
         this.forkTripleTreeBaseOffset = this.DE
-        this.frameStemTopHeight = this.B.y
 
         this.Y = new THREE.Vector3(this.rearTire.position.x, this.floorY, 0)
-
+        this.wheelbaseMM = this.X.x - this.Y.x
         this.trailMM = this.G.x - this.E.x
-        this.trailPoint = this.G
+
+        let H = new THREE.Vector3(this.B.x, this.floorY, 0)
+        let BH = this.B.distanceTo(H)
+        let BG = this.B.distanceTo(this.G)
+        let HG = H.distanceTo(this.G)
+        this.rakeRAD = this.calculateAngleFrom3Sides(BH, BG, HG)
+
+        this.calculateDimensionPoints()
     }
 
     initialize() {
@@ -383,7 +411,7 @@ export class Geometry {
         this.lines.push(mesh)
     }
 
-    drawPointLabel(label, vector, material, xOffset = 0, yOffset = 0) {
+    buildLabel(label, material) {
         let g = new THREE_Addons.TextGeometry(label, this.textParameters)
         g.name = label
         g.computeBoundingBox()
@@ -392,8 +420,57 @@ export class Geometry {
         g.textWidth = g.boundingBox.max.x - g.boundingBox.min.x
         g.textHeight = g.boundingBox.max.y - g.boundingBox.min.y
 
-        let mesh = new THREE.Mesh(g, material)
-        mesh.position.set(vector.x - (g.textWidth / 2) + xOffset, vector.y + yOffset, vector.z)
+        return new THREE.Mesh(g, material)
+    }
+
+    buildDistanceLabel(title, valueMM, material) {
+        let text = title + ': ' + valueMM.toFixed(0) + 'mm (' + this.mm2in(valueMM).toFixed(2) + '")'
+
+        return this.buildLabel(text, material)
+    }
+
+    buildAngleLabel(title, valueDeg, material) {
+        let text = title + ': ' + valueDeg.toFixed(1) + '°'
+
+        return this.buildLabel(text, material)
+    }
+
+    buildWheelbaseLabel() {
+        let wheelbaseText = this.buildDistanceLabel('WHEELBASE', this.wheelbaseMM, this.blueLineMaterial)
+        wheelbaseText.position.set(
+            this.Y.x + this.wheelbaseMM / 2 - wheelbaseText.geometry.textWidth / 2,
+            this.floorY + 1,
+            260
+        )
+        wheelbaseText.rotateX(-Math.PI / 2)
+
+        this.dimensionLabels.push(wheelbaseText)
+    }
+
+    buildTrailLabel() {
+        let trailText = this.buildDistanceLabel('TRAIL', this.trailMM, this.redLineMaterial)
+        trailText.rotateX(-Math.PI / 2)
+        trailText.rotateZ(-Math.PI / 2)
+        trailText.position.set(
+            this.X.x + (this.G.x - this.X.x) / 2 - trailText.geometry.textHeight / 2,
+            this.floorY,
+            260
+        )
+
+        this.dimensionLabels.push(trailText)
+    }
+
+    buildRakeLabel() {
+        let rakeText = this.buildAngleLabel('RAKE', this.rad2deg(this.rakeRAD), this.greenLineMaterial)
+        rakeText.rotateZ(-Math.PI / 2)
+        rakeText.position.set(this.B.x + rakeText.geometry.textHeight / 2, 0, 0)
+
+        this.dimensionLabels.push(rakeText)
+    }
+
+    drawPointLabel(label, vector, material, xOffset = 0, yOffset = 0) {
+       let mesh = this.buildLabel(label, material)
+        mesh.position.set(vector.x - (mesh.geometry.textWidth / 2) + xOffset, vector.y + yOffset, vector.z)
 
         this.pointLabels.push(mesh)
     }
@@ -435,10 +512,31 @@ export class Geometry {
         this.drawLineWithVectors("FD", this.F, this.D, this.blackLineMaterial)
         this.drawLineWithVectors("ED", this.E, this.D, this.blackLineMaterial)
 
+        this.pointLabels.forEach(label => {
+            this.pivot.add(label)
+        })
+
+        // LABELS
+        this.drawLineWithVectors("WHEELBASE_FRONT", this.X, this.dimensionPoints.wheelbase[0], this.blueLineMaterial)
+        this.drawLineWithVectors("WHEELBASE_REAR", this.Y, this.dimensionPoints.wheelbase[1], this.blueLineMaterial)
+        this.drawLineWithVectors("WHEELBASE_CONNECTING", this.dimensionPoints.wheelbase[0], this.dimensionPoints.wheelbase[1], this.blueLineMaterial)
+        this.buildWheelbaseLabel()
+
+        this.drawLineWithVectors("TRAIL_FRONT", this.X, this.dimensionPoints.trail[0], this.redLineMaterial)
+        this.drawLineWithVectors("TRAIL_REAR", this.G, this.dimensionPoints.trail[1], this.redLineMaterial)
+        this.drawLineWithVectors("TRAIL_CONNECTING", this.dimensionPoints.trail[0], this.dimensionPoints.trail[1], this.redLineMaterial)
+        this.buildTrailLabel()
+
+        this.drawLineWithVectors("RAKE_FRONT", this.B, this.G, this.greenLineMaterial)
+        this.drawLineWithVectors("RAKE_VERTICAL", this.B, this.dimensionPoints.rake[0], this.greenLineMaterial)
+        this.buildRakeLabel()
+
+        this.drawLineWithVectors("TRAVEL_BOTTOM", this.dimensionPoints.rake[0], this.dimensionPoints.rake[0], this.greenLineMaterial)
+
         this.lines.forEach(line => {
             this.pivot.add(line)
         })
-        this.pointLabels.forEach(label => {
+        this.dimensionLabels.forEach(label => {
             this.pivot.add(label)
         })
 
@@ -508,6 +606,29 @@ export class Geometry {
         this.updateLine("FE", this.F, this.E)
         this.updateLine("FD", this.F, this.D)
         this.updateLine("ED", this.E, this.D)
+
+        // LABELS
+        this.updateLine("WHEELBASE_FRONT", this.X, this.dimensionPoints.wheelbase[0])
+        this.updateLine("WHEELBASE_REAR", this.Y, this.dimensionPoints.wheelbase[1])
+        this.updateLine("WHEELBASE_CONNECTING", this.dimensionPoints.wheelbase[0], this.dimensionPoints.wheelbase[1])
+        this.updateLine("TRAIL_FRONT", this.X, this.dimensionPoints.trail[0])
+        this.updateLine("TRAIL_REAR", this.G, this.dimensionPoints.trail[1])
+        this.updateLine("TRAIL_CONNECTING", this.dimensionPoints.trail[0], this.dimensionPoints.trail[1])
+        this.updateLine("RAKE_FRONT", this.B, this.G)
+        this.updateLine("RAKE_VERTICAL", this.B, this.dimensionPoints.rake[0])
+
+        this.dimensionLabels.forEach(label => {
+            this.pivot.remove(label)
+        })
+        this.dimensionLabels = []
+
+        this.buildWheelbaseLabel()
+        this.buildTrailLabel()
+        this.buildRakeLabel()
+
+        this.dimensionLabels.forEach(label => {
+            this.pivot.add(label)
+        })
 
         this.rearTire.geometry.updateGeometry()
         this.frontTire.geometry.updateGeometry()

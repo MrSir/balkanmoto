@@ -11,8 +11,6 @@ export class ControlPanel {
 
         this.scene = scene
         this.geometry = geometry
-        // this.rearTire = rearTire
-        // this.frontTire = frontTire
 
         this.createMotorcycleFolder().createRiderFolder().createTuningFolder()
     }
