@@ -83,6 +83,10 @@ export class Geometry {
         return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
     }
 
+    calculateHypFromAdjAndAngle(adjacent, angle) {
+        return adjacent / Math.cos(angle)
+    }
+
     calculateAdjFromHypAndAngle(hypotenuse, angle) {
         return Math.cos(angle) * hypotenuse
     }
@@ -265,7 +269,7 @@ export class Geometry {
             ],
             rake: [
                 new THREE.Vector3(this.B.x, this.floorY + 1, 0),
-            ]
+            ],
         }
     }
 
@@ -359,12 +363,6 @@ export class Geometry {
 
         this.F = this.B
 
-        if (CD > 0) {
-            this.F = new THREE.Vector3(this.B.x + Math.abs(this.D.x - this.C.x), this.B.y + Math.abs(this.D.y - this.C.y), 0)
-        }
-
-        this.tripleTreeCenterOfForkTubesPoint = this.F
-
         let TrailOffsetFromB = (this.floorY - this.B.y) / ((this.C.y - this.B.y) / (this.C.x - this.B.x))
         let trailX = this.B.x + TrailOffsetFromB
         this.G = new THREE.Vector3(trailX, this.floorY, 0)
@@ -399,14 +397,17 @@ export class Geometry {
     update() {
         this.calculate()
         this.adjustForWeight()
-        console.log(this.fork.dimensions.travel)
     }
 
-    drawLineWithVectors(name, vector1, vector2, color) {
+    _drawLineWithVectors(name, vector1, vector2, material) {
         let g = new THREE.BufferGeometry().setFromPoints([vector1, vector2])
         g.name = name
 
-        let mesh = new THREE.Line(g, color)
+        return new THREE.Line(g, material)
+    }
+
+    drawLineWithVectors(name, vector1, vector2, material) {
+        let mesh = this._drawLineWithVectors(name, vector1, vector2, material)
 
         this.lines.push(mesh)
     }
@@ -531,8 +532,6 @@ export class Geometry {
         this.drawLineWithVectors("RAKE_VERTICAL", this.B, this.dimensionPoints.rake[0], this.greenLineMaterial)
         this.buildRakeLabel()
 
-        this.drawLineWithVectors("TRAVEL_BOTTOM", this.dimensionPoints.rake[0], this.dimensionPoints.rake[0], this.greenLineMaterial)
-
         this.lines.forEach(line => {
             this.pivot.add(line)
         })
@@ -625,6 +624,7 @@ export class Geometry {
         this.buildWheelbaseLabel()
         this.buildTrailLabel()
         this.buildRakeLabel()
+
 
         this.dimensionLabels.forEach(label => {
             this.pivot.add(label)

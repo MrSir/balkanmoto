@@ -198,7 +198,48 @@ export class Fork {
         return mesh
     }
 
+    calculateTravelPoints() {
+        let topY = (-this.forkGeometry.stanchionTubeLength / 2) + this.forkGeometry.length - this.forkGeometry.outerTubeLength + this.geometry.spring.dimensions.preload
+        let bottomY = topY - this.geometry.fork.dimensions.travel
+        let bottomCompression = topY - this.geometry.compression
+
+        this.travelPoints = [
+            new THREE.Vector3(0, topY, 0),
+            new THREE.Vector3(0, topY, -100),
+            new THREE.Vector3(0, bottomY, 0),
+            new THREE.Vector3(0, bottomY, -100),
+            new THREE.Vector3(0, topY, 0),
+            new THREE.Vector3(0, topY, 100),
+            new THREE.Vector3(0, bottomCompression, 0),
+            new THREE.Vector3(0, bottomCompression, 100),
+        ]
+    }
+
+    buildTravelLabel() {
+        let travelLabel = this.geometry.buildDistanceLabel("TRAVEL", this.geometry.fork.dimensions.travel, this.geometry.grayLineMaterial)
+        travelLabel.position.set(0, (travelLabel.geometry.textWidth / 2), -120)
+        travelLabel.rotation.y = Math.PI / 2
+        travelLabel.rotation.z = -Math.PI / 2
+
+        return travelLabel
+    }
+
+    buildCompressionLabel() {
+        let valueMM = this.geometry.compression
+        let valueIN = this.geometry.mm2in(valueMM)
+        let percent = (valueMM / this.geometry.fork.dimensions.travel) * 100
+        let text = 'COMPRESSION: ' + valueMM.toFixed(0) + 'mm (' + valueIN.toFixed(2) + '") (' + percent.toFixed(2) + '%)'
+        let compressionLabel = this.geometry.buildLabel(text, this.geometry.grayLineMaterial)
+        compressionLabel.position.set(0, (compressionLabel.geometry.textWidth / 2), 150)
+        compressionLabel.rotation.y = Math.PI / 2
+        compressionLabel.rotation.z = -Math.PI / 2
+
+        return compressionLabel
+    }
+
     buildGeometry() {
+        this.calculateTravelPoints()
+
         let wheelAxle = this.buildWheelAxle()
 
         let forkStem = this.buildForkStem()
@@ -210,16 +251,32 @@ export class Fork {
         this.pivotTripleTree.add(bottomYoke)
 
         let forkLeftInnerCylinder = this.buildForkInsideTube()
+        this.travelTopLine = this.geometry._drawLineWithVectors("TRAVEL_TOP", this.travelPoints[0], this.travelPoints[1], this.geometry.grayLineMaterial)
+        this.travelBottomLine = this.geometry._drawLineWithVectors("TRAVEL_BOTTOM", this.travelPoints[2], this.travelPoints[3], this.geometry.grayLineMaterial)
+        this.travelConnectingLine = this.geometry._drawLineWithVectors("TRAVEL_CONNECTING", this.travelPoints[1], this.travelPoints[3], this.geometry.grayLineMaterial)
+        this.travelLabel = this.buildTravelLabel()
         this.leftSpring = this.buildSpring()
         this.pivotLeftFork = new THREE.Group()
         this.pivotLeftFork.add(forkLeftInnerCylinder)
         this.pivotLeftFork.add(this.leftSpring)
+        this.pivotLeftFork.add(this.travelTopLine)
+        this.pivotLeftFork.add(this.travelBottomLine)
+        this.pivotLeftFork.add(this.travelConnectingLine)
+        this.pivotLeftFork.add(this.travelLabel)
 
         let forkRightInnerCylinder = this.buildForkInsideTube()
+        this.compressionTopLine = this.geometry._drawLineWithVectors("COMPRESSION_TOP", this.travelPoints[4], this.travelPoints[5], this.geometry.grayLineMaterial)
+        this.compressionBottomLine = this.geometry._drawLineWithVectors("COMPRESSION_BOTTOM", this.travelPoints[6], this.travelPoints[7], this.geometry.grayLineMaterial)
+        this.compressionConnectingLine = this.geometry._drawLineWithVectors("COMPRESSION_CONNECTING", this.travelPoints[5], this.travelPoints[7], this.geometry.grayLineMaterial)
+        this.compresionLabel = this.buildCompressionLabel()
         this.rightSpring = this.buildSpring()
         this.pivotRightFork = new THREE.Group()
         this.pivotRightFork.add(forkRightInnerCylinder)
         this.pivotRightFork.add(this.rightSpring)
+        this.pivotRightFork.add(this.compressionTopLine)
+        this.pivotRightFork.add(this.compressionBottomLine)
+        this.pivotRightFork.add(this.compressionConnectingLine)
+        this.pivotRightFork.add(this.compresionLabel)
 
         this.forkLeftCylinder = this.buildForkTube()
         this.forkRightCylinder = this.buildForkTube()
@@ -245,7 +302,37 @@ export class Fork {
         this.pivotRightFork.add(this.rightSpring)
     }
 
+    updateTravelLabels() {
+        this.pivotLeftFork.remove(this.travelTopLine)
+        this.pivotLeftFork.remove(this.travelBottomLine)
+        this.pivotLeftFork.remove(this.travelConnectingLine)
+        this.pivotLeftFork.remove(this.travelLabel)
+        this.travelTopLine = this.geometry._drawLineWithVectors("TRAVEL_TOP", this.travelPoints[0], this.travelPoints[1], this.geometry.grayLineMaterial)
+        this.travelBottomLine = this.geometry._drawLineWithVectors("TRAVEL_BOTTOM", this.travelPoints[2], this.travelPoints[3], this.geometry.grayLineMaterial)
+        this.travelConnectingLine = this.geometry._drawLineWithVectors("TRAVEL_CONNECTING", this.travelPoints[1], this.travelPoints[3], this.geometry.grayLineMaterial)
+        this.travelLabel = this.buildTravelLabel()
+        this.pivotLeftFork.add(this.travelTopLine)
+        this.pivotLeftFork.add(this.travelBottomLine)
+        this.pivotLeftFork.add(this.travelConnectingLine)
+        this.pivotLeftFork.add(this.travelLabel)
+
+        this.pivotRightFork.remove(this.compressionTopLine)
+        this.pivotRightFork.remove(this.compressionBottomLine)
+        this.pivotRightFork.remove(this.compressionConnectingLine)
+        this.pivotRightFork.remove(this.compresionLabel)
+        this.compressionTopLine = this.geometry._drawLineWithVectors("COMPRESSION_TOP", this.travelPoints[4], this.travelPoints[5], this.geometry.grayLineMaterial)
+        this.compressionBottomLine = this.geometry._drawLineWithVectors("COMPRESSION_BOTTOM", this.travelPoints[6], this.travelPoints[7], this.geometry.grayLineMaterial)
+        this.compressionConnectingLine = this.geometry._drawLineWithVectors("COMPRESSION_CONNECTING", this.travelPoints[5], this.travelPoints[7], this.geometry.grayLineMaterial)
+        this.compresionLabel = this.buildCompressionLabel()
+        this.pivotRightFork.add(this.compressionTopLine)
+        this.pivotRightFork.add(this.compressionBottomLine)
+        this.pivotRightFork.add(this.compressionConnectingLine)
+        this.pivotRightFork.add(this.compresionLabel)
+    }
+
     updateGeometry() {
+        this.calculateTravelPoints()
+
         this.pivot.position.set(this.geometry.frontTire.position.x, this.geometry.frontTire.position.y, 0)
 
         this.pivotTripleTree.position.set(
@@ -269,6 +356,7 @@ export class Fork {
         )
 
         this.updateSpringsGeometry()
+        this.updateTravelLabels()
 
         this.pivot.rotation.z = this.geometry.verticalStemAngle
     }

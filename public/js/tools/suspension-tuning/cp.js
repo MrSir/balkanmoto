@@ -88,7 +88,7 @@ export class ControlPanel {
             })
 
         folder
-            .add(params, 'Spring Preload (mm)', 0, 15, 0.1)
+            .add(params, 'Spring Preload (mm)', 0, 15, 0.5)
             .onChange((preload) => {
                 this.geometry.parameters.fork.spring.preload = preload
                 this.geometry.update()
