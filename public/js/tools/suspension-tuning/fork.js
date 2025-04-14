@@ -11,7 +11,6 @@ export class Fork {
         this.forkMaterial = new THREE.MeshPhongMaterial({
             color: 0x333333333,
             transparent: false,
-            opacity: 0.5,
             depthWrite: true,
             depthTest: true,
         })
@@ -20,7 +19,7 @@ export class Fork {
             color: 0xc4c4c4,
             roughness: 0.2,
             metalness: 1.0,
-            transparent: false,
+            transparent: true,
             opacity: 0.5,
             depthWrite: true,
             depthTest: true,
@@ -33,7 +32,7 @@ export class Fork {
             metalness: 1.0,
             roughness: 0.2,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.5,
             depthWrite: true,
             depthTest: true,
         })
@@ -44,7 +43,7 @@ export class Fork {
             metalness: 1.0,
             roughness: 0.2,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.5,
             depthWrite: true,
             depthTest: true,
         })

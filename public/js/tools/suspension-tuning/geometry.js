@@ -41,11 +41,19 @@ export class Geometry {
         }
 
         this.lines = []
-        this.pointLabels = []
+
+        this.pivot = new THREE.Group()
+
+        this.showGeometry = false
+        this.geometryLines = []
+        this.geometryPoints = []
+
+        this.showDimensions = true
+        this.dimensionLines = []
         this.dimensionLabels = []
         this.dimensionPoints = {}
 
-        this.pivot = new THREE.Group()
+        this.transparentObjects = true
     }
 
     in2mm(inches) {
@@ -406,10 +414,10 @@ export class Geometry {
         return new THREE.Line(g, material)
     }
 
-    drawLineWithVectors(name, vector1, vector2, material) {
+    drawLineWithVectors(name, vector1, vector2, material, linesArray) {
         let mesh = this._drawLineWithVectors(name, vector1, vector2, material)
 
-        this.lines.push(mesh)
+        linesArray.push(mesh)
     }
 
     buildLabel(label, material) {
@@ -469,75 +477,134 @@ export class Geometry {
         this.dimensionLabels.push(rakeText)
     }
 
-    drawPointLabel(label, vector, material, xOffset = 0, yOffset = 0) {
+    drawPointLabel(label, vector, material, pointsArray, xOffset = 0, yOffset = 0) {
        let mesh = this.buildLabel(label, material)
         mesh.position.set(vector.x - (mesh.geometry.textWidth / 2) + xOffset, vector.y + yOffset, vector.z)
 
-        this.pointLabels.push(mesh)
+        pointsArray.push(mesh)
+    }
+
+    drawGeometryLines() {
+        this.drawPointLabel("A", this.A, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("B", this.B, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("C", this.C, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("D", this.D, this.grayLineMaterial, this.geometryPoints, 15, 15)
+        this.drawPointLabel("E", this.E, this.grayLineMaterial, this.geometryPoints, -15)
+        this.drawPointLabel("F", this.F, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("G", this.G, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("M", this.M, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("X", this.X, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("Y", this.Y, this.grayLineMaterial, this.geometryPoints)
+        this.drawPointLabel("Z", this.Z, this.grayLineMaterial, this.geometryPoints)
+
+        this.drawLineWithVectors("AB", this.A, this.B, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("AC", this.A, this.C, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("BC", this.B, this.C, this.blackLineMaterial, this.geometryLines)
+
+        this.drawLineWithVectors("BZ", this.B, this.Z, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("ZE", this.Z, this.E, this.blackLineMaterial, this.geometryLines)
+
+        this.drawLineWithVectors("EG", this.E, this.G, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("CG", this.C, this.G, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("CD", this.C, this.D, this.blackLineMaterial, this.geometryLines)
+
+        this.drawLineWithVectors("AY", this.A, this.Y, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("EX", this.E, this.X, this.blackLineMaterial, this.geometryLines)
+
+        this.drawLineWithVectors("BM", this.B, this.M, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("ME", this.M, this.E, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("BE", this.B, this.E, this.blackLineMaterial, this.geometryLines)
+
+        this.drawLineWithVectors("BF", this.B, this.F, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("FE", this.F, this.E, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("FD", this.F, this.D, this.blackLineMaterial, this.geometryLines)
+        this.drawLineWithVectors("ED", this.E, this.D, this.blackLineMaterial, this.geometryLines)
+    }
+
+    updateGeometryLines() {
+        this.updatePointLabel("A", this.A, this.geometryPoints)
+        this.updatePointLabel("B", this.B, this.geometryPoints)
+        this.updatePointLabel("C", this.C, this.geometryPoints)
+        this.updatePointLabel("D", this.D, this.geometryPoints, 15, 15)
+        this.updatePointLabel("E", this.E, this.geometryPoints, -15)
+        this.updatePointLabel("F", this.F, this.geometryPoints)
+        this.updatePointLabel("G", this.G, this.geometryPoints)
+        this.updatePointLabel("M", this.M, this.geometryPoints)
+        this.updatePointLabel("X", this.X, this.geometryPoints)
+        this.updatePointLabel("Y", this.Y, this.geometryPoints)
+        this.updatePointLabel("Z", this.Z, this.geometryPoints)
+
+        this.updateLine("AB", this.A, this.B, this.geometryLines)
+        this.updateLine("AC", this.A, this.C, this.geometryLines)
+        this.updateLine("BC", this.B, this.C, this.geometryLines)
+
+        this.updateLine("BZ", this.B, this.Z, this.geometryLines)
+        this.updateLine("ZE", this.Z, this.E, this.geometryLines)
+
+        this.updateLine("EG", this.E, this.G, this.geometryLines)
+        this.updateLine("CG", this.C, this.G, this.geometryLines)
+        this.updateLine("CD", this.C, this.D, this.geometryLines)
+
+        this.updateLine("AY", this.A, this.Y, this.geometryLines)
+        this.updateLine("EX", this.E, this.X, this.geometryLines)
+
+        this.updateLine("BM", this.B, this.M, this.geometryLines)
+        this.updateLine("ME", this.M, this.E, this.geometryLines)
+        this.updateLine("BE", this.B, this.E, this.geometryLines)
+
+        this.updateLine("BF", this.B, this.F, this.geometryLines)
+        this.updateLine("FE", this.F, this.E, this.geometryLines)
+        this.updateLine("FD", this.F, this.D, this.geometryLines)
+        this.updateLine("ED", this.E, this.D, this.geometryLines)
+    }
+
+    drawDimensionLines()  {
+        // LABELS
+        this.drawLineWithVectors("WHEELBASE_FRONT", this.X, this.dimensionPoints.wheelbase[0], this.blueLineMaterial, this.dimensionLines)
+        this.drawLineWithVectors("WHEELBASE_REAR", this.Y, this.dimensionPoints.wheelbase[1], this.blueLineMaterial, this.dimensionLines)
+        this.drawLineWithVectors("WHEELBASE_CONNECTING", this.dimensionPoints.wheelbase[0], this.dimensionPoints.wheelbase[1], this.blueLineMaterial, this.dimensionLines)
+        this.buildWheelbaseLabel()
+
+        this.drawLineWithVectors("TRAIL_FRONT", this.X, this.dimensionPoints.trail[0], this.redLineMaterial, this.dimensionLines)
+        this.drawLineWithVectors("TRAIL_REAR", this.G, this.dimensionPoints.trail[1], this.redLineMaterial, this.dimensionLines)
+        this.drawLineWithVectors("TRAIL_CONNECTING", this.dimensionPoints.trail[0], this.dimensionPoints.trail[1], this.redLineMaterial, this.dimensionLines)
+        this.buildTrailLabel()
+
+        this.drawLineWithVectors("RAKE_FRONT", this.B, this.G, this.greenLineMaterial, this.dimensionLines)
+        this.drawLineWithVectors("RAKE_VERTICAL", this.B, this.dimensionPoints.rake[0], this.greenLineMaterial, this.dimensionLines)
+        this.buildRakeLabel()
+    }
+
+    updateDimensionLines() {
+        this.updateLine("WHEELBASE_FRONT", this.X, this.dimensionPoints.wheelbase[0], this.dimensionLines)
+        this.updateLine("WHEELBASE_REAR", this.Y, this.dimensionPoints.wheelbase[1], this.dimensionLines)
+        this.updateLine("WHEELBASE_CONNECTING", this.dimensionPoints.wheelbase[0], this.dimensionPoints.wheelbase[1], this.dimensionLines)
+        this.updateLine("TRAIL_FRONT", this.X, this.dimensionPoints.trail[0], this.dimensionLines)
+        this.updateLine("TRAIL_REAR", this.G, this.dimensionPoints.trail[1], this.dimensionLines)
+        this.updateLine("TRAIL_CONNECTING", this.dimensionPoints.trail[0], this.dimensionPoints.trail[1], this.dimensionLines)
+        this.updateLine("RAKE_FRONT", this.B, this.G, this.dimensionLines)
+        this.updateLine("RAKE_VERTICAL", this.B, this.dimensionPoints.rake[0], this.dimensionLines)
+
+        this.buildWheelbaseLabel()
+        this.buildTrailLabel()
+        this.buildRakeLabel()
     }
 
     buildGeometry() {
         // GEOMETRY
-        this.drawPointLabel("A", this.A, this.grayLineMaterial)
-        this.drawPointLabel("B", this.B, this.grayLineMaterial)
-        this.drawPointLabel("C", this.C, this.grayLineMaterial)
-        this.drawPointLabel("D", this.D, this.grayLineMaterial, 15, 15)
-        this.drawPointLabel("E", this.E, this.grayLineMaterial, -15)
-        this.drawPointLabel("F", this.F, this.grayLineMaterial)
-        this.drawPointLabel("G", this.G, this.grayLineMaterial)
-        this.drawPointLabel("M", this.M, this.grayLineMaterial)
-        this.drawPointLabel("X", this.X, this.grayLineMaterial)
-        this.drawPointLabel("Y", this.Y, this.grayLineMaterial)
-        this.drawPointLabel("Z", this.Z, this.grayLineMaterial)
+        if (this.showGeometry) {
+            this.drawGeometryLines()
+        }
 
-        this.drawLineWithVectors("AB", this.A, this.B, this.blackLineMaterial)
-        this.drawLineWithVectors("AC", this.A, this.C, this.blackLineMaterial)
-        this.drawLineWithVectors("BC", this.B, this.C, this.blackLineMaterial)
-
-        this.drawLineWithVectors("BZ", this.B, this.Z, this.blackLineMaterial)
-        this.drawLineWithVectors("ZE", this.Z, this.E, this.blackLineMaterial)
-
-        this.drawLineWithVectors("EG", this.E, this.G, this.blackLineMaterial)
-        this.drawLineWithVectors("CG", this.C, this.G, this.blackLineMaterial)
-        this.drawLineWithVectors("CD", this.C, this.D, this.blackLineMaterial)
-
-        this.drawLineWithVectors("AY", this.A, this.Y, this.blackLineMaterial)
-        this.drawLineWithVectors("EX", this.E, this.X, this.blackLineMaterial)
-
-        this.drawLineWithVectors("BM", this.B, this.M, this.blackLineMaterial)
-        this.drawLineWithVectors("ME", this.M, this.E, this.blackLineMaterial)
-        this.drawLineWithVectors("BE", this.B, this.E, this.blackLineMaterial)
-
-        this.drawLineWithVectors("BF", this.B, this.F, this.blackLineMaterial)
-        this.drawLineWithVectors("FE", this.F, this.E, this.blackLineMaterial)
-        this.drawLineWithVectors("FD", this.F, this.D, this.blackLineMaterial)
-        this.drawLineWithVectors("ED", this.E, this.D, this.blackLineMaterial)
-
-        this.pointLabels.forEach(label => {
-            this.pivot.add(label)
-        })
-
-        // LABELS
-        this.drawLineWithVectors("WHEELBASE_FRONT", this.X, this.dimensionPoints.wheelbase[0], this.blueLineMaterial)
-        this.drawLineWithVectors("WHEELBASE_REAR", this.Y, this.dimensionPoints.wheelbase[1], this.blueLineMaterial)
-        this.drawLineWithVectors("WHEELBASE_CONNECTING", this.dimensionPoints.wheelbase[0], this.dimensionPoints.wheelbase[1], this.blueLineMaterial)
-        this.buildWheelbaseLabel()
-
-        this.drawLineWithVectors("TRAIL_FRONT", this.X, this.dimensionPoints.trail[0], this.redLineMaterial)
-        this.drawLineWithVectors("TRAIL_REAR", this.G, this.dimensionPoints.trail[1], this.redLineMaterial)
-        this.drawLineWithVectors("TRAIL_CONNECTING", this.dimensionPoints.trail[0], this.dimensionPoints.trail[1], this.redLineMaterial)
-        this.buildTrailLabel()
-
-        this.drawLineWithVectors("RAKE_FRONT", this.B, this.G, this.greenLineMaterial)
-        this.drawLineWithVectors("RAKE_VERTICAL", this.B, this.dimensionPoints.rake[0], this.greenLineMaterial)
-        this.buildRakeLabel()
-
-        this.lines.forEach(line => {
-            this.pivot.add(line)
-        })
-        this.dimensionLabels.forEach(label => {
-            this.pivot.add(label)
-        })
+        if (this.showDimensions) {
+            this.drawDimensionLines()
+            this.dimensionLines.forEach(line => {
+                this.pivot.add(line)
+            })
+            this.dimensionLabels.forEach(label => {
+                this.pivot.add(label)
+            })
+        }
 
         // TIRES
         this.rearTire.geometry = new Tire(this.rearTire)
@@ -557,82 +624,105 @@ export class Geometry {
         this.pivot.position.x = this.pivotXOffset
     }
 
-    updateLine(name, vector1, vector2) {
-        let line = this.lines.find((line) => line.geometry.name === name)
+    updateLine(name, vector1, vector2, linesArray) {
+        let line = linesArray.find((line) => line.geometry.name === name)
         line.geometry.attributes.position.setXYZ(0, vector1.x, vector1.y, vector1.z)
         line.geometry.attributes.position.setXYZ(1, vector2.x, vector2.y, vector2.z)
         line.geometry.attributes.position.needsUpdate = true;
         line.geometry.computeBoundingSphere();
     }
 
-    updatePointLabel(name, vector, xOffset = 0, yOffset = 0) {
-        let label = this.pointLabels.find((line) => line.geometry.name === name)
+    updatePointLabel(name, vector, pointsArray, xOffset = 0, yOffset = 0) {
+        let label = pointsArray.find((line) => line.geometry.name === name)
         label.position.set(vector.x - (label.geometry.textWidth / 2) + xOffset, vector.y + yOffset, vector.z)
     }
 
+    showGeometryLines() {
+        if (this.showGeometry) {
+            if (this.geometryLines.length === 0) {
+                this.drawGeometryLines()
+                this.geometryLines.forEach(line => {
+                    this.pivot.add(line)
+                })
+                this.geometryPoints.forEach(point => {
+                    this.pivot.add(point)
+                })
+            } else {
+                this.geometryLines.forEach(line => {
+                    this.pivot.remove(line)
+                })
+                this.geometryPoints.forEach(point => {
+                    this.pivot.remove(point)
+                })
+                this.updateGeometryLines()
+                this.geometryLines.forEach(line => {
+                    this.pivot.add(line)
+                })
+                this.geometryPoints.forEach(point => {
+                    this.pivot.add(point)
+                })
+            }
+        } else {
+            if (this.geometryLines.length > 0) {
+                this.geometryLines.forEach(line => {
+                    this.pivot.remove(line)
+                })
+                this.geometryPoints.forEach(point => {
+                    this.pivot.remove(point)
+                })
+            }
+        }
+
+    }
+
+    showDimensionsLines() {
+        if (this.showDimensions) {
+            if (this.dimensionLines.length === 0) {
+                this.drawDimensionLines()
+                this.dimensionLines.forEach(line => {
+                    this.pivot.add(line)
+                })
+                this.dimensionLabels.forEach(label => {
+                    this.pivot.add(label)
+                })
+            } else {
+                this.dimensionLines.forEach(line => {
+                    this.pivot.remove(line)
+                })
+                this.dimensionLabels.forEach(label => {
+                    this.pivot.remove(label)
+                })
+                this.dimensionLabels = []
+                this.updateDimensionLines()
+                this.dimensionLines.forEach(line => {
+                    this.pivot.add(line)
+                })
+                this.dimensionLabels.forEach(label => {
+                    this.pivot.add(label)
+                })
+            }
+        } else {
+            if (this.dimensionLines.length > 0) {
+                this.dimensionLines.forEach(line => {
+                    this.pivot.remove(line)
+                })
+                this.dimensionLabels.forEach(label => {
+                    this.pivot.remove(label)
+                })
+                this.dimensionLabels = []
+            }
+        }
+
+    }
+
     updateGeometry() {
-        this.updatePointLabel("A", this.A)
-        this.updatePointLabel("B", this.B)
-        this.updatePointLabel("C", this.C)
-        this.updatePointLabel("D", this.D, 15, 15)
-        this.updatePointLabel("E", this.E, -15)
-        this.updatePointLabel("F", this.F)
-        this.updatePointLabel("G", this.G)
-        this.updatePointLabel("M", this.M)
-        this.updatePointLabel("X", this.X)
-        this.updatePointLabel("Y", this.Y)
-        this.updatePointLabel("Z", this.Z)
-
-        this.updateLine("AB", this.A, this.B)
-        this.updateLine("AC", this.A, this.C)
-        this.updateLine("BC", this.B, this.C)
-
-        this.updateLine("BZ", this.B, this.Z)
-        this.updateLine("ZE", this.Z, this.E)
-
-        this.updateLine("EG", this.E, this.G)
-        this.updateLine("CG", this.C, this.G)
-        this.updateLine("CD", this.C, this.D)
-
-        this.updateLine("AY", this.A, this.Y)
-        this.updateLine("EX", this.E, this.X)
-
-        this.updateLine("BM", this.B, this.M)
-        this.updateLine("ME", this.M, this.E)
-        this.updateLine("BE", this.B, this.E)
-
-        this.updateLine("BF", this.B, this.F)
-        this.updateLine("FE", this.F, this.E)
-        this.updateLine("FD", this.F, this.D)
-        this.updateLine("ED", this.E, this.D)
-
-        // LABELS
-        this.updateLine("WHEELBASE_FRONT", this.X, this.dimensionPoints.wheelbase[0])
-        this.updateLine("WHEELBASE_REAR", this.Y, this.dimensionPoints.wheelbase[1])
-        this.updateLine("WHEELBASE_CONNECTING", this.dimensionPoints.wheelbase[0], this.dimensionPoints.wheelbase[1])
-        this.updateLine("TRAIL_FRONT", this.X, this.dimensionPoints.trail[0])
-        this.updateLine("TRAIL_REAR", this.G, this.dimensionPoints.trail[1])
-        this.updateLine("TRAIL_CONNECTING", this.dimensionPoints.trail[0], this.dimensionPoints.trail[1])
-        this.updateLine("RAKE_FRONT", this.B, this.G)
-        this.updateLine("RAKE_VERTICAL", this.B, this.dimensionPoints.rake[0])
-
-        this.dimensionLabels.forEach(label => {
-            this.pivot.remove(label)
-        })
-        this.dimensionLabels = []
-
-        this.buildWheelbaseLabel()
-        this.buildTrailLabel()
-        this.buildRakeLabel()
-
-
-        this.dimensionLabels.forEach(label => {
-            this.pivot.add(label)
-        })
+        this.showGeometryLines()
+        this.showDimensionsLines()
 
         this.rearTire.geometry.updateGeometry()
         this.frontTire.geometry.updateGeometry()
 
+        this.fork.geometry.setTransparency(this.transparentObjects)
         this.fork.geometry.updateGeometry()
     }
 }

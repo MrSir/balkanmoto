@@ -13,32 +13,34 @@ export class SceneControlPanel {
         this.scene = scene
         this.objects = objects
 
-        this.createViewFolder().createSymulationFolder()
+        this.createViewFolder().createSimulationFolder()
     }
 
     createViewFolder() {
         let folder = this.gui.addFolder('View')
         let params = {
-            // 'Show Labels': true,
-            'Show Geometry': true,
+            'Show Geometry Lines': false,
+            'Show Dimensions': true,
             'Transparent Objects': true,
         }
 
-        // folder
-        //     .add(params, 'Show Labels')
-        //     .onChange((toggle) => {
-        //         this.objects.forEach((element) => {
-        //             element.setShowLabels(toggle)
-        //             element.redrawInScene(this.scene)
-        //         })
-        //     })
-
         folder
-            .add(params, 'Show Geometry')
+            .add(params, 'Show Geometry Lines')
             .onChange((toggle) => {
                 this.objects.forEach((element) => {
                     element.showGeometry = toggle
-                    element.redrawInScene(this.scene)
+                    element.update()
+                    element.updateGeometry()
+                })
+            })
+
+        folder
+            .add(params, 'Show Dimensions')
+            .onChange((toggle) => {
+                this.objects.forEach((element) => {
+                    element.showDimensions = toggle
+                    element.update()
+                    element.updateGeometry()
                 })
             })
 
@@ -47,14 +49,17 @@ export class SceneControlPanel {
             .onChange((toggle) => {
                 this.objects.forEach((element) => {
                     element.transparentObjects = toggle
-                    element.redrawInScene(this.scene)
+                    element.update()
+                    element.updateGeometry()
                 })
             })
+
+        folder.close()
 
         return this
     }
 
-    createSymulationFolder() {
+    createSimulationFolder() {
         let folder = this.gui.addFolder('Simulation')
 
         let simulateButton = {

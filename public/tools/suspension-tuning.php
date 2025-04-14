@@ -137,7 +137,7 @@
                 scene.add(geometryRight.pivot)
                 let controlPanelRight = new ControlPanel(cpRightContainer, scene, geometryRight)
 
-                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [geometryLeft])
+                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [geometryLeft, geometryRight])
             })
 
 
