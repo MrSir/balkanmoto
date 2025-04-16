@@ -157,7 +157,7 @@ export class Geometry {
             outerTubeLength: this.parameters.fork.outerTubeLength,
             length: this.parameters.fork.length,
             offset: this.parameters.fork.offset,
-            travel: (this.parameters.fork.spring.length / 2) - this.parameters.fork.spring.preload,
+            travel: this.parameters.fork.travel,
             compressionDamping: this.parameters.fork.compressionDamping,
             reboundDamping: this.parameters.fork.reboundDamping,
             oilWeight: this.parameters.fork.oilWeight,

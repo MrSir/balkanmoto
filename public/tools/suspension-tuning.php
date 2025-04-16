@@ -109,13 +109,14 @@
                     fork: {
                       diameter: 43,
                       length: 927,
+                      travel: 210,
                       offset: 3,
                       stanchionTubeLength: 561,
                       outerTubeLength: 562,
                       spring: {
                         rate: 6.0,
                         length: 425,
-                        preload: 2.5,
+                        preload: 0.0,
                       },
                       oilWeight: 10,
                       compressionDamping: 0,

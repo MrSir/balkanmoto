@@ -198,9 +198,9 @@ export class Fork {
     }
 
     calculateTravelPoints() {
-        let topY = (-this.forkGeometry.stanchionTubeLength / 2) + this.forkGeometry.length - this.forkGeometry.outerTubeLength + this.geometry.spring.dimensions.preload
+        let topY = (-this.forkGeometry.stanchionTubeLength / 2) + this.forkGeometry.length - this.forkGeometry.outerTubeLength
         let bottomY = topY - this.geometry.fork.dimensions.travel
-        let bottomCompression = topY - this.geometry.compression
+        let bottomCompression = topY - this.geometry.compression + this.geometry.spring.dimensions.preload
 
         this.travelPoints = [
             new THREE.Vector3(0, topY, 0),
@@ -224,7 +224,7 @@ export class Fork {
     }
 
     buildCompressionLabel() {
-        let valueMM = this.geometry.compression
+        let valueMM = this.geometry.compression - this.geometry.spring.dimensions.preload
         let valueIN = this.geometry.mm2in(valueMM)
         let percent = (valueMM / this.geometry.fork.dimensions.travel) * 100
         let text = 'COMPRESSION: ' + valueMM.toFixed(0) + 'mm (' + valueIN.toFixed(2) + '") (' + percent.toFixed(2) + '%)'
