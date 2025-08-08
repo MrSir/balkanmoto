@@ -29,8 +29,8 @@
                 <h2>GPX Files</h2>
                 <ul>
                     <li><a href="/adventures/gpx/acton_trails_main_path.gpx" target="_blank">Main Path</a></li>
-                    <li><a href="/adventures/gpx/acton_trails_loop_1.gpx">Loop 1</a></li>
-                    <li><a href="/adventures/gpx/acton_trails_loop_2.gpx">Loop 2</a></li>
+                    <li><a href="/adventures/gpx/acton_trails_loop_1.gpx" target="_blank">Loop 1</a></li>
+                    <li><a href="/adventures/gpx/acton_trails_loop_2.gpx" target="_blank">Loop 2</a></li>
                 </ul>
                 <h2>Videos</h2>
                 <iframe src="https://www.youtube.com/embed/17_xt-jsxJs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
