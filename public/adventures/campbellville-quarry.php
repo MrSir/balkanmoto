@@ -14,6 +14,17 @@
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">
+                <div class="route-details">
+                    <img class="route-logo" src="/adventures/img/campbellville-quarry-logo.jpg"/>
+                    <div class="route-stats">
+                        <label for="length">Length:</label><span id="length">72.96km</span><br>
+                        <label for="lowest-point">Lowest Point:</label><span id="lowest-point">289m</span><br>
+                        <label for="highest-point">Highest Point:</label><span id="highest-point">349m</span><br>
+                        <label for="elevation">Elevation Change:</label><span id="elevation">60m</span><br>
+                        <label for="surface">Surface:</label><span id="surface">Paved, Gravel, Dirt</span>
+                    </div>
+                </div>
+
                 <h2>The Map</h2>
                 <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1Mcye1oZZ5l2wEkOIRcb1IIoUFkfnXgo&ehbc=2E312F" height="500"></iframe>
 
