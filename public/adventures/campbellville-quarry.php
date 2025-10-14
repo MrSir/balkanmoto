@@ -17,11 +17,15 @@
                 <div class="route-details">
                     <img class="route-logo" src="/adventures/img/campbellville-quarry-logo.jpg"/>
                     <div class="route-stats">
-                        <label for="length">Length:</label><span id="length">72.96km</span><br>
-                        <label for="lowest-point">Lowest Point:</label><span id="lowest-point">289m</span><br>
-                        <label for="highest-point">Highest Point:</label><span id="highest-point">349m</span><br>
-                        <label for="elevation">Elevation Change:</label><span id="elevation">60m</span><br>
-                        <label for="surface">Surface:</label><span id="surface">Paved, Gravel, Dirt</span>
+                        <h2>Route Details</h2>
+                        <label>Location:</label><span id="length">Campbellville, ON</span><br>
+                        <label>Length:</label><span id="length">72.96km</span><br>
+                        <label>Time Needed:</label><span id="surface">1 Day</span><br>
+                        <label>Lowest Point:</label><span id="lowest-point">289m</span><br>
+                        <label>Highest Point:</label><span id="highest-point">349m</span><br>
+                        <label>Elevation Change:</label><span id="elevation">60m</span><br>
+                        <label>Surface:</label><span id="surface">Paved, Gravel, Dirt</span><br>
+                        <label>Time of Year:</label><span id="surface">April - October</span><br>
                     </div>
                 </div>
 

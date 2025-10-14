@@ -39,8 +39,17 @@
 .container-grid .content-grid .post-grid .body .route-details {
     display: grid;
     grid-template-areas: 'logo stats';
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: 5fr 4fr;
     margin-top: 50px;
+}
+
+.container-grid .content-grid .post-grid .body .route-details h4{
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+.container-grid .content-grid .post-grid .body .route-details p{
+    margin: 0;
 }
 
 .container-grid .content-grid .post-grid .body .route-details .route-logo{

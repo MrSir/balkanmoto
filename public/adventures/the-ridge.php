@@ -17,11 +17,15 @@
                 <div class="route-details">
                     <img class="route-logo" src="/adventures/img/the-ridge-logo.jpg"/>
                     <div class="route-stats">
-                        <label for="length">Length:</label><span id="length">5.29km</span><br>
-                        <label for="lowest-point">Lowest Point:</label><span id="lowest-point">340m</span><br>
-                        <label for="highest-point">Highest Point:</label><span id="highest-point">361m</span><br>
-                        <label for="elevation">Elevation Change:</label><span id="elevation">21m</span><br>
-                        <label for="surface">Surface:</label><span id="surface">Dirt, Mud, Sand</span>
+                        <h2>Route Details</h2>
+                        <label>Location:</label><span id="length">Acton, ON</span><br>
+                        <label>Length:</label><span id="length">5.29km</span><br>
+                        <label>Time Needed:</label><span id="surface">1 Hour</span><br>
+                        <label>Lowest Point:</label><span id="lowest-point">340m</span><br>
+                        <label>Highest Point:</label><span id="highest-point">361m</span><br>
+                        <label>Elevation Change:</label><span id="elevation">21m</span><br>
+                        <label>Surface:</label><span id="surface">Dirt, Mud, Sand</span><br>
+                        <label>Time of Year:</label><span id="surface">September - October</span><br>
                     </div>
                 </div>
 
