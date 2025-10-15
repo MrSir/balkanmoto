@@ -26,6 +26,7 @@
                         <label>Elevation Change:</label><span id="elevation">21m</span><br>
                         <label>Surface:</label><span id="surface">Dirt, Mud, Sand</span><br>
                         <label>Time of Year:</label><span id="surface">September - October</span><br>
+                        <label>Recommended Tire:</label><span id="surface">50:50 or more off-road biased</span><br>
                     </div>
                 </div>
 
