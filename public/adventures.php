@@ -33,7 +33,7 @@
                     "id": "the-ridge",
                     "link": "/adventures/the-ridge.php",
                     "logo": "/adventures/img/the-ridge-logo.jpg",
-                    "summary": "A nice off-road trail that can be ridden from a fairly novice to a full enduro rider, with lots to offer in terms of exploration and varied terrain."
+                    "summary": "A nice off-road trail that can be ridden by any level rider, with lots to offer in terms of exploration and varied terrain."
                 },
             ]
 

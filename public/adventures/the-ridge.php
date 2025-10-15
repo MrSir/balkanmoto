@@ -19,11 +19,11 @@
                     <div class="route-stats">
                         <h2>Route Details</h2>
                         <label>Location:</label><span id="length">Acton, ON</span><br>
-                        <label>Length:</label><span id="length">5.29km</span><br>
+                        <label>Length:</label><span id="length">2.36km</span><br>
                         <label>Time Needed:</label><span id="surface">1 Hour</span><br>
-                        <label>Lowest Point:</label><span id="lowest-point">340m</span><br>
-                        <label>Highest Point:</label><span id="highest-point">361m</span><br>
-                        <label>Elevation Change:</label><span id="elevation">21m</span><br>
+                        <label>Lowest Point:</label><span id="lowest-point">329m</span><br>
+                        <label>Highest Point:</label><span id="highest-point">355m</span><br>
+                        <label>Elevation Change:</label><span id="elevation">26m</span><br>
                         <label>Surface:</label><span id="surface">Dirt, Mud, Sand</span><br>
                         <label>Time of Year:</label><span id="surface">September - October</span><br>
                         <label>Recommended Tire:</label><span id="surface">50:50 or more off-road biased</span><br>
@@ -31,10 +31,11 @@
                 </div>
 
                 <h2>The Map</h2>
-                <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1_lWqLMwL_uNr3InlNgoPCuz9zd5Lh1U&ehbc=2E312F" height="500"></iframe>
+                <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1D8_fCd5p7__0IbECUeRBMQpOvyAau6Q&ehbc=2E312F" height="500"></iframe>
 
-                <h2>Main Path</h2>
-                <p>The main trail through the Acton farm land is actually more or less just a dirt road for farm equipment. It is used by the locals as a walking path, and by the off road enthusiasts as a riding ground. The north entrance is just at the east edge of town off of HWY 7. The south entrance is at the south edge of town just off of Churchill Road. The trail is very beginner friendly, with lots of different terrain elements. The one thing that is predominant however is that on drier days the bulk of the road is a soft almost dust like sand that is about 1"-2" deep. This could easily sway you one way or another. Just off of the main path towards loop 1, there is a slightly bigger hill with a steeper incline. It's a great place to practice going up and down. The south side of the hill is a bit more challenging with a very long straight descend at about 20deg incline. What makes it more challenging is the large number of loose medium size rocks, that make choosing your line a bit more interesting.</p>
+                <h2>The Route</h2>
+                <p>The Ridge as its commonly referred to by the locals is an off road trail, technically part of the Bruce Trail. It is quite a bit of the beaten path and a lot of the locals use it for ATV and Motor-cross/Enduro riding. The path is quite wide once down by the creek itself, with plenty of room to turn around at any point. The entrances on both sides could be a little challenging due to incline or sand but with a good set of 50:50 tire it's perfectly doable. The path itself features a number of great areas to practice off road riding techniques. Including hill climbs, log hops, sand riding, and should you want to get dirty river crossings.</p>
+                <p>There are generally speaking there are 3 ways to get to the creek path. One is by entering the very first farm field on the west side of 4th line north of the old Quarry. Then following the perimeter until you hit the gap in the trees and see the path. The second is by taking the more challenging routes on the north side of Glen Lawson Rd, then keep riding down hill and keep left at the fork. The last is by entering the south entrance to the Acton trails on the east side of Churchill Rd South. Then taking the first right and following the sandy hill down always keeping left. If none of these is your cup of tea then following the perimeter of a bunch of the farm fields from the mid point of the Acton Trails will eventually lead you to the same spot as the entrance off 4th line. (see map)</p>
 
                 <h2>GPX Files</h2>
                 <ul>
