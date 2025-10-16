@@ -15,13 +15,18 @@
         <div class="post-grid">
             <div class="body">
                 <div class="route-details">
-                    <img class="route-logo" src=""/>
+                    <img class="route-logo" src="/adventures/img/acton-trails-logo.jpg"/>
                     <div class="route-stats">
+                        <h2>Route Details</h2>
+                        <label>Location:</label><span id="length">Acton, ON</span><br>
                         <label for="length">Length:</label><span id="length">5.29km</span><br>
+                        <label>Time Needed:</label><span id="surface">1 Hour</span><br>
                         <label for="lowest-point">Lowest Point:</label><span id="lowest-point">340m</span><br>
                         <label for="highest-point">Highest Point:</label><span id="highest-point">361m</span><br>
                         <label for="elevation">Elevation Change:</label><span id="elevation">21m</span><br>
-                        <label for="surface">Surface:</label><span id="surface">Sand, Loose Rock, Dirt, Mud</span>
+                        <label for="surface">Surface:</label><span id="surface">Sand, Loose Rock, Dirt, Mud</span><br>
+                        <label>Time of Year:</label><span id="surface">April - October</span><br>
+                        <label>Recommended Tire:</label><span id="surface">At least 70:30, 50:50 would be better</span><br>
                     </div>
                 </div>
 
