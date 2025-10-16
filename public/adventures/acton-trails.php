@@ -45,6 +45,9 @@
                 <h2>Loop 3: Beginner Dual Track Loop</h2>
                 <p>The third loop shares the first part of the main path, then veers off to the left. It does a full loop following the border of the farm land back to the entry point of the main path off of HWY 7. A good portion of the loop is on a dual track surface, with fairly deep tracks. So pick left or right and stick with it. There are a few overhanging trees that you may need to duck for if standing.</p>
 
+                <h2>Advanced Section</h2>
+                <p>On the south end of the main path you will find another path leading down towards the forest. This will lead oyu into the more advanced section of the trails. There you will find much more challenging terrain, varying from steep narrow sandy descends, to full blown sand pits, to enduro level hill climbs.</p>
+
                 <h2>GPX Files</h2>
                 <ul>
                     <li><a href="/adventures/gpx/acton_trails_main_path.gpx" target="_blank">Main Path</a></li>
