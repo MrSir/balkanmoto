@@ -31,7 +31,7 @@
                 </div>
 
                 <h2>The Map</h2>
-                <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1D8_fCd5p7__0IbECUeRBMQpOvyAau6Q&ehbc=2E312F" height="500"></iframe>
+                <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1iVafVfOzvZUoisjeBmJnKAg5iOBTLtQ&ehbc=2E312F" height="500"></iframe>
 
                 <h2>The Route</h2>
                 <p>The Ridge as its commonly referred to by the locals is an off road trail, technically part of the Bruce Trail. It is quite a bit of the beaten path and a lot of the locals use it for ATV and Motor-cross/Enduro riding. The path is quite wide once down by the creek itself, with plenty of room to turn around at any point. The entrances on both sides could be a little challenging due to incline or sand but with a good set of 50:50 tire it's perfectly doable. The path itself features a number of great areas to practice off road riding techniques. Including hill climbs, log hops, sand riding, and should you want to get dirty river crossings.</p>
