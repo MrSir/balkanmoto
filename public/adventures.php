@@ -21,7 +21,7 @@
                     "id": "acton-trails",
                     "link": "/adventures/acton-trails.php",
                     "logo": "/adventures/img/acton-trails-logo.jpg",
-                    "summary": "The perfect area for beginner off-road training. Lot's of easy terrain, with progressive difficulty. For hard packed dirt, to deep sand and steep rocky hills."
+                    "summary": "The perfect area for beginner off-road training. Lot's of easy terrain, with progressive difficulty. From hard packed dirt, to deep sand and steep rocky hills."
                 },
                 {
                     "id": "campbellville-quarry",
