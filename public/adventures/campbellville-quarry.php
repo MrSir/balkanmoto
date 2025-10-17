@@ -14,11 +14,27 @@
     <div class="content-grid">
         <div class="post-grid">
             <div class="body">
+                <div class="route-details">
+                    <img class="route-logo" src="/adventures/img/campbellville-quarry-logo.jpg"/>
+                    <div class="route-stats">
+                        <h2>Route Details</h2>
+                        <label>Location:</label><span id="length">Campbellville, ON</span><br>
+                        <label>Length:</label><span id="length">72.96km</span><br>
+                        <label>Time Needed:</label><span id="surface">1 Day</span><br>
+                        <label>Lowest Point:</label><span id="lowest-point">289m</span><br>
+                        <label>Highest Point:</label><span id="highest-point">349m</span><br>
+                        <label>Elevation Change:</label><span id="elevation">60m</span><br>
+                        <label>Surface:</label><span id="surface">Paved, Gravel, Dirt</span><br>
+                        <label>Time of Year:</label><span id="surface">April - October</span><br>
+                        <label>Recommended Tire:</label><span id="surface">70:30 or 80:20</span><br>
+                    </div>
+                </div>
+
                 <h2>The Map</h2>
                 <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1Mcye1oZZ5l2wEkOIRcb1IIoUFkfnXgo&ehbc=2E312F" height="500"></iframe>
 
                 <h2>The Adventure</h2>
-                <p>In this adventure I decided to explore the hidden trails of the old Campbellville Quarry. I had heard that the area presented some fairly easy forest tracks to ride and figured let's take my 210kg adventure big on them. To my surprise the area was actually super nice to ride. The trails varied in difficulty but mostly stay fairly beginner. Most are plenty wide to turn around at any point, not that you will need to.</p>
+                <p>In this adventure I decided to explore the hidden trails of the old Campbellville Quarry. I had heard that the area presented some fairly easy forest tracks to ride and figured let's take my 210kg adventure bike on them. To my surprise the area was actually super nice to ride. The trails varied in difficulty but mostly stay fairly beginner. Most are plenty wide to turn around at any point, not that you will need to.</p>
 
                 <h2>Loop 1: Beginner Loop</h2>
                 <p>The first trail I explored very pleasantly surprised me. Most of seemed to have been defined by an ATV. So it was nice and wide, and easy to navigate. From the main path the trail takes you immediately into a table top style hill. I am sure more experienced rider could probably catch some series air off this thing. Then the track proceeds through a well packed dirt path looping around back to the main path. The second section of the loop has a nice light downhill section followed by a couple of meters of deep ruts. If you go there when it's wet you will likely have a bit of fun in the ruts, like it or not.</p>
