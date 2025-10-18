@@ -3,7 +3,7 @@
         grid-area: header-grid;
         display: grid;
         height: 100%;
-        grid-template-areas: 'leather builds tools';
+        grid-template-areas: 'adventures builds tools';
         grid-template-columns: repeat(3, 1fr);
     }
 

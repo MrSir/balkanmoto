@@ -75,17 +75,17 @@ a{
     display: grid;
     height: 100%;
     grid-template-areas:
-            'leather'
+            'adventures'
             'builds'
             'tools';
     grid-template-columns: 1fr;
 }
 
-.container-grid .header-grid .leather {
-    grid-area: leather;
+.container-grid .header-grid .adventures {
+    grid-area: adventures;
     height: 0px;
     padding-bottom: 66.66%;
-    background: url('/img/header/leather_1080x720.jpg') center;
+    background: url('/img/header/adventures_1080x720.jpg') center;
     background-size: cover;
 }
 
@@ -102,15 +102,15 @@ a{
     align-self: center;
 }
 
-.container-grid .header-grid .leather-overlay {
-    grid-area: leather;
+.container-grid .header-grid .adventures-overlay {
+    grid-area: adventures;
 }
 
-.container-grid .header-grid .leather:hover + .leather-overlay{
+.container-grid .header-grid .adventures:hover + .adventures-overlay{
     display: grid;
 }
 
-.container-grid .header-grid .leather-overlay:hover {
+.container-grid .header-grid .adventures-overlay:hover {
     display: grid;
 }
 

@@ -5,7 +5,11 @@
     }
 
     .container-grid .content-grid .main-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(328px, 500px));
         grid-gap: 50px;
+    }
+
+    .content-grid .main-grid .post-grid{
+        grid-template-rows: 5fr 2fr;
     }
 }

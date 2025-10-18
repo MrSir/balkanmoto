@@ -3,6 +3,7 @@
         <div class="footer-title">Navigation</div>
         <ul>
             <li><a href="/about.php">ABOUT</a></li>
+            <li><a href="/adventures.php">ADVENTURES</a></li>
             <li><a href="/builds.php">BUILDS</a></li>
             <li><a href="/leather-craft.php">LEATHER CRAFT</a></li>
             <li><a href="/wall-art.php">WALL ART</a></li>
