@@ -192,48 +192,6 @@ a{
     vertical-align: top;
 }
 
-.container-grid .footer-grid .tweeter .tweets .tweet{
-    display: grid;
-    grid-template-areas:
-            'image name'
-            'image handle'
-            'message message';
-    grid-template-columns: 50px 1fr;
-    grid-template-rows: repeat(2, 20px) 1fr;
-    grid-gap: 10px;
-}
-
-.container-grid .footer-grid .tweeter .tweets .tweet img{
-    grid-area: image;
-}
-
-.container-grid .footer-grid .tweeter .tweets .tweet .name{
-    grid-area: name;
-    font-size: 20pt;
-    color: #cbcbcb;
-    justify-self: left;
-}
-
-.container-grid .footer-grid .tweeter .tweets .tweet .handle{
-    grid-area: handle;
-    font-size: 18pt;
-    color: #d8d8e2;
-    justify-self: left;
-}
-
-.container-grid .footer-grid .tweeter .tweets .tweet .handle a{
-    color: white;
-    text-decoration: none;
-}
-
-.container-grid .footer-grid .tweeter .tweets .tweet .message{
-    grid-area: message;
-    font-size: 16pt;
-    color: #cbcbcb;
-    justify-self: left;
-    text-align: left;
-}
-
 .container-grid .footer-grid .links ul {
     list-style-type: none;
     text-align: left;

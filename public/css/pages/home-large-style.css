@@ -8,6 +8,16 @@
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 50px;
     }
+
+    .container-grid .content-grid #adventures-grid{
+        grid-template-columns: repeat(3, minmax(328px, 500px));
+        grid-gap: 20px;
+    }
+
+    .container-grid .content-grid #adventures-grid .post-grid{
+        grid-template-rows: 5fr 2fr;
+    }
+
     .container-grid .content-grid .other-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 50px;

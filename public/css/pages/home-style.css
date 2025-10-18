@@ -12,6 +12,7 @@
     grid-template-areas:
             'welcome'
             'builds-grid'
+            'adventures-grid'
             'other-grid';
     grid-gap: 20px;
     box-shadow: none;
@@ -66,6 +67,46 @@
 
 .container-grid .content-grid .builds-grid .build .title a, .container-grid .content-grid .other-grid .other .title a{
     text-decoration: none;
+    color: #636b6f;
+}
+
+.container-grid .content-grid #adventures-grid{
+    grid-area: adventures-grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
+    grid-gap: 20px;
+    justify-content: center;
+}
+
+
+.container-grid .content-grid #adventures-grid .post-grid{
+    display: grid;
+    grid-template-areas:
+            'image'
+            'summary';
+    grid-template-columns: 1fr;
+    grid-template-rows: 5fr 1fr;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 5px 5px 10px darkgray;
+}
+
+.container-grid .content-grid #adventures-grid .post-grid:hover{
+    cursor: pointer;
+}
+
+.container-grid .content-grid #adventures-grid .post-grid img{
+    grid-area: image;
+    width: 100%;
+}
+
+.container-grid .content-grid #adventures-grid .post-grid .summary{
+    grid-area: summary;
+    font-size: 16pt;
+    text-align: left;
+}
+
+.container-grid .content-grid #adventures-grid .post-grid .summary a{
     color: #636b6f;
 }
 
