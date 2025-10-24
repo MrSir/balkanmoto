@@ -3,6 +3,7 @@
     margin: 20px;
     font-size: 14pt;
     background-color: white;
+    box-shadow: 5px 5px 10px darkgray;
 }
 
 .container-grid .content-grid p{
