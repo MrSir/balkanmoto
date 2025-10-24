@@ -4,7 +4,6 @@
             'main-grid';
     grid-template-rows: auto;
     grid-gap: 20px;
-    background-color: lightgray;
     margin: 0;
     padding: 20px;
 }
@@ -12,7 +11,7 @@
 .content-grid .main-grid{
     grid-area: main-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
+    grid-template-columns: repeat(auto-fit, minmax(315px, 690px));
     grid-gap: 20px;
     justify-content: center;
 }
@@ -46,19 +45,4 @@
 
 .content-grid .main-grid .post-grid .summary a{
     color: #636b6f;
-}
-
-.content-grid .divider{
-    height: 55px;
-    line-height: 55px;
-    background-color: #ced4da;
-    font-size: 25pt;
-}
-
-.content-grid .divider1{
-    grid-area: divider1;
-}
-
-.content-grid .divider2{
-    grid-area: divider2;
 }

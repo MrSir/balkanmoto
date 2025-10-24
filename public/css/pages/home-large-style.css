@@ -1,15 +1,17 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
-    .container-grid .content-grid {
-        grid-gap: 50px;
-        padding: 50px;
+    .container-grid .content-grid .builds-grid .posts{
+        grid-template-columns: repeat(3, minmax(328px, 500px));
     }
 
-    .container-grid .content-grid .builds-grid {
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 50px;
+    .container-grid .content-grid #adventures-grid #adventures{
+        grid-template-columns: repeat(3, minmax(328px, 500px));
     }
-    .container-grid .content-grid .other-grid {
+
+    .container-grid .content-grid #adventures-grid #adventures .post-grid{
+        grid-template-rows: 5fr 2fr;
+    }
+
+    .container-grid .content-grid .other-grid .posts{
         grid-template-columns: repeat(2, 1fr);
-        grid-gap: 50px;
     }
 }

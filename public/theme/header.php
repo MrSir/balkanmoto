@@ -1,7 +1,7 @@
 <div class="header-grid">
-    <div class="leather"></div>
-    <div class="leather-overlay overlay" onclick="window.open('/leather-craft.php','_self');">
-        <div class="leather-overlay-text overlay-text">THE STORIES OF MY LEATHER CRAFT ...</div>
+    <div class="adventures"></div>
+    <div class="adventures-overlay overlay" onclick="window.open('/adventures.php','_self');">
+        <div class="adventures-overlay-text overlay-text">THE ADVENTURE ROUTES ...</div>
     </div>
     <div class="builds"></div>
     <div class="builds-overlay overlay" onclick="window.open('/builds.php','_self');">

@@ -1,10 +1,24 @@
 @media all and (min-width: 768px) AND (min-device-width: 1080px) {
+    .container-grid {
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    .container-grid .content-grid {
+        grid-gap: 50px;
+        padding: 50px;
+        max-width: 1540px;
+        margin: 0 auto;
+    }
+
     .container-grid .header-grid {
         grid-area: header-grid;
         display: grid;
         height: 100%;
-        grid-template-areas: 'leather builds tools';
+        grid-template-areas: 'adventures builds tools';
         grid-template-columns: repeat(3, 1fr);
+        border-left: 1px solid black;
+        border-right: 1px solid black;
     }
 
     .container-grid .menu-grid{
@@ -41,11 +55,5 @@
 
     .container-grid .divider {
         font-size: 25pt;
-    }
-
-    .container-grid .content-grid {
-        grid-area: content;
-        padding: 50px;
-        background-color: lightgray;
     }
 }

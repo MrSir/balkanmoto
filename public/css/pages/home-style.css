@@ -1,17 +1,9 @@
-.container-grid {
-    grid-template-areas:
-            'menu-grid'
-            'header-grid'
-            'content'
-            'footer';
-    grid-template-rows: 150px auto 1fr auto;
-}
-
 .container-grid .content-grid {
     display: grid;
     grid-template-areas:
             'welcome'
             'builds-grid'
+            'adventures-grid'
             'other-grid';
     grid-gap: 20px;
     box-shadow: none;
@@ -32,15 +24,44 @@
     margin: 25px 0px;
 }
 
-.container-grid .content-grid .builds-grid{
+.container-grid .content-grid .builds-grid, .container-grid .content-grid #adventures-grid{
     grid-area: builds-grid;
+    display: grid;
+    grid-template-areas:
+            'header'
+            'posts';
+    grid-gap: 20px;
+    justify-content: center;
+}
+
+.container-grid .content-grid #adventures-grid{
+    grid-area: adventures-grid;
+    display: grid;
+    grid-template-areas:
+            'header'
+            'posts';
+    grid-gap: 20px;
+    justify-content: center;
+}
+
+.container-grid .content-grid .builds-grid .header, .container-grid .content-grid #adventures-grid .header, .container-grid .content-grid .other-grid .header{
+    grid-area: header;
+    justify-content: center;
+    color: white;
+    background-color: #383838;
+    box-shadow: 5px 5px 10px darkgray;
+    height: 53px;
+}
+
+.container-grid .content-grid .builds-grid .posts, .container-grid .content-grid #adventures-grid #adventures, .container-grid .content-grid .other-grid .posts{
+    grid-area: posts;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
     grid-gap: 20px;
     justify-content: center;
 }
 
-.container-grid .content-grid .builds-grid .build, .container-grid .content-grid .other-grid .other{
+.container-grid .content-grid .builds-grid .posts .build, .container-grid .content-grid .other-grid .other{
     display: grid;
     grid-template-areas:
             'image'
@@ -51,27 +72,61 @@
     padding: 25px;
 }
 
-.container-grid .content-grid .builds-grid .build img, .container-grid .content-grid .other-grid .other img{
+.container-grid .content-grid .builds-grid .posts .build img, .container-grid .content-grid .other-grid .other img{
     grid-area: image;
     width: 100%;
     margin-bottom: 20px;
 }
 
-.container-grid .content-grid .builds-grid .build .title, .container-grid .content-grid .other-grid .other .title{
+.container-grid .content-grid .builds-grid .posts .build .title, .container-grid .content-grid .other-grid .other .title{
     grid-area: title;
     color: #636b6f;
     font-size: 24pt;
     text-align: left;
 }
 
-.container-grid .content-grid .builds-grid .build .title a, .container-grid .content-grid .other-grid .other .title a{
+.container-grid .content-grid .builds-grid .posts .build .title a, .container-grid .content-grid .other-grid .other .title a{
     text-decoration: none;
+    color: #636b6f;
+}
+
+.container-grid .content-grid #adventures-grid #adventures .post-grid{
+    display: grid;
+    grid-template-areas:
+            'image'
+            'summary';
+    grid-template-columns: 1fr;
+    grid-template-rows: 5fr 1fr;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 5px 5px 10px darkgray;
+}
+
+.container-grid .content-grid #adventures-grid #adventures .post-grid:hover{
+    cursor: pointer;
+}
+
+.container-grid .content-grid #adventures-grid #adventures .post-grid img{
+    grid-area: image;
+    width: 100%;
+}
+
+.container-grid .content-grid #adventures-grid #adventures .post-grid .summary{
+    grid-area: summary;
+    font-size: 16pt;
+    text-align: left;
+}
+
+.container-grid .content-grid #adventures-grid #adventures .post-grid .summary a{
     color: #636b6f;
 }
 
 .container-grid .content-grid .other-grid {
     grid-area: other-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 690px));
+    grid-template-areas:
+            'header'
+            'posts';
     grid-gap: 20px;
+    justify-content: center;
 }

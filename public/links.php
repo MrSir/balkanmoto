@@ -14,6 +14,16 @@
     <div class="content-grid">
         <div class="link">
             <div class="box">
+                <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEVKaXjDnXw0OaIbUnliglh-" target="_blank">Series: Adventures of Azzurro Burro</a>
+            </div>
+        </div>
+        <div class="link">
+            <div class="box">
+                <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEVTWnOKvtWUHB10ezDoI-oK" target="_blank">Series: Le Azzurro Burro - The Blue Donkey</a>
+            </div>
+        </div>
+        <div class="link">
+            <div class="box">
                 <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEVbNL24JMC3hxkyewp6R0D-" target="_blank">Series: The Wheelbarrow CX</a>
             </div>
         </div>
@@ -55,11 +65,6 @@
         <div class="link">
             <div class="box">
                 <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEVsIgIc6UkMALWlZbIzI8ZF" target="_blank">Series: How to build a BOSS Bobber</a>
-            </div>
-        </div>
-        <div class="link">
-            <div class="box">
-                <a href="https://www.youtube.com/playlist?list=PLPOp2IhKEuEUwQQ0EVe-7pbXlaqWjF-lI" target="_blank">Assetto Corsa Mods</a>
             </div>
         </div>
         <div class="link">
