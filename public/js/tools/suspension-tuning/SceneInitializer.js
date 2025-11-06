@@ -16,7 +16,7 @@ export class SceneInitializer {
             100,
             10000
         )
-        this.camera.position.set(0, 500, 2500)
+        this.camera.position.set(0, 800, 3800)
         this.camera.rotation.order = "YZX"
 
         return this
@@ -89,7 +89,7 @@ export class SceneInitializer {
 
     initializeScene() {
         this.scene.background = new THREE.Color(0xa0a0a0)
-        this.scene.fog = new THREE.Fog(0xa0a0a0, 2500, 8000)
+        this.scene.fog = new THREE.Fog(0xa0a0a0, 2500, 11000)
 
         this.addCamera().addRenderer().addOrbitalControls().addLights().addFloor()
     }

@@ -17,7 +17,8 @@
                 "geometry": "/js/tools/suspension-tuning/Geometry.js",
                 "fork": "/js/tools/suspension-tuning/fork.js",
                 "spring": "/js/tools/suspension-tuning/spring.js",
-                "tire": "/js/tools/suspension-tuning/tire.js"
+                "tire": "/js/tools/suspension-tuning/tire.js",
+                "simulation": "/js/tools/suspension-tuning/simulation.js"
             }
         }
     </script>
@@ -65,6 +66,7 @@
             import {SceneControlPanel} from 'scp';
             import {ControlPanel} from 'cp';
             import {Geometry} from 'geometry';
+            import {Simulation} from 'simulation';
 
             const floorY = -500
 
@@ -119,8 +121,8 @@
                         preload: 0.0,
                       },
                       oilWeight: 10,
-                      compressionDamping: 0,
-                      reboundDamping: 0,
+                      compressionDamping: 1,
+                      reboundDamping: 1,
                     }
                 }
 
@@ -130,15 +132,17 @@
 
                 let geometryLeft = new Geometry(JSON.parse(JSON.stringify(frameParameters)), floorY, font, xOffset, leftOffset, -Math.PI / 2)
                 geometryLeft.initialize()
-                scene.add(geometryLeft.pivot)
+                let simulationLeft = new Simulation(scene, geometryLeft, 0, 0)
+                scene.add(simulationLeft.pivot)
                 let controlPanelLeft = new ControlPanel(cpLeftContainer, scene, geometryLeft)
 
                 let geometryRight = new Geometry(JSON.parse(JSON.stringify(frameParameters)), floorY, font, xOffset, rightOffset, -Math.PI / 2)
                 geometryRight.initialize()
-                scene.add(geometryRight.pivot)
+                let simulationRight = new Simulation(scene, geometryRight, 0, 0)
+                scene.add(simulationRight.pivot)
                 let controlPanelRight = new ControlPanel(cpRightContainer, scene, geometryRight)
 
-                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [geometryLeft, geometryRight])
+                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [simulationLeft, simulationRight])
             })
 
 
@@ -152,7 +156,6 @@
 
             let animate = function () {
                 requestAnimationFrame(animate)
-
                 sceneInitializer.controls.update()
                 sceneInitializer.renderer.render(scene, sceneInitializer.camera)
             }

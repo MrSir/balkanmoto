@@ -1,7 +1,7 @@
 import { GUI } from 'three/gui';
 
 export class ControlPanel {
-    constructor(element, scene, geometry) {
+    constructor(element, scene, geometry, simulation) {
         this.gui = new GUI({
             container: element,
             width: 300,
@@ -11,6 +11,7 @@ export class ControlPanel {
 
         this.scene = scene
         this.geometry = geometry
+        this.simulation = simulation
 
         this.createMotorcycleFolder().createRiderFolder().createTuningFolder()
     }
@@ -96,7 +97,7 @@ export class ControlPanel {
             })
 
         folder
-            .add(params, 'Compression Damping', 0, 10, 1)
+            .add(params, 'Compression Damping', 1, 10, 1)
             .onChange((damping) => {
                 this.geometry.parameters.fork.compressionDamping = damping
                 this.geometry.update()
@@ -104,7 +105,7 @@ export class ControlPanel {
             })
 
         folder
-            .add(params, 'Rebound Damping', 0, 10, 1)
+            .add(params, 'Rebound Damping', 1, 10, 1)
             .onChange((damping) => {
                 this.geometry.parameters.fork.reboundDamping = damping
                 this.geometry.update()
@@ -118,6 +119,24 @@ export class ControlPanel {
                 this.geometry.update()
                 this.geometry.updateGeometry()
             })
+
+        let simulateButton = {
+            simulate: () => {
+                this.simulation.reset()
+
+                let animate = (time) => {
+                    this.simulation.simulate(time)
+
+                    if (!this.simulation.stop) {
+                        requestAnimationFrame(animate)
+                    }
+                }
+
+                requestAnimationFrame(animate)
+            }
+        }
+
+        folder.add(simulateButton, 'simulate').name('Simulate')
 
         return this
     }

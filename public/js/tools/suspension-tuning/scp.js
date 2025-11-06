@@ -28,9 +28,7 @@ export class SceneControlPanel {
             .add(params, 'Show Geometry Lines')
             .onChange((toggle) => {
                 this.objects.forEach((element) => {
-                    element.showGeometry = toggle
-                    element.update()
-                    element.updateGeometry()
+                    element.toggleGeometry(toggle)
                 })
             })
 
@@ -38,9 +36,7 @@ export class SceneControlPanel {
             .add(params, 'Show Dimensions')
             .onChange((toggle) => {
                 this.objects.forEach((element) => {
-                    element.showDimensions = toggle
-                    element.update()
-                    element.updateGeometry()
+                    element.toggleDimensions(toggle)
                 })
             })
 
@@ -48,9 +44,7 @@ export class SceneControlPanel {
             .add(params, 'Transparent Objects')
             .onChange((toggle) => {
                 this.objects.forEach((element) => {
-                    element.transparentObjects = toggle
-                    element.update()
-                    element.updateGeometry()
+                    element.toggleTransparency(toggle)
                 })
             })
 
@@ -62,37 +56,34 @@ export class SceneControlPanel {
     createSimulationFolder() {
         let folder = this.gui.addFolder('Simulation')
 
+        let params = {
+            'Drop Height(mm)': 0,
+        }
+
+        folder
+            .add(params, 'Drop Height(mm)', 0, 1500, 100)
+            .onChange((height) => {
+                this.objects.forEach((element) => {
+                    element.stop = true
+                    element.dropHeight = height
+                    element.pivot.position.y = height
+                })
+            })
+
+
         let simulateButton = {
             simulate: () => {
                 this.objects.forEach((element) => {
-                    let restingStroke = element.restingStroke
-                    element.fork.stroke = restingStroke
+                    element.reset()
 
-                    let springSqueeze = new Tween(element, false)
-                        .to({fork: {stroke: 100}}, 1000 * (element.fork.spring.rate / 6))
-                        .onUpdate(
-                            (frame) => {
-                                frame.redrawInScene(this.scene)
-                            }
-                        )
+                    let animate = (time) => {
+                        element.simulate(time)
 
-                    let springStretch = new Tween(element, false)
-                        .to({fork: {stroke: restingStroke}}, 1000 * (element.fork.spring.rate / 6))
-                        .onUpdate(
-                            (frame) => {
-                                frame.redrawInScene(this.scene)
-                            }
-                        )
-
-                    springSqueeze.chain(springStretch)
-                    springSqueeze.start()
-
-                    function animate(time) {
-                        springSqueeze.update(time)
-                        springStretch.update(time)
-
-                        requestAnimationFrame(animate)
+                        if (!element.stop) {
+                            requestAnimationFrame(animate)
+                        }
                     }
+
                     requestAnimationFrame(animate)
                 })
             },
