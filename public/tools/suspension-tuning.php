@@ -5,20 +5,96 @@
 
     <link href="/css/pages/tool-style.css" rel="stylesheet">
     <link href="/css/pages/tool-large-style.css" rel="stylesheet">
+    <style>
+        body.lab-fullscreen { overflow: hidden; }
+
+        /* The whole app lives in this container: small fixed size, or the full browser window. */
+        .lab {
+          position: relative; width: 1200px; height: 840px; overflow: hidden;
+          border-radius: 6px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+          --column-width: 230px;
+        }
+        .lab.fullscreen {
+          position: fixed; inset: 0; width: auto; height: auto; z-index: 1000; border-radius: 0;
+          --column-width: 260px;
+        }
+        .lab .viewport { position: absolute; inset: 0; }
+        .lab .viewport canvas { display: block; }
+
+        /* One column per bike (A left, B right): info panel with its lil-gui panel below. */
+        .column {
+          position: absolute; top: 12px; width: var(--column-width); max-height: calc(100% - 60px);
+          display: flex; flex-direction: column; gap: 6px;
+        }
+        .column.left { left: 12px; }
+        .column.right { right: 12px; }
+        .column > .lil-gui.root { width: auto; min-height: 0; }  /* fill the column; shrink and scroll */
+
+        .shared { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); }
+
+        /* Readouts: dark theme matching lil-gui. */
+        .readouts {
+          flex: none; padding: 6px 8px;
+          background: #1f1f1f; border-radius: 4px; border-left: 3px solid;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+          font-size: 11px; line-height: 1.3; color: #ebebeb;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        .readouts .table { display: grid; grid-template-columns: auto auto; column-gap: 10px; }
+        .readouts .head { font-size: 12px; font-weight: 700; }
+        .readouts h1 {
+          grid-column: 1 / -1; margin: 6px -8px 2px; padding: 2px 8px;
+          font-size: 11px; font-weight: 600; background: #111;
+        }
+        .readouts .label { color: #b0b0b0; }
+        .readouts .value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+        .readouts .value.differs { color: #7dff4d; }
+        .readouts .bottomed {
+          grid-column: 1 / -1; margin: 2px 0; padding: 0 6px; text-align: center; border-radius: 4px;
+          font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+          color: #424242; background: #2c2c2c;
+        }
+        .readouts .bottomed.active { color: #1f1f1f; background: #e8a317; }
+
+        /* Graphs: the area spans the gap between the bike columns; the graph panel is centred in it.
+           2×2 grid by default, a single row when each graph can be at least 200 px wide. */
+        .graph-area {
+          position: absolute; bottom: 12px;
+          left: calc(var(--column-width) + 24px); right: calc(var(--column-width) + 24px);
+          display: flex; justify-content: center; pointer-events: none;
+          container-type: inline-size;
+        }
+        .graphs {
+          width: 100%; max-width: 656px; box-sizing: border-box; pointer-events: auto; padding: 4px 6px 6px; background: #111; border-radius: 6px;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+          font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+          color: #b0b0b0;
+        }
+        .graph-header { display: flex; justify-content: space-between; gap: 12px; padding: 0 2px 4px; }
+        .graph-legend { display: flex; gap: 12px; }
+        .graph-grid {
+          display: grid; gap: 4px;
+          grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 140px;
+        }
+        .graph-grid canvas { display: block; width: 100%; height: 100%; border-radius: 4px; }
+        @container (min-width: 824px) {
+          .graphs { max-width: 1304px; }
+          .graph-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 240px; }
+        }
+
+        .fullscreen-toggle {
+          position: absolute; right: 12px; bottom: 12px; padding: 6px 10px;
+          font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+          color: #ebebeb; background: #424242; border: none; border-radius: 3px; cursor: pointer;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        .fullscreen-toggle:hover { background: #595959; }
+    </style>
     <script type="importmap">
         {
             "imports": {
-                "three": "/js/tools/three/three.module.js",
-                "three/addons": "/js/tools/three/addons/Addons.js",
-                "three/gui": "/js/tools/three/addons/libs/lil-gui.module.min.js",
-                "sceneInitializer": "/js/tools/suspension-tuning/SceneInitializer.js",
-                "cp": "/js/tools/suspension-tuning/cp.js",
-                "scp": "/js/tools/suspension-tuning/scp.js",
-                "geometry": "/js/tools/suspension-tuning/Geometry.js",
-                "fork": "/js/tools/suspension-tuning/fork.js",
-                "spring": "/js/tools/suspension-tuning/spring.js",
-                "tire": "/js/tools/suspension-tuning/tire.js",
-                "simulation": "/js/tools/suspension-tuning/simulation.js"
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
             }
         }
     </script>
@@ -29,14 +105,9 @@
 <div class="content container-grid">
     <?php include("../theme/menu.php"); ?>
     <?php include("../theme/header.php"); ?>
-    <div class="divider">SUSPENSION TUNING</div>
+    <div class="divider">SUSPENSION TUNING123</div>
     <div class="content-grid">
         <div id="info">
-            <h2>Parameters</h2>
-            <ul>
-                <li>TBD</li>
-            </ul>
-
             <h2>Mouse Controls</h2>
             You can use your mouse to fully navigate the 3D space
             <ul>
@@ -50,119 +121,27 @@
         </div>
         <br/>
         <div id="small-screen-warning">Your screen is too small to view the canvas.</div>
-        <div id="canvas">
-            <div id="control-panel-left"></div>
-            <div id="control-panel-right"></div>
-            <div id="scene-control-panel"></div>
-            <div id="control-panels">
+        <div id="lab" class="lab">
+            <div class="viewport"></div>
 
+            <!-- Per-bike columns: readouts (js/readouts.js) with the bike's GUI appended below (js/gui.js) -->
+            <div class="column left"><div class="readouts"></div></div>
+            <div class="column right"><div class="readouts"></div></div>
+            <div class="shared"></div>
+
+            <!-- Shared legend and caption, then one canvas per graph (js/readouts.js) -->
+            <div class="graph-area">
+                <div class="graphs">
+                    <div class="graph-header"><span class="graph-caption"></span><span class="graph-legend"></span></div>
+                    <div class="graph-grid"></div>
+                </div>
             </div>
+            <button class="fullscreen-toggle" type="button">⛶ Full screen</button>
         </div>
-        <script type="module">
-            import * as THREE from 'three';
-            import * as THREE_Addons from 'three/addons';
-            import {Tween, Easing} from 'https://unpkg.com/@tweenjs/tween.js@23.1.3/dist/tween.esm.js'
-            import * as SI from 'sceneInitializer';
-            import {SceneControlPanel} from 'scp';
-            import {ControlPanel} from 'cp';
-            import {Geometry} from 'geometry';
-            import {Simulation} from 'simulation';
-
-            const floorY = -500
-
-            let container = document.getElementById('canvas')
-            let cpLeftContainer = document.getElementById('control-panel-left')
-            let cpRightContainer = document.getElementById('control-panel-right')
-            let scpContainer = document.getElementById('scene-control-panel')
-            let scene = new THREE.Scene()
-            scene.background = new THREE.Color( 0xa0a0a0 );
-
-            let sceneInitializer = new SI.SceneInitializer(scene, container, floorY)
-            sceneInitializer.initializeScene()
-
-            let loader = new THREE_Addons.FontLoader()
-            loader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
-                let frameParameters = {
-                    rake: 27,
-                    wheelbase: 1590,
-                    weight: 205,
-                    rider: {
-                        weight: 90,
-                        gearWeight: 5,
-                    },
-                    frontTire: {
-                      width:  90,
-                      aspect: 90,
-                      rimDiameterInInches: 21,
-                    },
-                    rearTire: {
-                      width:  150,
-                      aspect: 70,
-                      rimDiameterInInches: 18,
-                    },
-                    tripleTree: {
-                        rake: 0,
-                        width: 200,
-                        offset: 60,
-                        stemLength: 200,
-                        topYokeThickness: 20,
-                        bottomYokeThickness: 30,
-                    },
-                    fork: {
-                      diameter: 43,
-                      length: 927,
-                      travel: 210,
-                      offset: 3,
-                      stanchionTubeLength: 561,
-                      outerTubeLength: 562,
-                      spring: {
-                        rate: 6.0,
-                        length: 425,
-                        preload: 0.0,
-                      },
-                      oilWeight: 10,
-                      compressionDamping: 1,
-                      reboundDamping: 1,
-                    }
-                }
-
-                const xOffset = -1000
-                const leftOffset = -400
-                const rightOffset = 400
-
-                let geometryLeft = new Geometry(JSON.parse(JSON.stringify(frameParameters)), floorY, font, xOffset, leftOffset, -Math.PI / 2)
-                geometryLeft.initialize()
-                let simulationLeft = new Simulation(scene, geometryLeft, 0, 0)
-                scene.add(simulationLeft.pivot)
-                let controlPanelLeft = new ControlPanel(cpLeftContainer, scene, geometryLeft)
-
-                let geometryRight = new Geometry(JSON.parse(JSON.stringify(frameParameters)), floorY, font, xOffset, rightOffset, -Math.PI / 2)
-                geometryRight.initialize()
-                let simulationRight = new Simulation(scene, geometryRight, 0, 0)
-                scene.add(simulationRight.pivot)
-                let controlPanelRight = new ControlPanel(cpRightContainer, scene, geometryRight)
-
-                let sceneControlPanel = new SceneControlPanel(scpContainer, scene, [simulationLeft, simulationRight])
-            })
-
-
-            function onWindowResize() {
-                sceneInitializer.camera.aspect = container.offsetWidth / container.offsetHeight
-                sceneInitializer.camera.updateProjectionMatrix()
-                sceneInitializer.renderer.setSize(container.offsetWidth, container.offsetHeight)
-            }
-
-            window.addEventListener('resize', onWindowResize, false)
-
-            let animate = function () {
-                requestAnimationFrame(animate)
-                sceneInitializer.controls.update()
-                sceneInitializer.renderer.render(scene, sceneInitializer.camera)
-            }
-
-            animate()
-        </script>
     </div>
+
+    <!-- ES modules can't load from file:// — serve this folder, e.g. `python3 -m http.server` -->
+    <script type="module" src="/js/tools/suspension-tuning/main.js"></script>
     <?php include("../theme/footer.php"); ?>
 </div>
 </body>
