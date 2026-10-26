@@ -18,8 +18,12 @@
                   <div class="title"><a href="/tools/suspension-geometry.php">SUSPENSION GEOMETRY</a></div>
               </div>
               <div class="post-grid">
-                  <img src="/tools/img/carb_tunning.jpg" alt="Article Cover">
+                  <img src="/tools/img/carb_tuning.jpg" alt="Article Cover">
                   <div class="title"><a href="/tools/carburetor-tuning.php">CARBURETOR TUNING</a></div>
+              </div>
+              <div class="post-grid">
+                  <img src="/tools/img/suspension_tuning.jpg" alt="Article Cover">
+                  <div class="title"><a href="/tools/suspension-tuning.php">SUSPENSION TUNING</a></div>
               </div>
         </div>
     </div>
